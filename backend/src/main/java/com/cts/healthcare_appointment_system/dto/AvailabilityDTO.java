@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppointmentDTO {
-    private int patientId;
+public class AvailabilityDTO {
     private int doctorId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
