@@ -1,5 +1,5 @@
 package com.cts.healthcare_appointment_system.enums;
 
-public enum OrderStatus {
+public enum AppointmentStatus {
     BOOKED, CANCELLED, COMPLETED
 }
