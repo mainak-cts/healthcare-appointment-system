@@ -1,8 +1,197 @@
 package com.cts.healthcare_appointment_system.services;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.cts.healthcare_appointment_system.dto.AppointmentDTO;
+import com.cts.healthcare_appointment_system.enums.AppointmentStatus;
+import com.cts.healthcare_appointment_system.enums.UserRole;
+import com.cts.healthcare_appointment_system.error.ApiException;
+import com.cts.healthcare_appointment_system.models.Appointment;
+import com.cts.healthcare_appointment_system.models.Availability;
+import com.cts.healthcare_appointment_system.models.User;
+import com.cts.healthcare_appointment_system.repositories.AppointmentRepository;
+import com.cts.healthcare_appointment_system.repositories.AvailabilityRepository;
+import com.cts.healthcare_appointment_system.repositories.UserRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class AppointmentService {
 
+    private AppointmentRepository appointmentRepo;
+    private AvailabilityRepository availabilityRepo;
+    private UserRepository userRepo;
+
+    // GET methods
+    // Get all appointments
+    public ResponseEntity<List<Appointment>> getAllAppointments(int patientId, int doctorId, LocalDateTime timeSlotStart, LocalDateTime timeSlotEnd, String status) {
+
+        List<Appointment> appointments = appointmentRepo.findAll(Sort.by(Direction.ASC, "timeSlotStart"));
+
+        // Filter by request params
+        if (patientId != 0) {
+            appointments = appointments.stream().filter(a -> a.getPatient().getUserId() == patientId).toList();
+        } else if (doctorId != 0) {
+            appointments = appointments.stream().filter(a -> a.getDoctor().getUserId() == doctorId).toList();
+        }
+
+        if (timeSlotStart != null) {
+            appointments = appointments.stream().filter(a -> a.getTimeSlotStart().isAfter(timeSlotStart) || a.getTimeSlotStart().isEqual(timeSlotStart)).toList();
+        }
+
+        if (timeSlotEnd != null) {
+            appointments = appointments.stream().filter(a -> a.getTimeSlotEnd().isBefore(timeSlotEnd) || a.getTimeSlotEnd().isEqual(timeSlotEnd)).toList();
+        }
+
+        if(status != null){
+            if(status.equalsIgnoreCase("cancelled")){
+                appointments = appointments.stream().filter(a -> a.getStatus() == AppointmentStatus.CANCELLED).toList();
+            }else if(status.equalsIgnoreCase("booked")){
+                appointments = appointments.stream().filter(a -> a.getStatus() == AppointmentStatus.BOOKED).toList();
+            }else if(status.equalsIgnoreCase("completed")){
+                appointments = appointments.stream().filter(a -> a.getStatus() == AppointmentStatus.COMPLETED).toList();
+            }else{
+                throw new ApiException("Invalid status provided: " + status, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        if (appointments.isEmpty()) {
+            throw new ApiException("No appointments found", HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(appointments);
+    }
+
+    // Get appointment by id
+    public ResponseEntity<Appointment> getAppointmentById(int id) {
+        Appointment appointment = appointmentRepo.findById(id).orElse(null);
+        if (appointment == null) {
+            throw new ApiException("No appointment found with id: " + id, HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(appointment);
+    }
+
+    // POST methods
+    // Save an appointment
+    @Transactional
+    public ResponseEntity<Appointment> saveAppointment(AppointmentDTO dto) {
+        int patientId = dto.getPatientId();
+        int doctorId = dto.getDoctorId();
+        LocalDateTime timeSlotStart = dto.getTimeSlotStart();
+        LocalDateTime timeSlotEnd = dto.getTimeSlotEnd();
+
+        User patient = userRepo.findById(patientId).orElse(null);
+        User doctor = userRepo.findById(doctorId).orElse(null);
+
+        Availability availability = availabilityRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(doctorId, timeSlotStart, timeSlotEnd).orElse(null);
+
+        if (patient == null || patient.getRole() != UserRole.PATIENT) {
+            throw new ApiException("Invalid patient id: " + patientId, HttpStatus.BAD_REQUEST);
+        }
+
+        if (doctor == null || doctor.getRole() != UserRole.DOCTOR) {
+            throw new ApiException("Invalid doctor id: " + doctorId, HttpStatus.BAD_REQUEST);
+        }
+
+        if (availability == null) {
+            throw new ApiException("Invalid availability time slot details", HttpStatus.BAD_REQUEST);
+        }
+        if (!availability.isAvailable()) {
+            throw new ApiException("Already booked availability slot", HttpStatus.BAD_REQUEST);
+        }
+
+        List<Appointment> prevAppointments = patient.getPatientAppointments();
+
+        // Check whether the timeslot overlaps
+        for (Appointment ap : prevAppointments) {
+            if ((timeSlotStart.isEqual(ap.getTimeSlotStart())) || (timeSlotStart.isAfter(ap.getTimeSlotStart()) && timeSlotStart.isBefore(ap.getTimeSlotEnd()))) {
+                throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
+            } else if ((timeSlotEnd.isEqual(ap.getTimeSlotEnd())) || (timeSlotEnd.isAfter(ap.getTimeSlotStart()) && timeSlotEnd.isBefore(ap.getTimeSlotEnd()))) {
+                throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
+            } else if (timeSlotStart.isBefore(ap.getTimeSlotStart()) && timeSlotEnd.isAfter(ap.getTimeSlotEnd())) {
+                throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        Appointment appointment = new Appointment();
+        appointment.setDoctor(doctor);
+        appointment.setPatient(patient);
+        appointment.setTimeSlotStart(timeSlotStart);
+        appointment.setTimeSlotEnd(timeSlotEnd);
+        appointment.book();
+
+        availability.setAvailable(false);
+
+        doctor.getDoctorAppointments().add(appointment);
+        patient.getPatientAppointments().add(appointment);
+
+        userRepo.save(patient);
+        userRepo.save(doctor);
+
+        availabilityRepo.save(availability);
+
+        appointmentRepo.save(appointment);
+
+        return ResponseEntity.status(HttpStatus.OK).body(appointment);
+    }
+
+    // PUT methods
+    // Cancel an appointment
+    @Transactional
+    public ResponseEntity<Appointment> cancelAppointment(int id) {
+        Appointment appointment = appointmentRepo.findById(id).orElse(null);
+        if (appointment == null) {
+            throw new ApiException("Invalid appointment with id: " + id, HttpStatus.BAD_REQUEST);
+        }
+        appointment.cancel();
+        int doctorId = appointment.getDoctor().getUserId();
+        LocalDateTime timeSlotStart = appointment.getTimeSlotStart();
+        LocalDateTime timeSlotEnd = appointment.getTimeSlotEnd();
+
+        Availability availability = availabilityRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(doctorId, timeSlotStart, timeSlotEnd).orElse(null);
+
+        if (timeSlotStart.isAfter(LocalDateTime.now())) {
+            availability.setAvailable(true);
+            availabilityRepo.save(availability);
+        }
+        appointmentRepo.save(appointment);
+        return ResponseEntity.status(HttpStatus.OK).body(appointment);
+    }
+
+    // Complete an appointment
+    @Transactional
+    public ResponseEntity<Appointment> completeAppointment(int id) {
+        Appointment appointment = appointmentRepo.findById(id).orElse(null);
+
+        if (appointment == null) {
+            throw new ApiException("Invalid appointment with id: " + id, HttpStatus.BAD_REQUEST);
+        }
+
+        int doctorId = appointment.getDoctor().getUserId();
+        LocalDateTime timeSlotStart = appointment.getTimeSlotStart();
+        LocalDateTime timeSlotEnd = appointment.getTimeSlotEnd();
+
+        Availability availability = availabilityRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(doctorId, timeSlotStart, timeSlotEnd).orElse(null);
+        
+        // If the appointment already started?
+        if(appointment.getTimeSlotStart().isBefore(LocalDateTime.now())){
+            appointment.complete();   // Mark as complete
+            availability.setAvailable(false);   // Make the slot unavailable
+        }else{
+            throw new ApiException("Can't mark as complete an appointment before it has started", HttpStatus.BAD_REQUEST);
+        }
+
+        appointmentRepo.save(appointment);
+        availabilityRepo.save(availability);
+        return ResponseEntity.status(HttpStatus.OK).body(appointment);
+    }
 }
