@@ -121,7 +121,7 @@ public class AvailabilityService {
                 } else if ((timeSlotEnd.isEqual(av.getTimeSlotEnd())) || (timeSlotEnd.isAfter(av.getTimeSlotStart()) && timeSlotEnd.isBefore(av.getTimeSlotEnd()))) {
                     throw new ApiException("Availability slot overlaps", HttpStatus.BAD_REQUEST);
                 } else if (timeSlotStart.isBefore(av.getTimeSlotStart()) && timeSlotEnd.isAfter(av.getTimeSlotEnd())) {
-                    throw new ApiException("Availability slot overlaps", HttpStatus.BAD_REQUEST);
+                     throw new ApiException("Availability slot overlaps", HttpStatus.BAD_REQUEST);
                 }
             }
         }
@@ -218,7 +218,7 @@ public class AvailabilityService {
                 throw new ApiException("Can't fetch the associated appointment", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            appointment.cancel();
+            appointment.cancel(); 
 
             appointmentRepo.save(appointment);
         }
