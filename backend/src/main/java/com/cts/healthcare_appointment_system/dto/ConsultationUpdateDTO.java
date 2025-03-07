@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsultationUpdateDTO {
-    int consultationId;
+    private int consultationId;
     private String notes;
     private String prescription;
 }
