@@ -158,7 +158,6 @@ public class AppointmentService {
         } else {
             throw new ApiException("Can't cancel a completed appointment", HttpStatus.BAD_REQUEST);
         }
-
         int doctorId = appointment.getDoctor().getUserId();
         LocalDateTime timeSlotStart = appointment.getTimeSlotStart();
         LocalDateTime timeSlotEnd = appointment.getTimeSlotEnd();
