@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-HealthcareAppointmentSystemApplication<healthcare_appointment_system>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.cts.healthcare_appointment_system.HealthcareAppointmentSystemApplication",
+      "projectName": "healthcare_appointment_system",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
