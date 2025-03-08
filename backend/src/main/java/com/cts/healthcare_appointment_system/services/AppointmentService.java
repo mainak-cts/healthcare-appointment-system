@@ -52,14 +52,14 @@ public class AppointmentService {
             appointments = appointments.stream().filter(a -> a.getTimeSlotEnd().isBefore(timeSlotEnd) || a.getTimeSlotEnd().isEqual(timeSlotEnd)).toList();
         }
 
-        if(status != null){
-            if(status.equalsIgnoreCase("cancelled")){
+        if (status != null) {
+            if (status.equalsIgnoreCase("cancelled")) {
                 appointments = appointments.stream().filter(a -> a.getStatus() == AppointmentStatus.CANCELLED).toList();
-            }else if(status.equalsIgnoreCase("booked")){
+            } else if (status.equalsIgnoreCase("booked")) {
                 appointments = appointments.stream().filter(a -> a.getStatus() == AppointmentStatus.BOOKED).toList();
-            }else if(status.equalsIgnoreCase("completed")){
+            } else if (status.equalsIgnoreCase("completed")) {
                 appointments = appointments.stream().filter(a -> a.getStatus() == AppointmentStatus.COMPLETED).toList();
-            }else{
+            } else {
                 throw new ApiException("Invalid status provided: " + status, HttpStatus.BAD_REQUEST);
             }
         }
@@ -152,14 +152,21 @@ public class AppointmentService {
         if (appointment == null) {
             throw new ApiException("Invalid appointment with id: " + id, HttpStatus.BAD_REQUEST);
         }
-        appointment.cancel();
+
+        if (appointment.getStatus() != AppointmentStatus.COMPLETED) {
+            appointment.cancel();
+        } else {
+            throw new ApiException("Can't cancel a completed appoitnment", HttpStatus.BAD_REQUEST);
+        }
+
         int doctorId = appointment.getDoctor().getUserId();
         LocalDateTime timeSlotStart = appointment.getTimeSlotStart();
         LocalDateTime timeSlotEnd = appointment.getTimeSlotEnd();
 
         Availability availability = availabilityRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(doctorId, timeSlotStart, timeSlotEnd).orElse(null);
 
-        if (timeSlotStart.isAfter(LocalDateTime.now())) {
+        // Make the availability slot available, if it is cancelled before end
+        if (timeSlotEnd.isAfter(LocalDateTime.now())) {
             availability.setAvailable(true);
             availabilityRepo.save(availability);
         }
@@ -181,12 +188,12 @@ public class AppointmentService {
         LocalDateTime timeSlotEnd = appointment.getTimeSlotEnd();
 
         Availability availability = availabilityRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(doctorId, timeSlotStart, timeSlotEnd).orElse(null);
-        
+
         // If the appointment already started?
-        if(appointment.getTimeSlotStart().isBefore(LocalDateTime.now())){
+        if (appointment.getTimeSlotStart().isBefore(LocalDateTime.now())) {
             appointment.complete();   // Mark as complete
             availability.setAvailable(false);   // Make the slot unavailable
-        }else{
+        } else {
             throw new ApiException("Can't mark as complete an appointment before it has started", HttpStatus.BAD_REQUEST);
         }
 

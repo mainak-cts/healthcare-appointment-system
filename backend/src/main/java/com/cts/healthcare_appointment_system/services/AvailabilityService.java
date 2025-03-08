@@ -38,7 +38,7 @@ public class AvailabilityService {
 
         if (isAvailable) {
             availabilities = availabilities.stream().filter(a -> a.isAvailable()).toList();
-        }else{
+        } else {
             availabilities = availabilities.stream().filter(a -> !a.isAvailable()).toList();
         }
 
@@ -85,7 +85,6 @@ public class AvailabilityService {
             throw new ApiException("Availability not found with id: " + availabilityId, HttpStatus.BAD_REQUEST);
         }
 
-        
         // Find the associated doctor (if any)
         User doctor = userRepo.findById(doctorId).orElse(null);
 
@@ -95,20 +94,17 @@ public class AvailabilityService {
         }
 
         // Check if the correct doctorId is sent with the availability
-        if(availability.getDoctor().getUserId() != doctorId){
+        if (availability.getDoctor().getUserId() != doctorId) {
             throw new ApiException("Doctor with id: " + doctorId + " is not associated with availability with id: " + availabilityId, HttpStatus.BAD_REQUEST);
         }
 
-        // Check if the time slot is valid (within 1 to 3 hrs)
-        if(!checkForValidDuration(timeSlotStart, timeSlotEnd, 60L, 180L)){
-            throw new ApiException("Time slot must be at minimum " + 1 + " hrs, and maximum " + 3 + " hrs.", HttpStatus.BAD_REQUEST);
+        if (timeSlotStart.isAfter(timeSlotEnd)) {
+            throw new ApiException("Invalid time slot details: " + timeSlotStart + " (timeSlotStart) is after " + timeSlotEnd + " (timeSlotEnd)", HttpStatus.BAD_REQUEST);
         }
 
-        if (timeSlotStart.isAfter(timeSlotEnd)) {
-            throw new ApiException("Invalid time slot details: " + timeSlotStart + " is after " + timeSlotEnd, HttpStatus.BAD_REQUEST);
-        }
-        if (timeSlotStart.isBefore(LocalDateTime.now())) {
-            throw new ApiException("Invalid time slot details: " + timeSlotStart + " is in past", HttpStatus.BAD_REQUEST);
+        // Check if the time slot is valid (within 1 to 3 hrs)
+        if (!checkForValidDuration(timeSlotStart, timeSlotEnd, 60L, 180L)) {
+            throw new ApiException("Time slot must be at minimum " + 1 + " hrs, and maximum " + 3 + " hrs.", HttpStatus.BAD_REQUEST);
         }
 
         List<Availability> prevAvailabilities = doctor.getAvailabilities();
@@ -121,7 +117,7 @@ public class AvailabilityService {
                 } else if ((timeSlotEnd.isEqual(av.getTimeSlotEnd())) || (timeSlotEnd.isAfter(av.getTimeSlotStart()) && timeSlotEnd.isBefore(av.getTimeSlotEnd()))) {
                     throw new ApiException("Availability slot overlaps", HttpStatus.BAD_REQUEST);
                 } else if (timeSlotStart.isBefore(av.getTimeSlotStart()) && timeSlotEnd.isAfter(av.getTimeSlotEnd())) {
-                     throw new ApiException("Availability slot overlaps", HttpStatus.BAD_REQUEST);
+                    throw new ApiException("Availability slot overlaps", HttpStatus.BAD_REQUEST);
                 }
             }
         }
@@ -161,16 +157,17 @@ public class AvailabilityService {
             throw new ApiException("Invalid doctor id: " + doctorId, HttpStatus.BAD_REQUEST);
         }
 
+        if (timeSlotStart.isAfter(timeSlotEnd)) {
+            throw new ApiException("Invalid time slot details: " + timeSlotStart + " (timeSlotStart) is after " + timeSlotEnd + " (timeSlotEnd)", HttpStatus.BAD_REQUEST);
+        }
+
         // Check if the time slot is valid (within 1 to 3 hrs)
-        if(!checkForValidDuration(timeSlotStart, timeSlotEnd, 60, 180)){
+        if (!checkForValidDuration(timeSlotStart, timeSlotEnd, 60, 180)) {
             throw new ApiException("Time slot must be at minimum " + 1 + " hrs, and maximum " + 3 + " hrs.", HttpStatus.BAD_REQUEST);
         }
 
         if (timeSlotStart.isAfter(timeSlotEnd)) {
             throw new ApiException("Invalid time slot details: " + timeSlotStart + " is after " + timeSlotEnd, HttpStatus.BAD_REQUEST);
-        }
-        if (timeSlotStart.isBefore(LocalDateTime.now())) {
-            throw new ApiException("Invalid time slot details: " + timeSlotStart + " is in past", HttpStatus.BAD_REQUEST);
         }
 
         List<Availability> prevAvailabilities = doctor.getAvailabilities();
@@ -211,14 +208,14 @@ public class AvailabilityService {
         }
 
         // Cancel the associated appointment (if any)
-        if(!delAvailability.isAvailable()){
+        if (!delAvailability.isAvailable()) {
             Appointment appointment = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(delAvailability.getDoctor().getUserId(), delAvailability.getTimeSlotStart(), delAvailability.getTimeSlotEnd()).orElse(null);
 
-            if(appointment == null){
+            if (appointment == null) {
                 throw new ApiException("Can't fetch the associated appointment", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            appointment.cancel(); 
+            appointment.cancel();
 
             appointmentRepo.save(appointment);
         }
@@ -230,9 +227,8 @@ public class AvailabilityService {
         return ResponseEntity.status(HttpStatus.OK).body(delAvailability);
     }
 
-
     // Utility methods
-    public boolean checkForValidDuration(LocalDateTime start, LocalDateTime end, long min, long max){
+    public boolean checkForValidDuration(LocalDateTime start, LocalDateTime end, long min, long max) {
         Duration duration = Duration.between(start, end);
         return duration.toMinutes() <= max && duration.toMinutes() >= min;
     }
