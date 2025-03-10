@@ -17,6 +17,7 @@ import com.cts.healthcare_appointment_system.dto.UserDTO;
 import com.cts.healthcare_appointment_system.models.User;
 import com.cts.healthcare_appointment_system.services.UserService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
@@ -42,13 +43,13 @@ public class UserController {
     
     //Register a new user
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<User> registerUser(@Valid @RequestBody UserDTO userDTO){
     	return userService.registerUser(userDTO);
     }
     
     //Update the existing user details
     @PutMapping("")
-    public ResponseEntity<User> changeUserDetails(@RequestBody UserDTO userDTO){
+    public ResponseEntity<User> changeUserDetails(@Valid @RequestBody UserDTO userDTO){
     	return userService.changeUserDetails(userDTO);
     }
     

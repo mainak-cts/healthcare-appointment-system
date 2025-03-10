@@ -18,6 +18,7 @@ import com.cts.healthcare_appointment_system.dto.AppointmentDTO;
 import com.cts.healthcare_appointment_system.models.Appointment;
 import com.cts.healthcare_appointment_system.services.AppointmentService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -49,7 +50,7 @@ public class AppointmentController {
 	
 	//Create a new appointment
 	@PostMapping
-	public ResponseEntity<Appointment> saveAppointment(@RequestBody AppointmentDTO dto){
+	public ResponseEntity<Appointment> saveAppointment(@Valid @RequestBody AppointmentDTO dto){
 		return appointmentService.saveAppointment(dto);
 	}
 	
