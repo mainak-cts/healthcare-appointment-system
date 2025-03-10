@@ -18,6 +18,7 @@ import com.cts.healthcare_appointment_system.dto.AvailabilityDTO;
 import com.cts.healthcare_appointment_system.models.Availability;
 import com.cts.healthcare_appointment_system.services.AvailabilityService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -45,14 +46,14 @@ public class AvailabilityController {
 
     // Saves new availability
     @PostMapping
-    public ResponseEntity<Availability> saveAvailability(@RequestBody AvailabilityDTO dto) {
+    public ResponseEntity<Availability> saveAvailability(@Valid @RequestBody AvailabilityDTO dto) {
     	return availabilityService.saveAvailability(dto);
 
     }
     
     // Edit an existing availability
     @PutMapping
-    public ResponseEntity<Availability> editAvailability(@RequestBody AvailabilityDTO dto) {
+    public ResponseEntity<Availability> editAvailability(@Valid @RequestBody AvailabilityDTO dto) {
          return availabilityService.editAvailability(dto);
     }
     

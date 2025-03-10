@@ -1,5 +1,7 @@
 package com.cts.healthcare_appointment_system.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ConsultationUpdateDTO {
     private int consultationId;
+    
+    @NotNull(message = "Notes cannot be null")
+    @Size(min = 5, max = 500, message = "Notes can only contain 5-500 characters")
     private String notes;
-    private String prescription;
+    
+    @NotNull(message = "Prescription cannot be null")
+    @Size(min = 5, max = 1000, message = "Prescription can only contain 5-1000 characters")
+    private String prescription;	
 }

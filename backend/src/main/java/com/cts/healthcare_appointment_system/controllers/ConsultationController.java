@@ -18,6 +18,7 @@ import com.cts.healthcare_appointment_system.dto.ConsultationUpdateDTO;
 import com.cts.healthcare_appointment_system.models.Consultation;
 import com.cts.healthcare_appointment_system.services.ConsultationService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -42,13 +43,13 @@ public class ConsultationController {
     
     // Create a new consultation
     @PostMapping
-    public ResponseEntity<Consultation> saveConsultation(@RequestBody ConsultationDTO consultationDTO) {
+    public ResponseEntity<Consultation> saveConsultation(@Valid @RequestBody ConsultationDTO consultationDTO) {
         return consultationService.saveConsultation(consultationDTO);
     }
 
     // Update an existing consultation
     @PutMapping
-    public ResponseEntity<Consultation> updateConsultation(@RequestBody ConsultationUpdateDTO consultationUpdateDTO) {
+    public ResponseEntity<Consultation> updateConsultation(@Valid @RequestBody ConsultationUpdateDTO consultationUpdateDTO) {
         return consultationService.updateConsultation(consultationUpdateDTO);
     }
 
