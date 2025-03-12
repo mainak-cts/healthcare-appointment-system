@@ -2,7 +2,6 @@ package com.cts.healthcare_appointment_system.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cts.healthcare_appointment_system.dto.JwtDTO;
 import com.cts.healthcare_appointment_system.dto.UserDTO;
+import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
 import com.cts.healthcare_appointment_system.models.User;
 import com.cts.healthcare_appointment_system.services.UserService;
 
@@ -40,11 +41,17 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable int id){
     	return userService.getUserById(id);
     }
-    
-    //Register a new user
+
+    // Register a new user
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody UserDTO userDTO){
-    	return userService.registerUser(userDTO);
+    public ResponseEntity<User> registerUser(@RequestBody @Valid UserDTO dto) {
+        return userService.registerUser(dto);
+    }
+    
+    // Login an exisiting user
+    @PostMapping("/login")
+    public ResponseEntity<JwtDTO> loginUser(@RequestBody @Valid UserLoginDTO dto) {
+        return userService.checkLogin(dto);
     }
     
     //Update the existing user details
