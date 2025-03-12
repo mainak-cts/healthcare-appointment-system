@@ -4,13 +4,22 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import com.cts.healthcare_appointment_system.dto.JwtDTO;
 import com.cts.healthcare_appointment_system.dto.UserDTO;
+import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.error.ApiException;
 import com.cts.healthcare_appointment_system.models.User;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.cts.healthcare_appointment_system.repositories.UserRepository;
+import com.cts.healthcare_appointment_system.security.JwtUtils;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -20,7 +29,9 @@ import lombok.AllArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepo;
-
+    private PasswordEncoder passwordEncoder;
+    private JwtUtils jwtUtils;
+    private AuthenticationManager authManager;
 
     // GET methods
     // Get all users 
@@ -84,7 +95,8 @@ public class UserService {
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
-        user.setPassword(dto.getPassword());
+        // Encode password before storing
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setPhone(dto.getPhone());
 
         User savedUser = userRepo.save(user);
@@ -93,6 +105,27 @@ public class UserService {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
+
+    // Login a user
+    public ResponseEntity<JwtDTO> checkLogin(UserLoginDTO dto) {
+        Authentication auth = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+
+        JwtDTO jwtDto = new JwtDTO();
+        User user = userRepo.findByEmail(dto.getEmail()).orElse(null);
+        if (auth.isAuthenticated()) {
+            System.out.println("Authorities: " + auth.getAuthorities());
+            String jwt = jwtUtils.generateJWTToken(dto.getEmail());
+
+            jwtDto.setEmail(dto.getEmail());
+            jwtDto.setUserId(user.getUserId());
+            jwtDto.setJwtToken(jwt);
+
+            return ResponseEntity.status(HttpStatus.OK).body(jwtDto);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    } 
+
 
     // DELETE methods
     // Remove an user
