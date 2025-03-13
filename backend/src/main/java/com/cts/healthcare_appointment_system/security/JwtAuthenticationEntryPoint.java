@@ -20,8 +20,15 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
 
+        String errMsg = authException.getMessage();
+
+        // Send meaningful message when user provides "Bad credentials"
+        if (errMsg.equalsIgnoreCase("Bad credentials")) {
+            errMsg = "Email or password is incorrect";
+        }
+
         String jsonResponse = "{ \"error\": \"Unauthorized\", "
-                + "\"message\": \"" + authException.getMessage() + "\", "
+                + "\"message\": \"" + errMsg + "\", "
                 + "\"timestamp\": \"" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + "\" }";
 
         response.getWriter().write(jsonResponse);
