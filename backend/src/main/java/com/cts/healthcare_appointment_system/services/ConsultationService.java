@@ -71,6 +71,10 @@ public class ConsultationService {
             throw new ApiException("Appointment with id: " + appointmentId + " is cancelled", HttpStatus.BAD_REQUEST);
         }
 
+        if(appointment.getConsultation() != null){
+            throw new ApiException("Appointment with id: " + appointmentId + " is alreay having one consultation, please modify it or delete it", HttpStatus.BAD_REQUEST);
+        }
+
         // Consultation can't be given before the appointment has started
         if(appointment.getTimeSlotStart().isAfter(LocalDateTime.now())){
             throw new ApiException("Can't give consultation before the appointment has started", HttpStatus.BAD_REQUEST);
