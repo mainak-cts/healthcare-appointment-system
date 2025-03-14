@@ -1,0 +1,114 @@
+package com.cts.healthcare_appointment_system.services;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.stereotype.Service;
+
+import com.cts.healthcare_appointment_system.models.Appointment;
+import com.cts.healthcare_appointment_system.models.User;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class NotificationService {
+
+    private EmailService service;
+
+    
+    public void sendReminderEmail(Appointment appointment){
+
+        User doctor = appointment.getDoctor();
+        User patient = appointment.getPatient();
+        LocalDate dateOfAppointment = appointment.getTimeSlotStart().toLocalDate();
+        String timeStartOfAppointment = formatTime(appointment.getTimeSlotStart().toLocalTime());
+        String timeEndOfAppointment = formatTime(appointment.getTimeSlotEnd().toLocalTime());
+
+        String subject = "Reminder: Upcoming Appointment";
+
+        String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "This is a friendly reminder of your upcoming appointment with Dr. " + doctor.getName() + "." + "\n\n" + "Date: " + dateOfAppointment + "\nTime: " + timeStartOfAppointment + " to " + timeEndOfAppointment + "\n\n" + "Please ensure you arrive on time." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        String doctorEmailBody = "Dear Dr. " + doctor.getName() + "," + "\n\n" + "This is a friendly reminder of your upcoming appointment with " + patient.getName() + "." + "\n\n" + "Date: " + dateOfAppointment + "\nTime: " + timeStartOfAppointment + " to " + timeEndOfAppointment + "\n\n" + "Please ensure you are available for the consultation." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        service.sendEmail(doctor.getEmail(), subject, doctorEmailBody);
+        service.sendEmail(patient.getEmail(), subject, patientEmailBody);
+    }
+
+    public void sendCompletionEmail(Appointment appointment){
+
+        User doctor = appointment.getDoctor();
+        User patient = appointment.getPatient();
+        LocalDate dateOfAppointment = appointment.getTimeSlotStart().toLocalDate();
+        String timeStartOfAppointment = formatTime(appointment.getTimeSlotStart().toLocalTime());
+        String timeEndOfAppointment = formatTime(appointment.getTimeSlotEnd().toLocalTime());
+
+        String subject = "Appointment Completed";
+
+        String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Your appointment with Dr. " + doctor.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment + " to " + timeEndOfAppointment + " has been successfully completed.\n\n" + "If you need any further assistance or follow-up, please reach out to our clinic." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        String doctorEmailBody = "Dear Dr. " + doctor.getName() + "," + "\n\n" + "Your appointment with " + patient.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment + " to " + timeEndOfAppointment + " has been successfully completed.\n\n" + "If you need any further assistance or follow-up, please reach out to our clinic." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        service.sendEmail(doctor.getEmail(), subject, doctorEmailBody);
+        service.sendEmail(patient.getEmail(), subject, patientEmailBody);
+    }
+
+    public void sendCancellationEmail(Appointment appointment){
+
+        User doctor = appointment.getDoctor();
+        User patient = appointment.getPatient();
+        LocalDate dateOfAppointment = appointment.getTimeSlotStart().toLocalDate();
+        String timeStartOfAppointment = formatTime(appointment.getTimeSlotStart().toLocalTime());
+
+        String subject = "Appointment Cancelled";
+
+        String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Your appointment with Dr. " + doctor.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment + " has been cancelled as per your request.\n\n" + "If this was a mistake, please rebook your appointment through our system." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        String doctorEmailBody = "Dear Dr. " + doctor.getName() + "," + "\n\n" + "Your appointment with " + patient.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment  + " has been cancelled as per your request.\n\n" + "If this was a mistake, please rebook your appointment through our system." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        service.sendEmail(doctor.getEmail(), subject, doctorEmailBody);
+        service.sendEmail(patient.getEmail(), subject, patientEmailBody);
+    }
+
+    public void sendBookedEmail(Appointment appointment){
+
+        User doctor = appointment.getDoctor();
+        User patient = appointment.getPatient();
+        LocalDate dateOfAppointment = appointment.getTimeSlotStart().toLocalDate();
+        String timeStartOfAppointment = formatTime(appointment.getTimeSlotStart().toLocalTime());
+        String timeEndOfAppointment = formatTime(appointment.getTimeSlotEnd().toLocalTime());
+
+        String subject = "Appointment Booked";
+
+        String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Your appointment with Dr. " + doctor.getName() + " has been successfully booked.\n\n" + "Date: " + dateOfAppointment + "\nTime: " + timeStartOfAppointment + " to " + timeEndOfAppointment + "\n\n" + "Please ensure you arrive on time." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        String doctorEmailBody = "Dear Dr. " + doctor.getName() + "," + "\n\n" + "A new appointment has been booked with " + patient.getName() + ".\n\n" + "Date: " + dateOfAppointment + "\nTime: " + timeStartOfAppointment + " to " + timeEndOfAppointment + "\n\n" + "Please be prepared for the consultation." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+
+        service.sendEmail(doctor.getEmail(), subject, doctorEmailBody);
+        service.sendEmail(patient.getEmail(), subject, patientEmailBody);
+    }
+
+    public void sendRescheduledEmail(Appointment appointment){
+
+        User doctor = appointment.getDoctor();
+        User patient = appointment.getPatient();
+        LocalDate dateOfAppointment = appointment.getTimeSlotStart().toLocalDate();
+        String timeStartOfAppointment = formatTime(appointment.getTimeSlotStart().toLocalTime());
+        String timeEndOfAppointment = formatTime(appointment.getTimeSlotEnd().toLocalTime());
+
+        String subject = "Appointment Rescheduled";
+
+        String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Your appointment with Dr. " + doctor.getName() + " has been rescheduled.\n\n" + "New Date: " + dateOfAppointment + "\nNew Time: " + timeStartOfAppointment + " to " + timeEndOfAppointment + "\n\n" + "If you have any issues with the new timing, please contact us." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+        
+        service.sendEmail(patient.getEmail(), subject, patientEmailBody);
+    }
+
+    private String formatTime(LocalTime time){
+        DateTimeFormatter formmater = DateTimeFormatter.ofPattern("hh:mm:ss a");
+        return time.format(formmater);
+    }
+
+
+
+}

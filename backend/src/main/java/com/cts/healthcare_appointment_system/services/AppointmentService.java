@@ -30,6 +30,7 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepo;
     private AvailabilityRepository availabilityRepo;
     private UserRepository userRepo;
+    private NotificationService notificationService;
 
     // GET methods
     // Get all appointments
@@ -141,6 +142,9 @@ public class AppointmentService {
 
         appointmentRepo.save(appointment);
 
+        // Send appointment booked email
+        notificationService.sendBookedEmail(appointment);
+
         return ResponseEntity.status(HttpStatus.OK).body(appointment);
     }
 
@@ -169,7 +173,12 @@ public class AppointmentService {
             availability.setAvailable(true);
             availabilityRepo.save(availability);
         }
+
         appointmentRepo.save(appointment);
+
+        // Send appointment cancellation email
+        notificationService.sendCancellationEmail(appointment);
+
         return ResponseEntity.status(HttpStatus.OK).body(appointment);
     }
 
@@ -198,6 +207,10 @@ public class AppointmentService {
 
         appointmentRepo.save(appointment);
         availabilityRepo.save(availability);
+
+        // Send appointment completion email
+        notificationService.sendCompletionEmail(appointment);
+
         return ResponseEntity.status(HttpStatus.OK).body(appointment);
     }
 }
