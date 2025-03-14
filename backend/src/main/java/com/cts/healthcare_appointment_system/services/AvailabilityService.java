@@ -30,6 +30,7 @@ public class AvailabilityService {
     private final AvailabilityRepository availabilityRepo;
     private final AppointmentRepository appointmentRepo;
     private final UserRepository userRepo;
+    private final NotificationService notificationService;
 
     // GET methods
     // Get all availabilities 
@@ -138,6 +139,9 @@ public class AvailabilityService {
 
         // Save the edited availability
         availabilityRepo.save(availability);
+
+        // Send rescheduled email
+        notificationService.sendRescheduledEmail(appointment);
 
         return ResponseEntity.status(HttpStatus.OK).body(availability);
     }
