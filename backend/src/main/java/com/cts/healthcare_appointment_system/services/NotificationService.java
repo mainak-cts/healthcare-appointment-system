@@ -63,9 +63,21 @@ public class NotificationService {
 
         String subject = "Appointment Cancelled";
 
-        String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Your appointment with Dr. " + doctor.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment + " has been cancelled as per your request.\n\n" + "If this was a mistake, please rebook your appointment through our system." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+        String patientEmailBody = "Dear " + patient.getName() + ",\n\n" +
+        "We regret to inform you that your appointment with Dr. " + doctor.getName() + 
+        " on " + dateOfAppointment + " at " + timeStartOfAppointment + " has been cancelled.\n\n" +
+        "If you have any questions or need assistance, please do not hesitate to contact us through our system.\n\n" +
+        "Thank you for your understanding.\n\n" +
+        "Best Regards,\n" +
+        "Healthcare Appointment System";
 
-        String doctorEmailBody = "Dear Dr. " + doctor.getName() + "," + "\n\n" + "Your appointment with " + patient.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment  + " has been cancelled as per your request.\n\n" + "If this was a mistake, please rebook your appointment through our system." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+        String doctorEmailBody = "Dear Dr. " + doctor.getName() + ",\n\n" +
+        "We regret to inform you that your appointment with " + patient.getName() + 
+        " on " + dateOfAppointment + " at " + timeStartOfAppointment + " has been cancelled.\n\n" +
+        "If you have any questions or need assistance, please do not hesitate to contact us through our system.\n\n" +
+        "Thank you for your understanding.\n\n" +
+        "Best Regards,\n" +
+        "Healthcare Appointment System";
 
         service.sendEmail(doctor.getEmail(), subject, doctorEmailBody);
         service.sendEmail(patient.getEmail(), subject, patientEmailBody);
