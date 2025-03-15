@@ -221,6 +221,9 @@ public class AvailabilityService {
 
             appointment.cancel();
 
+            // Send cancellation mail
+            notificationService.sendCancellationEmail(appointment);
+
             appointmentRepo.save(appointment);
         }
 
