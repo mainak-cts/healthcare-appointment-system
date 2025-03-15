@@ -85,6 +85,19 @@ public class ApiExceptionHandler{
  
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
+
+    // Handle all other unhandled exceptions (generic exception handler)
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex){
+ 
+        Map<String, String> err = new HashMap<>();
+       
+        err.put("error", ex.getClass().getSimpleName());
+        err.put("message", ex.getMessage());
+        err.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+ 
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+    } 
    
  
  
