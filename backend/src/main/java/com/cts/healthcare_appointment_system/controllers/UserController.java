@@ -21,8 +21,6 @@ import com.cts.healthcare_appointment_system.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
-
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")

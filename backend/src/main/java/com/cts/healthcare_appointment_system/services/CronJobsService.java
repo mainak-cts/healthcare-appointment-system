@@ -12,11 +12,9 @@ import com.cts.healthcare_appointment_system.repositories.AppointmentRepository;
 import com.cts.healthcare_appointment_system.repositories.AvailabilityRepository;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class CronJobsService {
 
     private AvailabilityRepository availabilityRepo;

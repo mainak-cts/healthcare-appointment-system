@@ -16,11 +16,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-/* TODO
-    1. Field validations 
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,7 +32,6 @@ public class Availability {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "doctor_id")
     @JsonBackReference(value = "doctor-availabilities")
-    @ToString.Exclude
     private User doctor;
 
     @Column(name = "time_slot_start")

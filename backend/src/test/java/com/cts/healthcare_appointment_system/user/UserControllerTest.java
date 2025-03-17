@@ -25,7 +25,6 @@ import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.models.User;
 import com.cts.healthcare_appointment_system.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
- 
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)   // To skip security checks
@@ -153,10 +152,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("Janavi"))
                 .andExpect(jsonPath("$.email").value("Janavi@gmail.com"))
                 .andDo(print());
-    }
- 
- 
- 
+    } 
  
 }
  
