@@ -25,7 +25,6 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/appointments")
 @AllArgsConstructor
 public class AppointmentController {
-
 	
 	private AppointmentService appointmentService;
 	
@@ -37,7 +36,6 @@ public class AppointmentController {
 			@RequestParam(required = false) LocalDateTime timeSlotStart,
 			@RequestParam(required = false) LocalDateTime timeSlotEnd,
 			@RequestParam(required = false) String status
-			
 			){
 		return appointmentService.getAllAppointments(patientId, doctorId, timeSlotStart, timeSlotEnd, status);
 	}
@@ -53,7 +51,6 @@ public class AppointmentController {
 	public ResponseEntity<Appointment> saveAppointment(@Valid @RequestBody AppointmentDTO dto){
 		return appointmentService.saveAppointment(dto);
 	}
-	
 	
 	//Cancel an appointment by id
 	@PutMapping("/cancel/{id}")

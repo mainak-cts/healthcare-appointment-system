@@ -28,7 +28,6 @@ public class ConsultationController {
 	
 	private ConsultationService consultationService;
 	
-
     // Retrieve all consultations (optional appointmentId as a query parameter)
     @GetMapping
     public ResponseEntity<List<Consultation>> getAllConsultations(@RequestParam(required = false) Integer appointmentId) {
