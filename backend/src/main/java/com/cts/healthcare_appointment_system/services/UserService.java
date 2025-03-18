@@ -114,7 +114,6 @@ public class UserService {
         JwtDTO jwtDto = new JwtDTO();
         User user = userRepo.findByEmail(dto.getEmail()).orElse(null);
         if (auth.isAuthenticated()) {
-            System.out.println("Authorities: " + auth.getAuthorities());
             String jwt = jwtUtils.generateJWTToken(dto.getEmail());
 
             jwtDto.setEmail(dto.getEmail());
