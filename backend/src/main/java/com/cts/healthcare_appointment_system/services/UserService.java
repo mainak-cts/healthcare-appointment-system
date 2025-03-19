@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cts.healthcare_appointment_system.dto.JwtDTO;
@@ -14,10 +16,6 @@ import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.error.ApiException;
 import com.cts.healthcare_appointment_system.models.User;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.cts.healthcare_appointment_system.repositories.UserRepository;
 import com.cts.healthcare_appointment_system.security.JwtUtils;
 
@@ -66,7 +64,7 @@ public class UserService {
             throw new ApiException("No user found with id: " + userId, HttpStatus.BAD_REQUEST);
         }
         user.setName(name);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.setPhone(phone);
 
         userRepo.save(user);
