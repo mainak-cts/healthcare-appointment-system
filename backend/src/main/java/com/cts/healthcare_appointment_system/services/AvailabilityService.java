@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cts.healthcare_appointment_system.dto.AvailabilityDTO;
+import com.cts.healthcare_appointment_system.enums.AppointmentStatus;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.error.ApiException;
 import com.cts.healthcare_appointment_system.models.Appointment;
@@ -124,17 +125,19 @@ public class AvailabilityService {
         }
 
         // When the availability slot changes, the associated appointment (if any) must also change
-        Appointment appointment = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(doctorId, availability.getTimeSlotStart(), availability.getTimeSlotEnd()).orElse(null);
+        List<Appointment> appointments = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(doctorId, availability.getTimeSlotStart(), availability.getTimeSlotEnd());
 
-        // Change the associated appointment slot
-        if (appointment != null) {
-            appointment.setTimeSlotStart(timeSlotStart);
-            appointment.setTimeSlotEnd(timeSlotEnd);
-            appointmentRepo.save(appointment);
+        // Change the associated appointment slots
+        appointments.forEach(ap -> {
 
-            // Send rescheduled email
-            notificationService.sendRescheduledEmail(appointment);
-        }
+            // Change time slot and send rescheduled email
+            if (ap.getStatus() == AppointmentStatus.BOOKED) {
+                ap.setTimeSlotStart(timeSlotStart);
+                ap.setTimeSlotEnd(timeSlotEnd);
+                appointmentRepo.save(ap);
+                notificationService.sendRescheduledEmail(ap);
+            }
+        });
 
         // Finally, update the availability timeslot
         availability.setTimeSlotStart(timeSlotStart);
@@ -213,18 +216,21 @@ public class AvailabilityService {
 
         // Cancel the associated appointment (if any)
         if (!delAvailability.isAvailable()) {
-            Appointment appointment = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(delAvailability.getDoctor().getUserId(), delAvailability.getTimeSlotStart(), delAvailability.getTimeSlotEnd()).orElse(null);
+            List<Appointment> appointments = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(delAvailability.getDoctor().getUserId(), delAvailability.getTimeSlotStart(), delAvailability.getTimeSlotEnd());
 
-            if (appointment == null) {
-                throw new ApiException("Can't fetch the associated appointment", HttpStatus.INTERNAL_SERVER_ERROR);
+            if (appointments.isEmpty()) {
+                throw new ApiException("Can't fetch the associated appointments", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            appointment.cancel();
-
-            // Send cancellation mail
-            notificationService.sendCancellationEmail(appointment);
-
-            appointmentRepo.save(appointment);
+            // Cancel the associated appointment slots and cancellation mail
+            appointments.forEach(ap -> {
+                if (ap.getStatus() == AppointmentStatus.BOOKED) {
+                    ap.cancel();
+                    appointmentRepo.save(ap);
+                    // Send cancellation mail
+                    notificationService.sendCancellationEmail(ap);
+                }
+            });
         }
 
         // Breaking the associativity with the doctor
