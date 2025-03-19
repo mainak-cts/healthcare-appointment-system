@@ -105,7 +105,7 @@ public class AvailabilityService {
 
         // Check if the time slot is valid (within 1 to 3 hrs)
         if (!checkForValidDuration(timeSlotStart, timeSlotEnd, 60L, 180L)) {
-            throw new ApiException("Time slot must be at minimum " + 1 + " hrs, and maximum " + 3 + " hrs.", HttpStatus.BAD_REQUEST);
+            throw new ApiException("Time slot must be at minimum " + 1 + " hr., and maximum " + 3 + " hrs.", HttpStatus.BAD_REQUEST);
         }
 
         List<Availability> prevAvailabilities = doctor.getAvailabilities();
@@ -131,6 +131,9 @@ public class AvailabilityService {
             appointment.setTimeSlotStart(timeSlotStart);
             appointment.setTimeSlotEnd(timeSlotEnd);
             appointmentRepo.save(appointment);
+
+            // Send rescheduled email
+            notificationService.sendRescheduledEmail(appointment);
         }
 
         // Finally, update the availability timeslot
@@ -139,9 +142,6 @@ public class AvailabilityService {
 
         // Save the edited availability
         availabilityRepo.save(availability);
-
-        // Send rescheduled email
-        notificationService.sendRescheduledEmail(appointment);
 
         return ResponseEntity.status(HttpStatus.OK).body(availability);
     }
