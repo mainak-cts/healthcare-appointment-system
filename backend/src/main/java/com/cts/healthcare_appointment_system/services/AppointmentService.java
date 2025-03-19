@@ -114,12 +114,15 @@ public class AppointmentService {
 
         // Check whether the timeslot overlaps
         for (Appointment ap : prevAppointments) {
-            if ((timeSlotStart.isEqual(ap.getTimeSlotStart())) || (timeSlotStart.isAfter(ap.getTimeSlotStart()) && timeSlotStart.isBefore(ap.getTimeSlotEnd()))) {
-                throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
-            } else if ((timeSlotEnd.isEqual(ap.getTimeSlotEnd())) || (timeSlotEnd.isAfter(ap.getTimeSlotStart()) && timeSlotEnd.isBefore(ap.getTimeSlotEnd()))) {
-                throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
-            } else if (timeSlotStart.isBefore(ap.getTimeSlotStart()) && timeSlotEnd.isAfter(ap.getTimeSlotEnd())) {
-                throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
+            // Only for the booked appointments, check whether the time slot overlaps
+            if(ap.getStatus() == AppointmentStatus.BOOKED){
+                if ((timeSlotStart.isEqual(ap.getTimeSlotStart())) || (timeSlotStart.isAfter(ap.getTimeSlotStart()) && timeSlotStart.isBefore(ap.getTimeSlotEnd()))) {
+                    throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
+                } else if ((timeSlotEnd.isEqual(ap.getTimeSlotEnd())) || (timeSlotEnd.isAfter(ap.getTimeSlotStart()) && timeSlotEnd.isBefore(ap.getTimeSlotEnd()))) {
+                    throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
+                } else if (timeSlotStart.isBefore(ap.getTimeSlotStart()) && timeSlotEnd.isAfter(ap.getTimeSlotEnd())) {
+                    throw new ApiException("Appoinment slot overlaps", HttpStatus.BAD_REQUEST);
+                }
             }
         }
 
