@@ -10,7 +10,10 @@ import com.cts.healthcare_appointment_system.enums.AppointmentStatus;
 import com.cts.healthcare_appointment_system.models.Appointment;
 import com.cts.healthcare_appointment_system.repositories.AppointmentRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class SendAppointmentReminderService {
     
     private AppointmentRepository appointmentRepo;
