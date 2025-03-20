@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
  
 import com.cts.healthcare_appointment_system.dto.UserDTO;
+import com.cts.healthcare_appointment_system.dto.UserUpdateDTO;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.models.User;
 import com.cts.healthcare_appointment_system.repositories.UserRepository;
@@ -82,10 +83,9 @@ public class UserServiceTest {
         user.setEmail("Rohit@gmail.com");
         user.setPassword("Rohit@cr7");
         
-        UserDTO dto = new UserDTO();
+        UserUpdateDTO dto = new UserUpdateDTO();
         dto.setUserId(user.getUserId());
         dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
         dto.setPassword(user.getPassword());
  
         when(repo.findById(1)).thenReturn(Optional.of(user));
