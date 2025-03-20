@@ -4,6 +4,7 @@
 
 The **Healthcare Appointment Management System** is a Spring Boot-based solution designed to simplify and streamline healthcare appointment management. It provides a robust and secure platform for managing user registrations, scheduling appointments, maintaining consultation records, and monitoring doctor availability. Notifications for appointments are automated using **CRON jobs** with **Java Mail Sender**.
 
+![Data Flow Diagram](./backend/images/dfd.png)
 ---
 
 ## Features
