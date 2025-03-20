@@ -14,8 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentDTO {
-    private int patientId;
-    private int doctorId;
+	
+	@NotNull(message = "Patient id is required")
+    private Integer patientId;
+	
+	@NotNull(message = "Doctor id is required")
+    private Integer doctorId;
 
     @NotNull(message = "Time slot start cannot be null")
     @Future(message = "Time slot start must be in the future")

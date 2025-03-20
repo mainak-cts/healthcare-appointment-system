@@ -14,10 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailabilityDTO {
-
-    private int availabilityId;
-
-    private int doctorId;
+	
+	@NotNull(message = "Availability id is required")
+    private Integer availabilityId;
+	
+	@NotNull(message = "Doctor id is required")
+    private Integer doctorId;
 
     @NotNull(message = "Time slot start cannot be null")
     @Future(message = "Time slot start must be in the future")

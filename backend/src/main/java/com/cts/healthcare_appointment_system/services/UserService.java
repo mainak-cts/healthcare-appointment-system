@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.cts.healthcare_appointment_system.dto.JwtDTO;
 import com.cts.healthcare_appointment_system.dto.UserDTO;
 import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
+import com.cts.healthcare_appointment_system.dto.UserUpdateDTO;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.error.ApiException;
 import com.cts.healthcare_appointment_system.models.User;
@@ -53,7 +54,7 @@ public class UserService {
     // PUT methods
     // Change user details
     @Transactional
-    public ResponseEntity<User> changeUserDetails(UserDTO dto){
+    public ResponseEntity<User> changeUserDetails(UserUpdateDTO dto){
         int userId = dto.getUserId();
         String name = dto.getName();
         String password = dto.getPassword();
