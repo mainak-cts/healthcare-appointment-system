@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -81,6 +82,18 @@ public class ApiExceptionHandler{
        
         err.put("error", "Invalid Request Body");
         err.put("message", ex.getMessage());
+        err.put("statusCode", HttpStatus.BAD_REQUEST.toString());
+ 
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    // Handle Bad credentials exception
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> handleBackCredentials(BadCredentialsException ex){
+        Map<String, String> err = new HashMap<>();
+       
+        err.put("error", ex.getClass().getSimpleName());
+        err.put("message", "Email or password is incorrect");
         err.put("statusCode", HttpStatus.BAD_REQUEST.toString());
  
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);

@@ -22,11 +22,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         String errMsg = authException.getMessage();
 
-        // Send meaningful message when user provides "Bad credentials"
-        if (errMsg.equalsIgnoreCase("Bad credentials")) {
-            errMsg = "Email or password is incorrect";
-        }
-
         String jsonResponse = "{ \"error\": \"Unauthorized\", "
                 + "\"message\": \"" + errMsg + "\", "
                 + "\"timestamp\": \"" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + "\" }";
