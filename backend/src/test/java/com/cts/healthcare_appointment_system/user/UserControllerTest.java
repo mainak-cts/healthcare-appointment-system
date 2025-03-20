@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
  
 import com.cts.healthcare_appointment_system.dto.UserDTO;
+import com.cts.healthcare_appointment_system.dto.UserUpdateDTO;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.models.User;
 import com.cts.healthcare_appointment_system.services.UserService;
@@ -116,10 +117,8 @@ public class UserControllerTest {
         user.setRole(UserRole.PATIENT);
         user.setPhone("9876543210");
 
-        UserDTO dto = new UserDTO();
-        dto.setEmail(user.getEmail());
+        UserUpdateDTO dto = new UserUpdateDTO();
         dto.setName(user.getName());
-        dto.setRole(user.getRole());
         dto.setPassword(user.getPassword());
         dto.setPhone(user.getPhone());
  

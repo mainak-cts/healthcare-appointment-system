@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cts.healthcare_appointment_system.dto.JwtDTO;
 import com.cts.healthcare_appointment_system.dto.UserDTO;
 import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
+import com.cts.healthcare_appointment_system.dto.UserUpdateDTO;
 import com.cts.healthcare_appointment_system.models.User;
 import com.cts.healthcare_appointment_system.services.UserService;
 
@@ -46,7 +47,7 @@ public class UserController {
         return userService.registerUser(dto);
     }
     
-    // Login an exisiting user
+    // Login an existing user
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> loginUser(@RequestBody @Valid UserLoginDTO dto) {
         return userService.checkLogin(dto);
@@ -54,8 +55,8 @@ public class UserController {
     
     //Update the existing user details
     @PutMapping("")
-    public ResponseEntity<User> changeUserDetails(@Valid @RequestBody UserDTO userDTO){
-    	return userService.changeUserDetails(userDTO);
+    public ResponseEntity<User> changeUserDetails(@Valid @RequestBody UserUpdateDTO userUpdateDTO){
+    	return userService.changeUserDetails(userUpdateDTO);
     }
     
     //Delete user by id

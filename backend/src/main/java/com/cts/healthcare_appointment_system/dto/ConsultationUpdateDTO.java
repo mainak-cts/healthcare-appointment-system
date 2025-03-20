@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsultationUpdateDTO {
-    private int consultationId;
+	
+	@NotNull(message = "Consultation id is required")
+    private Integer consultationId;
     
     @NotNull(message = "Notes cannot be null")
     @Size(min = 5, max = 500, message = "Notes can only contain 5-500 characters")
