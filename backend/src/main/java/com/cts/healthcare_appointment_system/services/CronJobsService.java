@@ -32,15 +32,18 @@ public class CronJobsService {
             if(av.isAvailable()){
                 av.setAvailable(false);
             }else{
-                Appointment appointment = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(av.getDoctor().getUserId(), av.getTimeSlotStart(), av.getTimeSlotEnd()).orElse(null);
+                List<Appointment> appointments = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(av.getDoctor().getUserId(), av.getTimeSlotStart(), av.getTimeSlotEnd());
 
-                if((appointment != null) && (appointment.getStatus() == AppointmentStatus.BOOKED)){
-                    // Mark the appointment as completed
-                    appointment.complete();
-                    // Send completion mail
-                    notificationService.sendCompletionEmail(appointment);
-                    appointmentRepo.save(appointment);
-                }
+                appointments.forEach(ap -> {
+                    if(ap.getStatus() == AppointmentStatus.BOOKED){
+                        // Mark the appointment as completed
+                        ap.complete();
+                        appointmentRepo.save(ap);
+
+                        // Send completion mail
+                        notificationService.sendCompletionEmail(ap);
+                    }
+                });
             }
             availabilityRepo.save(av);
         });
