@@ -174,10 +174,7 @@ public class AvailabilityService {
             throw new ApiException("Time slot must be at minimum " + 1 + " hrs, and maximum " + 3 + " hrs.", HttpStatus.BAD_REQUEST);
         }
 
-        if (timeSlotStart.isAfter(timeSlotEnd)) {
-            throw new ApiException("Invalid time slot details: " + timeSlotStart + " is after " + timeSlotEnd, HttpStatus.BAD_REQUEST);
-        }
-
+        // Fetch all the previous availabilities
         List<Availability> prevAvailabilities = doctor.getAvailabilities();
 
         // Check whether the timeslot overlaps
