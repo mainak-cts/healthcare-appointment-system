@@ -88,6 +88,11 @@ public class AvailabilityService {
             throw new ApiException("Availability not found with id: " + availabilityId, HttpStatus.BAD_REQUEST);
         }
 
+        // Can't update past time slots
+        if(availability.getTimeSlotEnd().isBefore(LocalDateTime.now())){
+            throw new ApiException("Can't update past availability slots", HttpStatus.BAD_REQUEST);
+        }
+
         // Find the associated doctor (if any)
         User doctor = userRepo.findById(doctorId).orElse(null);
 
