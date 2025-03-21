@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.healthcare_appointment_system.dto.AvailabilityDTO;
+import com.cts.healthcare_appointment_system.dto.AvailabilityUpdateDTO;
 import com.cts.healthcare_appointment_system.models.Availability;
 import com.cts.healthcare_appointment_system.services.AvailabilityService;
 
@@ -53,7 +54,7 @@ public class AvailabilityController {
     
     // Edit an existing availability
     @PutMapping
-    public ResponseEntity<Availability> editAvailability(@Valid @RequestBody AvailabilityDTO dto) {
+    public ResponseEntity<Availability> editAvailability(@Valid @RequestBody AvailabilityUpdateDTO dto) {
          return availabilityService.editAvailability(dto);
     }
     

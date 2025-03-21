@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cts.healthcare_appointment_system.dto.AvailabilityDTO;
+import com.cts.healthcare_appointment_system.dto.AvailabilityUpdateDTO;
 import com.cts.healthcare_appointment_system.enums.AppointmentStatus;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.error.ApiException;
@@ -74,7 +75,7 @@ public class AvailabilityService {
 
     // PUT methods
     @Transactional
-    public ResponseEntity<Availability> editAvailability(AvailabilityDTO dto) {
+    public ResponseEntity<Availability> editAvailability(AvailabilityUpdateDTO dto) {
         int availabilityId = dto.getAvailabilityId();
         int doctorId = dto.getDoctorId();
         LocalDateTime timeSlotStart = dto.getTimeSlotStart();

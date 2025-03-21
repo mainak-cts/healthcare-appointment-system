@@ -13,9 +13,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvailabilityDTO {
-	
-    private int availabilityId;
+public class AvailabilityUpdateDTO {
+
+    @NotNull(message = "Availability id is required")
+    private Integer availabilityId;
 	
 	@NotNull(message = "Doctor id is required")
     private Integer doctorId;
