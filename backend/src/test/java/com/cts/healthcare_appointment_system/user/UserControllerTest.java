@@ -118,6 +118,7 @@ public class UserControllerTest {
         user.setPhone("9876543210");
 
         UserUpdateDTO dto = new UserUpdateDTO();
+        dto.setUserId(1);
         dto.setName(user.getName());
         dto.setPassword(user.getPassword());
         dto.setPhone(user.getPhone());
