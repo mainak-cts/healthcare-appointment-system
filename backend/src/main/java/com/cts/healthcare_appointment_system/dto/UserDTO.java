@@ -15,8 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    private int userId;
-
+    
     @NotBlank(message = "Name is required")
     @Size(min = 2, max = 255, message="Name can only contain 2-255 characters")
     private String name;
