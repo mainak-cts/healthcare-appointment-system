@@ -132,7 +132,6 @@ public class UserServiceTest {
 	     user.setPhone("9748643002");
  
         UserDTO dto = new UserDTO();
-        dto.setUserId(0);
         dto.setName("Mainak");
         dto.setRole(UserRole.DOCTOR);
         dto.setEmail("m@gmail.com");
