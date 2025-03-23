@@ -14,9 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailabilityDTO {
-	
-    private int availabilityId;
-	
 	@NotNull(message = "Doctor id is required")
     private Integer doctorId;
 
