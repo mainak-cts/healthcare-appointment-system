@@ -14,15 +14,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentDTO {
-	
-	@NotNull(message = "Patient id is required")
+
+    @NotNull(message = "Patient id is required")
     private Integer patientId;
-	
-	@NotNull(message = "Doctor id is required")
+
+    @NotNull(message = "Doctor id is required")
     private Integer doctorId;
 
     @NotNull(message = "Time slot start cannot be null")
-    @Future(message = "Time slot start must be in the future")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timeSlotStart;
 
