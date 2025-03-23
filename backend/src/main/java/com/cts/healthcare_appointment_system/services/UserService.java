@@ -14,6 +14,7 @@ import com.cts.healthcare_appointment_system.dto.JwtDTO;
 import com.cts.healthcare_appointment_system.dto.UserDTO;
 import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
 import com.cts.healthcare_appointment_system.dto.UserUpdateDTO;
+import com.cts.healthcare_appointment_system.enums.AppointmentStatus;
 import com.cts.healthcare_appointment_system.enums.UserRole;
 import com.cts.healthcare_appointment_system.error.ApiException;
 import com.cts.healthcare_appointment_system.models.User;
@@ -31,6 +32,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     private JwtUtils jwtUtils;
     private AuthenticationManager authManager;
+    private AppointmentService appointmentService;
 
     // GET methods
     // Get all users 
@@ -135,12 +137,16 @@ public class UserService {
         }
         // Removing the associations
         user.getPatientAppointments().forEach(a -> {
+            if(a.getStatus() == AppointmentStatus.BOOKED){
+                appointmentService.cancelAppointment(a.getAppointmentId());
+            }
             a.setPatient(null);
-            a.cancel();
         });
         user.getDoctorAppointments().forEach(a -> {
+            if(a.getStatus() == AppointmentStatus.BOOKED){
+                appointmentService.cancelAppointment(a.getAppointmentId());
+            }
             a.setDoctor(null);
-            a.cancel();
         });
         // This will also remove the availabilities (Thanks to 'orphanRemoval = true')
         user.getAvailabilities().forEach(e -> e.setDoctor(null));
