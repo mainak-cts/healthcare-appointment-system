@@ -1,0 +1,6 @@
+<nav id="navbar">
+    <a routerLink="home" routerLinkActive="active-route">Home</a>
+    <a routerLink="login" routerLinkActive="active-route">Login</a>
+    <a routerLink="register" routerLinkActive="active-route">Register</a>
+    <a [routerLink]="['users', userId()]" routerLinkActive="active-route">Profile</a>
+</nav>
