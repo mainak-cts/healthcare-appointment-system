@@ -1,0 +1,18 @@
+nav#navbar{
+    width: 100vw;
+    display: flex;
+    gap: 1rem;
+    background-color: antiquewhite;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+nav#navbar a{
+    text-decoration: none;
+    color: black;
+}
+
+nav#navbar a.active-route{
+    border-bottom: 2px solid black;
+    font-weight: bold;
+}
