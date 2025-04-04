@@ -34,15 +34,28 @@ public class AppointmentService {
 
     // GET methods
     // Get all appointments
-    public ResponseEntity<List<Appointment>> getAllAppointments(int patientId, int doctorId, LocalDateTime timeSlotStart, LocalDateTime timeSlotEnd, String status) {
-
-        List<Appointment> appointments = appointmentRepo.findAll(Sort.by(Direction.ASC, "timeSlotStart"));
+    public ResponseEntity<List<Appointment>> getAllAppointments(int patientId, int doctorId, String patientName, String doctorName, LocalDateTime timeSlotStart, LocalDateTime timeSlotEnd, String status) {
+        List<Appointment> appointments = appointmentRepo.findAll(Sort.by(Direction.DESC, "timeSlotStart"));
 
         // Filter by request params
-        if (patientId != 0) {
+
+        if(patientId != 0){
             appointments = appointments.stream().filter(a -> a.getPatient().getUserId() == patientId).toList();
-        } else if (doctorId != 0) {
+        }
+        if(doctorId != 0){
             appointments = appointments.stream().filter(a -> a.getDoctor().getUserId() == doctorId).toList();
+        }
+        
+        if(patientName != null){
+            if (!patientName.trim().equals("")) {
+                appointments = appointments.stream().filter(a -> a.getPatient().getName().toLowerCase().startsWith(patientName.trim().toLowerCase())).toList();
+            } 
+        }
+
+        if(doctorName != null){
+            if (!doctorName.trim().equals("")) {
+                appointments = appointments.stream().filter(a -> a.getDoctor().getName().toLowerCase().startsWith(doctorName.trim().toLowerCase())).toList();
+            } 
         }
 
         if (timeSlotStart != null) {

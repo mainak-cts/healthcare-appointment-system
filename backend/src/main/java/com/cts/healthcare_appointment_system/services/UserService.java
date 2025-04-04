@@ -52,6 +52,15 @@ public class UserService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
+    
+    //Get user by email
+    public ResponseEntity<User> getUserByEmail(String email) {
+        User user = userRepo.findByEmail(email).orElse(null);
+        if (user == null) {
+            throw new ApiException("No user with user email: " + email + " found", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 
     // PUT methods
     // Change user details

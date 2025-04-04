@@ -23,11 +23,9 @@ public class AvailabilityUpdateDTO {
 
     @NotNull(message = "Time slot start cannot be null")
     @Future(message = "Time slot start must be in the future")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timeSlotStart;
 
     @NotNull(message = "Time slot end cannot be null")
     @Future(message = "Time slot end must be in the future")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timeSlotEnd;
 }

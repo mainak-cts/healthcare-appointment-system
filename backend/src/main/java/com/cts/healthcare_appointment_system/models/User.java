@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cts.healthcare_appointment_system.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -42,18 +42,18 @@ public class User {
     private UserRole role;
 
     // If the User is a 'PATIENT', then only it is relevant
-    @JsonManagedReference(value = "patient-appointments")
+    @JsonBackReference(value = "patient-appointments")
     @OneToMany(mappedBy = "patient", cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     private List<Appointment> patientAppointments = new ArrayList<>();
 
     // If the User is a 'DOCTOR', then only it is relevant
-    @JsonManagedReference(value = "doctor-appointments")
+    @JsonBackReference(value = "doctor-appointments")
     @OneToMany(mappedBy = "doctor", cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     private List<Appointment> doctorAppointments = new ArrayList<>();
 
     // If the User is a 'DOCTOR', then only it is relevant
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "doctor-availabilities")
+    @JsonBackReference(value = "doctor-availabilities")
     private List<Availability> availabilities = new ArrayList<>();
 
     @Column(name = "email")

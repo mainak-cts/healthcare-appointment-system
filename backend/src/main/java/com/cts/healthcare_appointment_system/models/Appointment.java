@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.cts.healthcare_appointment_system.enums.AppointmentStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,12 +34,12 @@ public class Appointment {
     @Column(name = "appointment_id")
     private int appointmentId;
 
-    @JsonBackReference(value = "patient-appointments")
+    @JsonManagedReference(value = "patient-appointments")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "patient_id")
     private User patient;
 
-    @JsonBackReference(value = "doctor-appointments")
+    @JsonManagedReference(value = "doctor-appointments")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "doctor_id")
     private User doctor;

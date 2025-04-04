@@ -36,18 +36,21 @@ public class AvailabilityService {
 
     // GET methods
     // Get all availabilities 
-    public ResponseEntity<List<Availability>> getAllAvailabilities(int doctorId, LocalDateTime timeSlotStart, LocalDateTime timeSlotEnd, boolean isAvailable) {
+    public ResponseEntity<List<Availability>> getAllAvailabilities(String namePrefix, LocalDateTime timeSlotStart, LocalDateTime timeSlotEnd, String isAvailable) {
         List<Availability> availabilities = availabilityRepo.findAll(Sort.by(Direction.ASC, "timeSlotStart"));
 
-        if (isAvailable) {
-            availabilities = availabilities.stream().filter(a -> a.isAvailable()).toList();
-        } else {
-            availabilities = availabilities.stream().filter(a -> !a.isAvailable()).toList();
+        if (namePrefix != null) {
+            availabilities = availabilityRepo.findByDoctorNameStartsWith(namePrefix);
+        }
+        
+        if(isAvailable != null){
+            if (isAvailable.equalsIgnoreCase("true")) {
+                availabilities = availabilities.stream().filter(a -> a.isAvailable()).toList();
+            } else if (isAvailable.equalsIgnoreCase("false")){
+                availabilities = availabilities.stream().filter(a -> !a.isAvailable()).toList();
+            }
         }
 
-        if (doctorId != 0) {
-            availabilities = availabilities.stream().filter(a -> a.getDoctor().getUserId() == doctorId).toList();
-        }
 
         if (timeSlotStart != null) {
             availabilities = availabilities.stream().filter(a -> a.getTimeSlotStart().isAfter(timeSlotStart) || a.getTimeSlotStart().isEqual(timeSlotStart)).toList();
@@ -221,11 +224,12 @@ public class AvailabilityService {
         if (!delAvailability.isAvailable()) {
             List<Appointment> appointments = appointmentRepo.findByDoctorUserIdAndTimeSlotStartAndTimeSlotEnd(delAvailability.getDoctor().getUserId(), delAvailability.getTimeSlotStart(), delAvailability.getTimeSlotEnd());
 
-            if (appointments.isEmpty()) {
+            // If the time slot is not in the past and can't fetch associated appointments
+            if (appointments.isEmpty() && delAvailability.getTimeSlotEnd().isAfter(LocalDateTime.now())) {
                 throw new ApiException("Can't fetch the associated appointments", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            // Cancel the associated appointment slots and cancellation mail
+            // Cancel the associated appointment slots and send scancellation mail
             appointments.forEach(ap -> {
                 if (ap.getStatus() == AppointmentStatus.BOOKED) {
                     ap.cancel();
