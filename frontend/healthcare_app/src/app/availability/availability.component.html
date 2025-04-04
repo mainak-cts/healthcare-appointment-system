@@ -1,0 +1,41 @@
+<div class="availability">
+    @if(!isEditing()){
+        <p>{{availability().availabilityId}}</p>
+        <a [routerLink]="['../users/', availability().doctor.userId]" routerLinkActive="router-link-active" >{{availability().doctor.name}}</a>
+        <p>{{availability().timeSlotStart | date:'short'}}</p>
+        <span>to</span>
+        <p>{{availability().timeSlotEnd | date:'short'}}</p>
+        @if(availability().available){
+            <p class="available">AVAILABLE</p>
+        }@else {
+            <p class="unavailable">UNAVAILABLE</p>
+        }
+        @if(userRole() === 'PATIENT'){
+            <button class="btn btn-book" (click)="onBook()">Book</button>
+        }@else if(userRole() === 'DOCTOR') {
+            <button class="btn btn-edit-availability" (click)="onEditClick()">Edit</button>
+            <button class="btn btn-delete-availability" (click)="onDeleteAvailability()">Delete</button>
+        }
+    }
+    @else {
+        <p>{{availability().availabilityId}}</p>
+        <p>{{availability().doctor.name}}</p>
+        <form id="edit-availability" [formGroup]="editForm">
+            <div class="slot time-slot-start">
+                <label for="editSlotStart">From</label>
+                <input type="datetime-local" class="timeSlot" id="editSlotStart" name="editSlotStart" formControlName="timeSlotStart" [class.error-control]="slotStartInvalid">
+            </div>
+            <div class="slot time-slot-end">
+                <label for="editSlotEnd">to</label>
+                <input type="datetime-local" class="timeSlot" id="editSlotEnd" name="editSlotEnd" formControlName="timeSlotEnd" [class.error-control]="slotEndInvalid">
+            </div>
+            @if(availability().available){
+                <p class="available">AVAILABLE</p>
+            }@else {
+                <p class="unavailable">UNAVAILABLE</p>
+            }
+            <button class="btn" type="submit" (click)="onEditSubmit()">Submit</button>
+            <button class="btn" (click)="onEditCancel()">Cancel</button>
+        </form>
+    }
+</div>

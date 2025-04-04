@@ -1,3 +1,96 @@
-<div class="profile">
-    <h1>User Profile for user: {{userId()}}</h1>
+<div class="profile container">
+    @if(user === null){
+        <h1>No user found with id: {{userId()}}</h1>
+    }@else {
+        <div class="profile-data">
+            @if(user.role === 'DOCTOR'){
+                <img src="/doctor.jfif" alt="doctor" id="doctor-pic">
+            }@else {
+                <img src="/patient.png" alt="doctor" id="patient-pic">
+            }
+            @if(!editProfile()){
+                <div class="profile-details">
+                    <p class="p-user-details" id="user_id">User Id: <span>{{userId()}}</span></p>
+                    <p class="p-user-details" id="user_name">Name: <span>{{user.name}}</span></p>
+                    <p class="p-user-details" id="user_role">Role: <span>{{user.role}}</span></p>
+                    <p class="p-user-details" id="user_email">Email: <span>{{user.email}}</span></p>
+                    <p class="p-user-details" id="user_phone">Phone: <span>{{user.phone}}</span></p>
+                </div>
+                @if(isItYourProfile){
+                    <div class="edit-profile-div">
+                        <button class="btn" (click)="onEditProfile()">Edit profile</button>
+                    </div>
+                }
+            }@else {
+                <form id="edit-profile" [formGroup]="editProfileForm">
+                    <h2>Edit Profile</h2>
+                    <div class="form-control">
+                        <mat-form-field>
+                            <mat-label>Name</mat-label>
+                            <input matInput type="text" formControlName="name">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-control">
+                        <mat-form-field>
+                            <mat-label>New password</mat-label>
+                            <input matInput type="password" formControlName="password">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-control">
+                        <mat-form-field>
+                            <mat-label>Phone</mat-label>
+                            <input matInput type="text" formControlName="phone">
+                        </mat-form-field>
+                    </div>
+                </form>
+                <div class="edit-profile-form-btns">
+                    <button class="btn btn-cancel" (click)="onEditProfileCancel()">Cancel</button>
+                    <button class="btn btn-Submit" (click)="onEditProfileSubmitForm()">Submit</button>
+                </div>
+            }
+        </div>
+        <form id="filter-appointment" [formGroup]="form" (ngSubmit)="onSubmit()">
+            @if((currentLoggedInUser.role == 'PATIENT') && isItYourProfile){
+                <div class="form-control">
+                    <mat-form-field>
+                        <mat-label>Doctor Name</mat-label>
+                        <input matInput type="text" formControlName="doctorName">
+                    </mat-form-field>
+                </div>
+            }@else if((currentLoggedInUser.role == 'DOCTOR') && isItYourProfile){
+                <div class="form-control">
+                    <mat-form-field>
+                        <mat-label>Patient Name</mat-label>
+                        <input matInput type="text" formControlName="patientName">
+                    </mat-form-field>
+                </div>
+            }
+            <div class="form-control">
+                <mat-form-field>
+                    <mat-label>Appointment Status</mat-label>
+                    <mat-select matNativeControl formControlName="status">
+                      <mat-option value="BOOKED">BOOKED</mat-option>
+                      <mat-option value="CANCELLED">CANCELLED</mat-option>
+                      <mat-option value="COMPLETED">COMPLETED</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <button type="submit" class="btn">Filter</button>
+        </form>
+        <div class="appointments">
+            @if(appointments){
+                @if(isItYourProfile){
+                    <p class="p-appointments">Your appointments - </p>
+                }@else {
+                    <p class="p-appointments">Appointments - </p>
+                }
+            }
+            @for(appointment of appointments; track appointment.appointmentId){
+                <app-appointment [appointment]="appointment" [isYou]="isItYourProfile" (cancel)="onCancel($event)" (complete)="onComplete($event)" [userRole] = "user.role"/>
+            }@empty {
+                <p class="p-appointments">No appointments found 😢</p>
+            }
+        </div>
+    }
+
 </div>

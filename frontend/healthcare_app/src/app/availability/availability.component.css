@@ -1,0 +1,59 @@
+div.availability{
+    outline: 1px solid rgb(46, 46, 46);
+    background-color: rgba(234, 184, 244, 0.151);
+    border-radius: 5px;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+p.available{
+    color: rgb(5, 178, 43);
+}
+
+p.unavailable{
+    color: red;
+}
+
+button.btn-delete-availability{
+    background-color: red;
+    color: white;
+}
+
+form#edit-availability{
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+div.slot{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input.timeSlot{
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    font-family: "Poppins", sans-serif; 
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    border: 2px solid #ccc;
+}
+input.timeSlot:focus{
+    border-color: #3f51b5;
+}
+
+input.error-control{
+    color: #e40e0e;
+    border-color: #e40e0e;
+}
+
+div.availabilities p{
+    text-align: center;
+}
