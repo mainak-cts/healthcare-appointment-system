@@ -3,23 +3,41 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AvailabilitiesComponent } from './availabilities/availabilities.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+    },
+    {
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent,
+        title: 'Home'
+    },
+    {
+        path: 'availabilitites',
+        component: AvailabilitiesComponent,
+        canMatch: [authGuard],
+        title: 'Availabilities'
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+        title: 'Login'
     },
     {
         path: 'register',
-        component: RegisterComponent
+        component: RegisterComponent,
+        title: 'Register'
     },
     {
         path: 'users/:userId',
-        component: ProfileComponent
+        component: ProfileComponent,
+        canMatch: [authGuard],
+        title: 'Profile'
     },
 
 ];

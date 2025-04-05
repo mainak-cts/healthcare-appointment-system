@@ -1,8 +1,28 @@
-div.home{
-    width: 100vw;
-    height: 100%;
+div.show-case{
+    margin-top: 1rem;
     display: flex;
+    gap: 1rem;
+}
+
+div.show{
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    background-color: rgba(173, 108, 201, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.315);
+    border-radius: 5px;
+    padding: 0.85rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transition: all 0.2s ease-in-out;
+}
+
+span.value{
+    font-weight: 500;
+    font-size: 3rem;
+}
+
+div.show:hover{
+    cursor: pointer;
+    transform: scale(1.05);
 }

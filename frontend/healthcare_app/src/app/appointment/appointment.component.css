@@ -1,0 +1,41 @@
+div.appointment-details{
+    outline: 1px solid rgba(0, 0, 0, 0.269);
+    background-color: rgba(184, 237, 244, 0.219);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+div.appointment{
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button.btn-cancel{
+    background-color: red;
+    color: white;
+}
+button.btn-complete{
+    background-color: rgb(3, 165, 103);
+    color: white;
+}
+
+div.cancelled{
+    color: red;
+}
+
+div.booked{
+    color: rgb(37, 95, 243);
+}
+
+div.completed{
+    color: rgb(3, 165, 103);
+}
