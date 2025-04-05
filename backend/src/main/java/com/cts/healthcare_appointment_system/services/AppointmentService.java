@@ -38,23 +38,23 @@ public class AppointmentService {
         List<Appointment> appointments = appointmentRepo.findAll(Sort.by(Direction.DESC, "timeSlotStart"));
 
         // Filter by request params
-
         if(patientId != 0){
-            appointments = appointments.stream().filter(a -> a.getPatient().getUserId() == patientId).toList();
+            // As, the associated patient or doctor can be NULL (may be they have deleted their account), checking not NULL to avoid NULL pointer exception
+            appointments = appointments.stream().filter(a -> a.getPatient() != null).filter(a -> a.getPatient().getUserId() == patientId).toList();
         }
         if(doctorId != 0){
-            appointments = appointments.stream().filter(a -> a.getDoctor().getUserId() == doctorId).toList();
+            appointments = appointments.stream().filter(a -> a.getDoctor() != null).filter(a -> a.getDoctor().getUserId() == doctorId).toList();
         }
         
         if(patientName != null){
             if (!patientName.trim().equals("")) {
-                appointments = appointments.stream().filter(a -> a.getPatient().getName().toLowerCase().startsWith(patientName.trim().toLowerCase())).toList();
+                appointments = appointments.stream().filter(a -> a.getPatient() != null).filter(a -> a.getPatient().getName().toLowerCase().startsWith(patientName.trim().toLowerCase())).toList();
             } 
         }
 
         if(doctorName != null){
             if (!doctorName.trim().equals("")) {
-                appointments = appointments.stream().filter(a -> a.getDoctor().getName().toLowerCase().startsWith(doctorName.trim().toLowerCase())).toList();
+                appointments = appointments.stream().filter(a -> a.getDoctor() != null).filter(a -> a.getDoctor().getName().toLowerCase().startsWith(doctorName.trim().toLowerCase())).toList();
             } 
         }
 
@@ -238,3 +238,4 @@ public class AppointmentService {
         return ResponseEntity.status(HttpStatus.OK).body(appointment);
     }
 }
+
