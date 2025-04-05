@@ -32,11 +32,11 @@ public class AvailabilityController {
     // Retrieves all availabilities
     @GetMapping
     public ResponseEntity<List<Availability>> getAllAvailabilities(
-            @RequestParam(defaultValue = "0") int doctorId,
+            @RequestParam(required = false) String namePrefix,
             @RequestParam(required = false) LocalDateTime timeSlotStart,
             @RequestParam(required = false) LocalDateTime timeSlotEnd,
-            @RequestParam(defaultValue = "true") boolean isAvailable) {
-    	return availabilityService.getAllAvailabilities(doctorId, timeSlotStart, timeSlotEnd, isAvailable);
+            @RequestParam(required = false) String isAvailable) {
+    	return availabilityService.getAllAvailabilities(namePrefix, timeSlotStart, timeSlotEnd, isAvailable);
     }
     
     // Retrieves availability by Id

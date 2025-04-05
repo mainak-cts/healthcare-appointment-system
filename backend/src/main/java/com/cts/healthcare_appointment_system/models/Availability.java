@@ -2,7 +2,7 @@ package com.cts.healthcare_appointment_system.models;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,7 +31,7 @@ public class Availability {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "doctor_id")
-    @JsonBackReference(value = "doctor-availabilities")
+    @JsonManagedReference(value = "doctor-availabilities")
     private User doctor;
 
     @Column(name = "time_slot_start")
