@@ -26,42 +26,43 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/availabilities")
 @AllArgsConstructor
 public class AvailabilityController {
-	
+
     private AvailabilityService availabilityService;
-    
+
     // Retrieves all availabilities
     @GetMapping
     public ResponseEntity<List<Availability>> getAllAvailabilities(
+            @RequestParam(defaultValue = "0") int doctorId,
             @RequestParam(required = false) String namePrefix,
             @RequestParam(required = false) LocalDateTime timeSlotStart,
             @RequestParam(required = false) LocalDateTime timeSlotEnd,
             @RequestParam(required = false) String isAvailable) {
-    	return availabilityService.getAllAvailabilities(namePrefix, timeSlotStart, timeSlotEnd, isAvailable);
+        return availabilityService.getAllAvailabilities(doctorId, namePrefix, timeSlotStart, timeSlotEnd, isAvailable);
     }
-    
+
     // Retrieves availability by Id
     @GetMapping("/{id}")
     public ResponseEntity<Availability> getAvailabilityById(@PathVariable int id) {
-    	return availabilityService.getAllAvailabilityById(id);
+        return availabilityService.getAllAvailabilityById(id);
     }
 
     // Saves new availability
     @PostMapping
     public ResponseEntity<Availability> saveAvailability(@Valid @RequestBody AvailabilityDTO dto) {
-    	return availabilityService.saveAvailability(dto);
+        return availabilityService.saveAvailability(dto);
 
     }
-    
+
     // Edit an existing availability
     @PutMapping
     public ResponseEntity<Availability> editAvailability(@Valid @RequestBody AvailabilityUpdateDTO dto) {
-         return availabilityService.editAvailability(dto);
+        return availabilityService.editAvailability(dto);
     }
-    
+
     // Delete availability by Id
     @DeleteMapping("/{id}")
     public ResponseEntity<Availability> deleteAvailabilityById(@PathVariable int id) {
-    	return availabilityService.deleteAvailabilityByid(id);
+        return availabilityService.deleteAvailabilityByid(id);
     }
-   
+
 }
