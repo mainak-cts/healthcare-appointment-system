@@ -1,1 +1,34 @@
-<p>appointment works!</p>
+<div class="appointment">
+    <div class="appointment-details">
+        @if(userRole() === 'DOCTOR'){
+            <a [routerLink]="['../', appointment().patient.userId]" routerLinkActive="router-link-active" >{{appointment().patient.name}}</a>
+        }@else if(userRole() === 'PATIENT'){
+            <a [routerLink]="['../', appointment().doctor.userId]" routerLinkActive="router-link-active" >{{appointment().doctor.name}}</a>
+        }
+        <div class="startTime">{{appointment().timeSlotStart | date: 'short'}}</div>
+        <div class="endTime">{{appointment().timeSlotEnd | date: 'short'}}</div>
+        @if(appointment().status === 'CANCELLED'){
+            <div class="status" class="cancelled">{{appointment().status}}</div>
+        }@else if(appointment().status === 'BOOKED'){
+            <div class="status" class="booked">{{appointment().status}}</div>
+        }@else if(appointment().status === 'COMPLETED'){
+            <div class="status" class="completed">{{appointment().status}}</div>
+        }
+        @if(isYou()){
+
+            <button class="btn btn-cancel" (click)="onCancelAppointment()" [disabled]="appointment().status !== 'BOOKED'">Cancel</button>
+            <button class="btn btn-complete" (click)="onCompleteAppointment()" [disabled]="appointment().status !== 'BOOKED'">Complete</button>
+            @if(!showConsultation()){
+                <button class="btn" (click)="toggleConsultation()">View consultation</button>
+            }@else {
+                <button class="btn" (click)="toggleConsultation()">Hide consultation</button>
+
+            }
+        }
+    </div>
+    <div class="consultations">
+        @if(showConsultation()){
+            <app-consultation [appointmentId]="appointment().appointmentId" (delete)="toggleConsultation()"/>
+        }
+    </div>
+</div>

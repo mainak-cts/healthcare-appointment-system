@@ -1,18 +1,66 @@
 nav#navbar{
     width: 100vw;
     display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 65px;
     gap: 1rem;
     background-color: antiquewhite;
     padding: 1rem;
-    box-sizing: border-box;
+    padding-left: 1.5rem;
 }
 
 nav#navbar a{
     text-decoration: none;
+    color: rgb(84, 83, 83);
+    transition: color 0.2s ease-in;
+}
+nav#navbar a:hover{
     color: black;
 }
 
 nav#navbar a.active-route{
+    color: black;
     border-bottom: 2px solid black;
     font-weight: bold;
+}
+
+button.logout{
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+div.side-nav{
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-left: auto;
+    position: relative;
+    right: 0.85rem;
+}
+
+img#profile-pic{
+    width: 40px;
+    aspect-ratio: 1/1;
+}
+
+a#a-profile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+a#a-profile:hover{
+    opacity: 0.6;
+}
+
+a.btn-register{
+    font-weight: normal;
+    box-shadow: 0 0 !important;
+    color: black !important;
 }

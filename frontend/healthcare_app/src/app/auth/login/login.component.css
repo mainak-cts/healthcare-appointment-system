@@ -1,7 +1,27 @@
-div.login{
-    width: 100vw;
-    height: 100%;
+div.login form{
     display: flex;
+    flex-direction: column;
+    width: 450px;
+    border-radius: 10px;
+    border: 1px solid black;
     justify-content: center;
     align-items: center;
+    padding: 1rem;
+    position: relative;
 }
+
+p.form-control-error{
+    margin: 0;
+    font-size: 0.8rem;
+    color: red;
+    position: relative;
+    bottom: 10px;
+}
+
+div.form-control{
+    position: relative;
+}
+
+
+
+

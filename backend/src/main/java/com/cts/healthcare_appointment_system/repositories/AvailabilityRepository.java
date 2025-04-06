@@ -13,4 +13,6 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Inte
 
     @Query("SELECT a FROM Availability a WHERE DATE(a.timeSlotStart) = CURRENT_DATE AND a.timeSlotEnd <= CURRENT_TIMESTAMP")
     public List<Availability> findPastSlotsOfToday();
+
+    public List<Availability> findByDoctorNameStartsWith(String prefix);
 }

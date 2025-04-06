@@ -1,0 +1,65 @@
+<div class="consultation">
+    @if(consultation()){
+        <h2>Consultation</h2>
+        @if(editable()){
+            <form class="consultation-form" [formGroup]="form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Notes</mat-label>
+                    <textarea matInput formControlName="notes"></textarea>
+                  </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Prescription</mat-label>
+                    <textarea matInput formControlName="prescription"></textarea>
+                </mat-form-field>
+            </form>
+        }@else{
+            <div class="show-consultation">
+                <div class="notes">
+                    <h3 class="h-consultation">Notes</h3>
+                    <p class="p-consultation">{{consultation().notes}}</p>
+                </div>
+                <div class="prescription">
+                    <h3 class="h-consultation">Prescription</h3>
+                    <p class="p-consultation">{{consultation().prescription}}</p>
+                </div>
+            </div>
+        }
+        <div class="btn-grp edit-btns">
+            @if(currentLoggedInUser.role === 'DOCTOR'){
+                @if(!editable()){
+                    <button class="btn" (click)="onEdit()">Edit</button>
+                    <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+                }@else if (editable()) {
+                    <button class="btn" (click)="onCancel()">Cancel</button>
+                    <button class="btn" (click)="onEditConsultation()">Submit</button>
+                }
+            }
+        </div>
+    }@else {
+        <div class="no-consultation">
+            @if(!create()){
+                <h2>No consultations found</h2>
+                @if(currentLoggedInUser.role === 'DOCTOR'){
+                    <button class="btn" (click)="onCreate()">Create</button>
+                }
+            }@else {
+                <form class="consultation-form" [formGroup]="newConsultationForm">
+                    <h2>Consultation</h2>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Notes</mat-label>
+                        <textarea matInput formControlName="newNotes"></textarea>
+                      </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Prescription</mat-label>
+                        <textarea matInput formControlName="newPrescription"></textarea>
+                    </mat-form-field>
+    
+                    <div class="btn-grp">
+                        <button class="btn" (click)="onCancelCreate()">Cancel</button>
+                        <button class="btn" (click)="onCreateConsultation()">Submit</button>
+                    </div>
+                </form>
+            }
+        </div>
+    }
+</div>

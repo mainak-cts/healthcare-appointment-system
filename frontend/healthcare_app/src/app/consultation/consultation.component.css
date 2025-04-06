@@ -1,0 +1,36 @@
+div.consultation{
+    display: flex;
+    padding: 1rem;
+    width: 450px;
+    margin-top: 0.5rem;
+    outline: 1px solid rgb(6, 0, 0);
+    background-color: rgba(250, 235, 215, 0.196);
+    border-radius: 5px;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.75rem;
+    justify-content: center;
+}
+div.no-consultation{
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+}
+form.consultation-form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+div.show-consultation h3.h-consultation{
+    margin-top: 0.5rem;
+}
+div.show-consultation p.p-consultation{
+    margin-top: 0.25rem;
+}
+
+div.btn-grp{
+    display: flex;
+    justify-content: space-between;
+}

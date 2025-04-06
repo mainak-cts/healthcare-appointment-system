@@ -1,3 +1,64 @@
-<div class="register">
-    <h1>Register Page</h1>
+<div class="register container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h1>Sign up</h1>
+        <div class="form-control">
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput type="name" formControlName="name">
+            </mat-form-field>
+            @if(isNameInvalid){
+                <p class="form-control-error">Name is invalid</p>
+            }
+        </div>
+        <div class="form-control">
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email">
+            </mat-form-field>
+            @if(isEmailInvalid){
+                <p class="form-control-error">Email is invalid</p>
+            }
+        </div>
+
+        <div class="form-control">
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password"/>
+            </mat-form-field>
+            @if(isPasswordInvalid){
+                <p class="form-control-error">Password is invalid</p>
+            }
+        </div>
+
+        <div class="form-control">
+            <mat-form-field>
+                <mat-label>Role</mat-label>
+                <mat-select matNativeControl formControlName="role">
+                  <mat-option value="PATIENT">Patient</mat-option>
+                  <mat-option value="DOCTOR">Doctor</mat-option>
+                </mat-select>
+            </mat-form-field>
+            @if(isRoleInvalid){
+                <p class="form-control-error">Role is invalid</p>
+            }
+        </div>
+
+        <div class="form-control">
+            <mat-form-field>
+                <mat-label>Phone</mat-label>
+                <input matInput type="number" formControlName="phone"/>
+            </mat-form-field>
+            @if(isPhoneInvalid){
+                <p class="form-control-error">Phone number is invalid</p>
+            }
+        </div>
+
+
+        <button type="submit" class="btn btn-login">
+            Register
+            @if (isLoading()) {
+                <mat-progress-spinner mode="indeterminate" diameter="15"></mat-progress-spinner>
+            }
+        </button>
+    </form>
 </div>
