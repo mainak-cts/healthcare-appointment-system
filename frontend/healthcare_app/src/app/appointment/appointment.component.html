@@ -36,7 +36,7 @@
     </div>
     <div class="consultations">
         @if(showConsultation()){
-            <app-consultation [appointmentId]="appointment().appointmentId" (delete)="toggleConsultation()"/>
+            <app-consultation [appointmentId]="appointment().appointmentId" (delete)="toggleConsultation()" [status]="appointment().status"/>
         }
     </div>
 </div>

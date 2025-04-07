@@ -39,7 +39,7 @@
         <div class="no-consultation">
             @if(!create()){
                 <h2>No consultations found</h2>
-                @if(currentLoggedInUser().role === 'DOCTOR'){
+                @if(currentLoggedInUser().role === 'DOCTOR' && status() != "CANCELLED"){
                     <button class="btn" (click)="onCreate()">Create</button>
                 }
             }@else {
