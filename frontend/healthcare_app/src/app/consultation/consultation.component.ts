@@ -23,6 +23,7 @@ export class ConsultationComponent implements OnInit{
   route = inject(Router);
   toastr = inject(ToastrService);
   validationService = inject(ValidationService);
+  status = input.required<"COMPLETED" | "CANCELLED" | "BOOKED">();
 
   editable = signal(false);
   create = signal(false);
