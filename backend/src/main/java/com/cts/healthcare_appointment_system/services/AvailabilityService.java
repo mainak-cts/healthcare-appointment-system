@@ -36,21 +36,27 @@ public class AvailabilityService {
 
     // GET methods
     // Get all availabilities 
-    public ResponseEntity<List<Availability>> getAllAvailabilities(String namePrefix, LocalDateTime timeSlotStart, LocalDateTime timeSlotEnd, String isAvailable) {
+    public ResponseEntity<List<Availability>> getAllAvailabilities(int doctorId, String namePrefix, LocalDateTime timeSlotStart, LocalDateTime timeSlotEnd, String isAvailable) {
         List<Availability> availabilities = availabilityRepo.findAll(Sort.by(Direction.ASC, "timeSlotStart"));
 
-        if (namePrefix != null) {
-            availabilities = availabilityRepo.findByDoctorNameStartsWith(namePrefix);
+        // Filter by query params
+        if (doctorId != 0) {
+            availabilities = availabilities.stream().filter(a -> a.getDoctor().getUserId() == doctorId).toList();
         }
-        
-        if(isAvailable != null){
-            if (isAvailable.equalsIgnoreCase("true")) {
-                availabilities = availabilities.stream().filter(a -> a.isAvailable()).toList();
-            } else if (isAvailable.equalsIgnoreCase("false")){
-                availabilities = availabilities.stream().filter(a -> !a.isAvailable()).toList();
+
+        if (namePrefix != null) {
+            if (!namePrefix.trim().equals("")) {
+                availabilities = availabilities.stream().filter(a -> a.getDoctor().getName().toLowerCase().startsWith(namePrefix.trim().toLowerCase())).toList();
             }
         }
 
+        if (isAvailable != null) {
+            if (isAvailable.equalsIgnoreCase("true")) {
+                availabilities = availabilities.stream().filter(a -> a.isAvailable()).toList();
+            } else if (isAvailable.equalsIgnoreCase("false")) {
+                availabilities = availabilities.stream().filter(a -> !a.isAvailable()).toList();
+            }
+        }
 
         if (timeSlotStart != null) {
             availabilities = availabilities.stream().filter(a -> a.getTimeSlotStart().isAfter(timeSlotStart) || a.getTimeSlotStart().isEqual(timeSlotStart)).toList();
@@ -92,7 +98,7 @@ public class AvailabilityService {
         }
 
         // Can't update past time slots
-        if(availability.getTimeSlotEnd().isBefore(LocalDateTime.now())){
+        if (availability.getTimeSlotEnd().isBefore(LocalDateTime.now())) {
             throw new ApiException("Can't update past availability slots", HttpStatus.BAD_REQUEST);
         }
 
