@@ -5,6 +5,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AvailabilitiesComponent } from './availabilities/availabilities.component';
 import { authGuard } from './guards/auth.guard';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 export const routes: Routes = [
     {
@@ -39,5 +40,10 @@ export const routes: Routes = [
         canMatch: [authGuard],
         title: 'Profile'
     },
+    {
+        path: '**',
+        component: PagenotfoundComponent,
+        title: "404 - Page Not Found"
+    }
 
 ];

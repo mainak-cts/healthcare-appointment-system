@@ -1,17 +1,16 @@
 <nav id="navbar">
     <a routerLink="home" routerLinkActive="active-route">Home</a>
-    @if(user != null){
+    @if(user() != null){
         <a routerLink="availabilitites" routerLinkActive="active-route">Availabilities</a>
     }
     <div class="side-nav">
-        @if(user === null){
+        @if(user() === null){
             <a routerLink="login" routerLinkActive="active-route">Login</a>
             <a routerLink="register" class="btn btn-register">Register</a>
         }@else {
-            <a [routerLink]="['users', user.userId]" id="a-profile">
+            <a [routerLink]="['users', user().userId]" id="a-profile">
                 <img src="/profile_pic.png" alt="pic" id="profile-pic">
             </a>
-            <button (click)="logout()" class="btn logout">Logout</button>
         }
     </div>
 </nav>

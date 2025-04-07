@@ -1,8 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { LogInData } from "../app/models/LogInData";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Route, Router } from "@angular/router";
-import { BehaviorSubject } from "rxjs";
+import { Router } from "@angular/router";
+import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { RegisterData } from "../app/models/RegisterData";
 
 @Injectable({providedIn: 'root'})
@@ -17,14 +17,20 @@ export class AuthApiService{
         this.getUserDetails();
     }
 
-    logInUser(data: LogInData){
+    // To show the loading spinner, while waiting for the API response, made it async/await
+    async logInUser(data: LogInData){
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        return this.httpClient.post<{email: string, userId: string, jwtToken: string}>(this.API_URL + '/login', data, {headers})
+        const response =  this.httpClient.post<{email: string, userId: string, jwtToken: string}>(this.API_URL + '/login', data, {headers});
+
+        return firstValueFrom(response);
     }
 
+     // To show the loading spinner, while waiting for the API response, made it async/await
     registerUser(data: RegisterData){
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        return this.httpClient.post<any>(this.API_URL + '/register', data, {headers})
+        const response = this.httpClient.post<any>(this.API_URL + '/register', data, {headers})
+
+        return firstValueFrom(response);
     }
 
     handleLogIn(jwtToken: string){

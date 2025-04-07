@@ -20,4 +20,13 @@ export class UserApiService{
             }
         )
     }
+
+    deleteUserById(id: string){
+        return this.httpClient.delete<any>(
+            `${this.BASE_URL}/${id}`,
+            {
+                headers: this.authHeader
+            }
+        )
+    }
 }
