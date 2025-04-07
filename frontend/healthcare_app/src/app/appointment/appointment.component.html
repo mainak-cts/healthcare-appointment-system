@@ -1,9 +1,17 @@
 <div class="appointment">
     <div class="appointment-details">
         @if(userRole() === 'DOCTOR'){
-            <a [routerLink]="['../', appointment().patient.userId]" routerLinkActive="router-link-active" >{{appointment().patient.name}}</a>
+            @if(appointment().patient){
+                <a [routerLink]="['../', appointment().patient.userId]" routerLinkActive="router-link-active" >{{appointment().patient.name}}</a>
+            }@else {
+                <p class="disabled">UNAVAILABLE</p>
+            }
         }@else if(userRole() === 'PATIENT'){
-            <a [routerLink]="['../', appointment().doctor.userId]" routerLinkActive="router-link-active" >{{appointment().doctor.name}}</a>
+            @if(appointment().doctor){
+                <a [routerLink]="['../', appointment().doctor.userId]" routerLinkActive="router-link-active" >{{appointment().doctor.name}}</a>
+            }@else{
+                <p class="disabled">UNAVAILABLE</p>
+            }
         }
         <div class="startTime">{{appointment().timeSlotStart | date: 'short'}}</div>
         <div class="endTime">{{appointment().timeSlotEnd | date: 'short'}}</div>

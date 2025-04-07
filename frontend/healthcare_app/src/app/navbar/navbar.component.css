@@ -25,15 +25,6 @@ nav#navbar a.active-route{
     font-weight: bold;
 }
 
-button.logout{
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-}
-
 div.side-nav{
     display: flex;
     align-items: center;

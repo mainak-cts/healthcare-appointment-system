@@ -39,3 +39,7 @@ div.booked{
 div.completed{
     color: rgb(3, 165, 103);
 }
+
+p.disabled{
+    opacity: 0.8;
+}

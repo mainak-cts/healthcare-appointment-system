@@ -76,7 +76,7 @@ div.edit-profile-div{
     display: flex;
     margin-top: 1rem;
     width: 100%;
-    flex-direction: row-reverse;
+    justify-content: space-between;
 }
 
 div.edit-profile-form-btns{
@@ -93,4 +93,18 @@ form#edit-profile{
 
 form#edit-profile h2{
     text-align: center;
+}
+
+div.delete-profile{
+    margin-top: 1rem;
+    outline: 1px solid rgba(204, 0, 0, 0.32);
+    color: rgb(228, 1, 1);
+    background-color: rgba(249, 182, 182, 0.244);
+    border-radius: 5px;
+    min-width: 300px;
+    padding: 0.5rem 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:1rem;
 }

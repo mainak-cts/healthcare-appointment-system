@@ -1,6 +1,7 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthApiService } from '../../services/authapi.service';
+import { ToastManagerService } from '../../services/toastr.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,18 +11,14 @@ import { AuthApiService } from '../../services/authapi.service';
 })
 export class NavbarComponent implements OnInit{
   authService = inject(AuthApiService);
-  user: any = null;
+  user = signal<any>(null);
+
+  toastManagerService = inject(ToastManagerService);
 
   ngOnInit(){
     this.authService.user$.subscribe((user) => {
-      this.user = user;
+      this.user.set(user);
     });
 
   }
-
-  logout(){
-      this.authService.logOutUser();
-  }
-
-
 }

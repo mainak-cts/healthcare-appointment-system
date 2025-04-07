@@ -1,13 +1,13 @@
 <div class="availabilities container">
-    @if(currentLoggedInUser.role == 'PATIENT'){
-        <h1>Hi, {{currentLoggedInUser.name}}</h1>
+    @if(currentLoggedInUser().role == 'PATIENT'){
+        <h1>Hi, {{currentLoggedInUser().name}}</h1>
         <h2>Find your preferable availability slots</h2>
-    }@else if(currentLoggedInUser.role == 'DOCTOR'){
-        <h1>Hi, Dr. {{currentLoggedInUser.name}}</h1>
+    }@else if(currentLoggedInUser().role == 'DOCTOR'){
+        <h1>Hi, Dr. {{currentLoggedInUser().name}}</h1>
         <h2>Find your availability slots</h2>
     }
 
-    @if(currentLoggedInUser.role == 'DOCTOR'){
+    @if(currentLoggedInUser().role == 'DOCTOR'){
         <form id="create-availability" [formGroup]="availabilityForm">
             <div class="slot time-slot-start">
                 <label for="slotStart">From</label>
@@ -19,7 +19,7 @@
             </div>
             <button class="btn" (click)="onCreateSubmit()">Create</button>
         </form>
-    }@else if(currentLoggedInUser.role == 'PATIENT'){
+    }@else if(currentLoggedInUser().role == 'PATIENT'){
         <form id="filter-availability" [formGroup]="filterAvailabilityForm">
             <div class="form-control">
                 <input type="text" class="custom-input" id="doctorName" name="doctorName" formControlName="doctorName" placeholder="Doctor Name">
@@ -37,17 +37,17 @@
     }
 
     <div class="show-availabilities">
-        @if(currentLoggedInUser.role === 'DOCTOR'){
-            @if(availabilities.length > 0){
+        @if(currentLoggedInUser().role === 'DOCTOR'){
+            @if(availabilities().length > 0){
                 <p class="p-availabilities">Your available time slots - </p>
             }
-        }@else if (currentLoggedInUser.role === 'PATIENT') {
-            @if(availabilities.length > 0){
+        }@else if (currentLoggedInUser().role === 'PATIENT') {
+            @if(availabilities().length > 0){
                 <p class="p-availabilities">Available time slots - </p>
             }
         }
-        @for(availability of availabilities; track availability.availabilityId){
-                <app-availability [availability]="availability" [userRole]="currentLoggedInUser.role" (book)="onBook($event)" (edit)="onEdit($event)" (delete)="onDelete($event)"/>
+        @for(availability of availabilities(); track availability.availabilityId){
+                <app-availability [availability]="availability" [userRole]="currentLoggedInUser().role" (book)="onBook($event)" (edit)="onEdit($event)" (delete)="onDelete($event)"/>
         }@empty {
             <p class="p-availabilities">No available time slots 😢</p>
         }
