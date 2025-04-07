@@ -6,6 +6,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { AuthApiService } from '../../services/authapi.service';
 import { ConsultationData } from '../models/ConsultationData';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { ValidationService } from '../../services/validation.service';
 
 @Component({
   selector: 'app-consultation',
@@ -17,8 +19,10 @@ export class ConsultationComponent implements OnInit{
   appointmentId = input.required<string>();
   consultationService = inject(ConsultationApiService);
   authService = inject(AuthApiService);
-  currentLoggedInUser: any = null;
+  currentLoggedInUser = signal<any>(null);
   route = inject(Router);
+  toastr = inject(ToastrService);
+  validationService = inject(ValidationService);
 
   editable = signal(false);
   create = signal(false);
@@ -28,21 +32,23 @@ export class ConsultationComponent implements OnInit{
 
   form = new FormGroup({
     notes: new FormControl('', {
-      validators: Validators.required,
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(500), this.validationService.noWhiteSpaceMinLengthValidator(5)]
     }),
     prescription: new FormControl('', {
-      validators: Validators.required,
-    }),
-  })
-  newConsultationForm = new FormGroup({
-    newNotes: new FormControl('', {
-      validators: Validators.required,
-    }),
-    newPrescription: new FormControl('', {
-      validators: Validators.required,
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(1000), this.validationService.noWhiteSpaceMinLengthValidator(5)]
     }),
   })
 
+  newConsultationForm = new FormGroup({
+    newNotes: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(500), this.validationService.noWhiteSpaceMinLengthValidator(5)]
+    }),
+    newPrescription: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(1000), this.validationService.noWhiteSpaceMinLengthValidator(5)]
+    }),
+  })
+
+  // Fetch the associated consultation, for the given appointment
   constructor(){
     effect(() => {
       this.consultationService.getConsultationByAppointmentId(this.appointmentId()).subscribe({
@@ -55,15 +61,17 @@ export class ConsultationComponent implements OnInit{
       })
     })
     
+    // When the consultation is loaded (signal changes), set the values in the edit consultation form
     effect(() => {
       this.form.controls.notes.setValue(this.consultation().notes);
       this.form.controls.prescription.setValue(this.consultation().prescription);
     })
   }
 
+  // Fetch the current logged in user details
   ngOnInit(): void {
     this.authService.user$.subscribe((loggedInUser) => {
-      this.currentLoggedInUser = loggedInUser;
+      this.currentLoggedInUser.set(loggedInUser);
     });
   }
 
@@ -83,6 +91,7 @@ export class ConsultationComponent implements OnInit{
     this.create.set(true)
   }
 
+  // Edit consultation
   onEditConsultation(){
     if(this.form.valid){
       const data: ConsultationData = {
@@ -94,14 +103,16 @@ export class ConsultationComponent implements OnInit{
         next: (res) => {
           this.consultation.set(res);
           this.editable.set(false);
+          this.toastr.success("Consultation updated successfully!", "Updated");
         },
         error: (err) => {
-          console.log(err)
+          this.toastr.error(err.error.message, "Failed");
         }
       })
     }
   }
 
+  // Create new consultation
   onCreateConsultation(){
     if(this.newConsultationForm.valid){
       const data: {appointmentId: string, notes: string, prescription: string} = {
@@ -113,9 +124,14 @@ export class ConsultationComponent implements OnInit{
         next: (res) => {
           this.consultation.set(res);
           this.create.set(false);
+          this.toastr.success("Consultation created successfully!", "Created");
         },
         error: (err) => {
-          console.log(err)
+          if(err.error.error){
+            this.toastr.error(err.error.message, "Failed")
+          }else{
+            this.toastr.error("Something went wrong, please try again later", "Error")
+          }
         }
       })
     }
@@ -127,11 +143,11 @@ export class ConsultationComponent implements OnInit{
       this.consultationService.deleteConsultationById(this.consultation().consultationId).subscribe({
         next: (res) => {
           this.consultation.set(null);
+          this.toastr.success("Consultation deleted successfully", "Deleted")
           this.delete.emit();
-
         },
         error: (err) => {
-          console.log(err);
+          this.toastr.error("Failed to delete the consultation", "Failed")
         }
       })
     }

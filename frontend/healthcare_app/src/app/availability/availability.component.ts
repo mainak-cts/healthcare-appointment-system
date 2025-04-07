@@ -2,7 +2,6 @@ import { DatePipe } from '@angular/common';
 import { Component, effect, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AppointmentData } from '../models/AppointmentData';
 
 @Component({
   selector: 'app-availability',

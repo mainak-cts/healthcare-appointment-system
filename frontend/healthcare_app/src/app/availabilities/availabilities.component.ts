@@ -9,6 +9,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AvailabilityData } from '../models/AvailabilityData';
 import { AppointmentData } from '../models/AppointmentData';
 import { AppointmentApiService } from '../../services/appointmentapi.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -19,13 +20,15 @@ import { AppointmentApiService } from '../../services/appointmentapi.service';
 })
 export class AvailabilitiesComponent implements OnInit{
 
-  currentLoggedInUser: any = null;
+  currentLoggedInUser = signal<any>(null);
+  availabilities = signal<any[]>([]);
+
   authService = inject(AuthApiService);
   availabilityService = inject(AvailabilityApiService);
   appointmentService = inject(AppointmentApiService);
-  availabilities: any[] = [];
   httpClient = inject(HttpClient);
   formSubmitted = signal(false);
+  toastr = inject(ToastrService);
 
   availabilityForm = new FormGroup({
     timeSlotStart: new FormControl('', {
@@ -42,31 +45,25 @@ export class AvailabilitiesComponent implements OnInit{
     timeSlotEnd: new FormControl(''),
   })
 
-  // Ensure, evem if the page reloads, logged in user details are fetched
-  constructor(){
-    this.currentLoggedInUser = this.authService.getUserDetails();
-  }
-
   // Set the current logged in user and fetch all the availabilities
   ngOnInit(): void {
     this.authService.user$.subscribe((user) =>{
-      this.currentLoggedInUser = user;
-      if(this.currentLoggedInUser != null && this.currentLoggedInUser.role == 'DOCTOR'){
-        this.availabilityService.getAvailabilitiesByDoctorId(this.currentLoggedInUser.userId).subscribe({
+      this.currentLoggedInUser.set(user);
+      if(this.currentLoggedInUser() != null && this.currentLoggedInUser().role == 'DOCTOR'){
+        this.availabilityService.getAvailabilitiesByDoctorId(this.currentLoggedInUser().userId).subscribe({
           next: (data) => {
-            this.availabilities = data;
-            console.log(data)
+            this.availabilities.set(data);
           },
           error: (err) =>{
             console.log(err);
           }
         })
       }
-      // To be implemented (PATIENT can filter availabilities)
-      else if(this.currentLoggedInUser != null && this.currentLoggedInUser.role == 'PATIENT'){
+
+      else if(this.currentLoggedInUser() != null && this.currentLoggedInUser().role == 'PATIENT'){
         this.availabilityService.getAvailabilities(null, null, null).subscribe({
           next: (data) => {
-            this.availabilities = data;
+            this.availabilities.set(data);
           },
           error: (err) =>{
             console.log(err);
@@ -97,26 +94,36 @@ export class AvailabilitiesComponent implements OnInit{
     this.formSubmitted.set(true)
     if(this.availabilityForm.valid){
       const data: AvailabilityData = {
-        doctorId: this.currentLoggedInUser.userId,
+        doctorId: this.currentLoggedInUser().userId,
         timeSlotStart: this.availabilityForm.controls.timeSlotStart.value!,
         timeSlotEnd: this.availabilityForm.controls.timeSlotEnd.value!,
       }
       this.availabilityService.createAvailability(data).subscribe({
         next: (res) => {
-          this.availabilities.push(res);
+          this.availabilities.set([res, ...this.availabilities()]);
+          this.toastr.success("Availability slot created successfully", "Created")
         },
         error: (err) => {
-          console.log(err)
+          if(err.error.error){
+            let errorMsg = '';
+            for(let errKey in err.error){
+              if(errKey != 'error' && errKey != 'statusCode'){
+                errorMsg += `${err.error[errKey]}\n`
+              }
+            }
+            this.toastr.error(errorMsg, "Creation Failed")
+          }else{
+            this.toastr.error("Something went wrong, please try again later", "Error")
+          }
         }
       })
-      return;
     }
   }
 
   // Book a new appointment using a selected availabililty
   onBook(data: {doctorId: string, timeSlotStart: string, timeSlotEnd: string, availabilityId: string}){
     const appointmentData: AppointmentData = {
-      patientId: this.currentLoggedInUser.userId,
+      patientId: this.currentLoggedInUser().userId,
       doctorId: data.doctorId,
       timeSlotStart: data.timeSlotStart,
       timeSlotEnd: data.timeSlotEnd,
@@ -124,13 +131,13 @@ export class AvailabilitiesComponent implements OnInit{
 
     this.appointmentService.bookAppointment(appointmentData).subscribe({
       next: (res) => {
-        let bookedAvailability = this.availabilities.find((av) => {
-          return av.availabilityId == data.availabilityId;
-        })
-        bookedAvailability.available = false;
+        this.availabilities.update(av => av.map(a => {
+          return a.availabilityId == data.availabilityId ? {...a, available: false}: a;
+        }));
+        this.toastr.success(`New appointment booked with id: ${res.appointmentId}`, "Appointment Booked")
       },
       error: (err) => {
-        console.log(err)
+        this.toastr.error(err.error.message, "Appointment booking failed")
       }
     })
   }
@@ -138,21 +145,30 @@ export class AvailabilitiesComponent implements OnInit{
   // Edit an availability
   onEdit(data: {timeSlotStart: string, timeSlotEnd: string}){
     const editAvailabilityData = {
-      doctorId: this.currentLoggedInUser.userId,
+      doctorId: this.currentLoggedInUser().userId,
       ...data
     }
     this.availabilityService.editAvailability(editAvailabilityData).subscribe({
       next: (res) => {
-        // Find the changed availability
-        let changedAvailability = this.availabilities.find((av) => {
-          return av.availabilityId == res.availabilityId;
-        })
 
-        changedAvailability.timeSlotStart = res.timeSlotStart;
-        changedAvailability.timeSlotEnd = res.timeSlotEnd;
+        this.availabilities.update(av => av.map(a => {
+          return a.availabilityId == res.availabilityId ? {...a, timeSlotStart: res.timeSlotStart, timeSlotEnd : res.timeSlotEnd}: a;
+        }))
+
+        this.toastr.success("Availability slot updated successfully!", "Updated")
       }, 
       error: (err) => {
-        console.log(err)
+        if(err.error.error){
+          let errorMsg = '';
+          for(let errKey in err.error){
+            if(errKey != 'error' && errKey != 'statusCode'){
+              errorMsg += `${err.error[errKey]}\n`
+            }
+          }
+          this.toastr.error(errorMsg, "Updation Failed")
+        }else{
+          this.toastr.error("Something went wrong, please try again later", "Error")
+        }
       }
     })
   }
@@ -163,25 +179,30 @@ export class AvailabilitiesComponent implements OnInit{
     if(confirmDelete){
       this.availabilityService.deleteAvailabilityById(id).subscribe({
         next: (res) => {
-          this.availabilities = this.availabilities.filter((a) => a.availabilityId != res.availabilityId);
+          const updatedList = this.availabilities().filter((a) => a.availabilityId != res.availabilityId);
+
+          this.availabilities.set(updatedList);
+
+          this.toastr.success("Availability slot deleted successfully!", "Deleted")
         },
         error: (err) => {
-          console.log(err)
+          this.toastr.error(err.error.message, "Failed to delete")
         }
       })
     }
   }
 
+  // Filter availabilities
   onFilterSubmit(){
     const doctorName = this.filterAvailabilityForm.controls.doctorName.value;
     const timeSlotStart = this.filterAvailabilityForm.controls.timeSlotStart.value;
     const timeSlotEnd = this.filterAvailabilityForm.controls.timeSlotEnd.value;
     this.availabilityService.getAvailabilities(doctorName, timeSlotStart, timeSlotEnd).subscribe({
       next: (res) => {
-        this.availabilities = res;
+        this.availabilities.set(res);
       },
       error: (err) => {
-        this.availabilities = []
+        this.availabilities.set([]);
       }
     })
   }
