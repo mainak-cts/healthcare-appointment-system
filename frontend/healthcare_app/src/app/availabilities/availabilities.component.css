@@ -6,8 +6,13 @@ div.show-availabilities{
     margin-bottom: 1rem;
 }
 
+h1.h1-availabilities{
+    margin-top: 1rem;
+}
+
 form{
-    border: 1px solid rgb(30, 1, 1);
+    border: 1px solid rgba(30, 1, 1, 0.489);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 5px;
     margin-top: 1rem;
     padding: 1rem;

@@ -10,11 +10,12 @@ import { UserApiService } from '../../services/userapi.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastManagerService } from '../../services/toastr.service';
 import { ValidationService } from '../../services/validation.service';
+import { TitleCasePipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-profile',
-  imports: [AppointmentComponent, ReactiveFormsModule, MatSelectModule, MatInputModule],
+  imports: [AppointmentComponent, ReactiveFormsModule, MatSelectModule, MatInputModule, TitleCasePipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })

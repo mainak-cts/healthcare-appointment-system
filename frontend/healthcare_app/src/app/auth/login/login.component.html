@@ -1,31 +1,39 @@
 <div class="login container">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <h1>Login</h1>
-        <div class="form-control">
-            <mat-form-field>
-                <mat-label>Email</mat-label>
-                <input matInput type="email" formControlName="email">
-            </mat-form-field>
-            @if(isEmailInvalid){
-                <p class="form-control-error">Invalid email</p>
-            }
+    <div class="login-container">
+        <div class="login-img">
+            <img src="/login.png" alt="logo-login">
         </div>
-
-        <div class="form-control">
-            <mat-form-field>
-                <mat-label>Password</mat-label>
-                <input matInput type="password" formControlName="password"/>
-            </mat-form-field>
-            @if(isPasswordInvalid){
-                <p class="form-control-error">Invalid password</p>
-            }
-        </div>
-
-        <button type="submit" class="btn btn-login" [disabled]="isLoading()">
-            Submit
-            @if (isLoading()) {
-                <mat-progress-spinner mode="indeterminate" diameter="15"></mat-progress-spinner>
-            }
-        </button>
-    </form>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <h1 id="h1-login">Login</h1>
+            <div class="form-control">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email">
+                </mat-form-field>
+                @if(isEmailInvalid){
+                    <p class="form-control-error">Invalid email</p>
+                }
+            </div>
+    
+            <div class="form-control">
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" formControlName="password"/>
+                </mat-form-field>
+                @if(isPasswordInvalid){
+                    <p class="form-control-error">Invalid password</p>
+                }
+            </div>
+    
+            <button type="submit" class="btn btn-login btn-arrow" [disabled]="isLoading()">
+                Submit
+                @if(!isLoading()){
+                    <i class="fa-solid fa-arrow-right"></i>
+                }
+                @else{
+                    <mat-progress-spinner mode="indeterminate" diameter="15"></mat-progress-spinner>
+                }
+            </button>
+        </form>
+    </div>
 </div>

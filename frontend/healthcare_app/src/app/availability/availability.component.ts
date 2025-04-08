@@ -1,11 +1,11 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, effect, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-availability',
-  imports: [DatePipe, RouterLink, ReactiveFormsModule],
+  imports: [DatePipe, RouterLink, ReactiveFormsModule, TitleCasePipe],
   templateUrl: './availability.component.html',
   styleUrl: './availability.component.css'
 })

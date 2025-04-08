@@ -11,15 +11,21 @@
             @if(!editProfile()){
                 <div class="profile-details">
                     <p class="p-user-details" id="user_id">User Id: <span>{{userId()}}</span></p>
-                    <p class="p-user-details" id="user_name">Name: <span>{{user().name}}</span></p>
+                    <p class="p-user-details" id="user_name">Name: <span>{{user().name | titlecase}}</span></p>
                     <p class="p-user-details" id="user_role">Role: <span>{{user().role}}</span></p>
                     <p class="p-user-details" id="user_email">Email: <span>{{user().email}}</span></p>
                     <p class="p-user-details" id="user_phone">Phone: <span>{{user().phone}}</span></p>
                 </div>
                 @if(isItYourProfile){
                     <div class="edit-profile-div">
-                        <button (click)="logOut()" class="btn btn-danger">Logout</button>
-                        <button class="btn" (click)="onEditProfile()">Edit profile</button>
+                        <button (click)="logOut()" class="btn btn-danger btn-arrow">
+                            Logout
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </button>
+                        <button class="btn" (click)="onEditProfile()">
+                            Edit profile
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
                     </div>
                 }
             }@else {
@@ -45,8 +51,14 @@
                     </div>
                 </form>
                 <div class="edit-profile-form-btns">
-                    <button class="btn btn-cancel" (click)="onEditProfileCancel()">Cancel</button>
-                    <button class="btn btn-Submit" (click)="onEditProfileSubmitForm()">Submit</button>
+                    <button class="btn btn-cancel" (click)="onEditProfileCancel()">
+                        Cancel
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <button class="btn btn-submit btn-arrow" (click)="onEditProfileSubmitForm()">
+                        Submit
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 </div>
             }
         </div>
@@ -76,7 +88,10 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <button type="submit" class="btn">Filter</button>
+            <button type="submit" class="btn">
+                Filter
+                <i class="fa-solid fa-filter"></i>
+            </button>
         </form>
         <div class="appointments">
             @if(appointments().length > 0){
@@ -97,7 +112,10 @@
     @if(isItYourProfile){
         <div class="delete-profile">
             <p>Delete your profile?</p>
-            <button class="btn btn-danger" (click)="onDeleteProfile()">Delete</button>
+            <button class="btn btn-danger" (click)="onDeleteProfile()">
+                Delete
+                <i class="fa-solid fa-user-xmark"></i>
+            </button>
         </div>
     }
 
