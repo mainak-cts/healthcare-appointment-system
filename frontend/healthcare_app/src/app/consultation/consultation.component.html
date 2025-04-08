@@ -27,11 +27,23 @@
         <div class="btn-grp edit-btns">
             @if(currentLoggedInUser().role === 'DOCTOR'){
                 @if(!editable()){
-                    <button class="btn" (click)="onEdit()">Edit</button>
-                    <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+                    <button class="btn" (click)="onEdit()">
+                        Edit
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="onDelete()">
+                        Delete
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
                 }@else if (editable()) {
-                    <button class="btn" (click)="onCancel()">Cancel</button>
-                    <button class="btn" (click)="onEditConsultation()">Submit</button>
+                    <button class="btn" (click)="onCancel()">
+                        Cancel
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <button class="btn btn-arrow" (click)="onEditConsultation()">
+                        Submit
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 }
             }
         </div>
@@ -39,8 +51,11 @@
         <div class="no-consultation">
             @if(!create()){
                 <h2>No consultations found</h2>
-                @if(currentLoggedInUser().role === 'DOCTOR' && status() != "CANCELLED"){
-                    <button class="btn" (click)="onCreate()">Create</button>
+                @if(currentLoggedInUser().role === 'DOCTOR'){
+                    <button class="btn" (click)="onCreate()" [disabled]="status() == 'CANCELLED'">
+                        Create
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
                 }
             }@else {
                 <form class="consultation-form" [formGroup]="newConsultationForm">
@@ -55,8 +70,14 @@
                     </mat-form-field>
     
                     <div class="btn-grp">
-                        <button class="btn" (click)="onCancelCreate()">Cancel</button>
-                        <button class="btn" (click)="onCreateConsultation()">Submit</button>
+                        <button class="btn" (click)="onCancelCreate()">
+                            Cancel
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <button class="btn btn-arrow" (click)="onCreateConsultation()">
+                            Submit
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
                     </div>
                 </form>
             }

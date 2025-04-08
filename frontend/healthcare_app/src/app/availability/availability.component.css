@@ -1,21 +1,38 @@
 div.availability{
-    outline: 1px solid rgb(46, 46, 46);
-    background-color: rgba(234, 184, 244, 0.151);
     border-radius: 5px;
     display: flex;
     gap: 1rem;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
+div.availability.available{
+    outline: 1px solid rgb(4, 211, 97);
+    background-color: rgba(207, 250, 214, 0.151);
+    border-left: 5px solid rgb(4, 211, 97);
+}
+div.availability.unavailable{
+    outline: 1px solid rgb(223, 35, 35);
+    background-color: rgba(250, 207, 207, 0.151);
+    border-left: 5px solid rgb(223, 35, 35);
+}
+
 p.available{
-    color: rgb(5, 178, 43);
+    background-color: rgb(4, 211, 97);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 5px;
+    color: white;
 }
 
 p.unavailable{
-    color: red;
+    background-color: rgb(251, 75, 75);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 5px;
+    color: white;
 }
 
 button.btn-delete-availability{

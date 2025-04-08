@@ -2,11 +2,12 @@ div.appointment-details{
     outline: 1px solid rgba(0, 0, 0, 0.269);
     background-color: rgba(184, 237, 244, 0.219);
     border-radius: 5px;
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -27,19 +28,44 @@ button.btn-complete{
     background-color: rgb(3, 165, 103);
     color: white;
 }
-
+div.status{
+    padding: 0.2rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 5px;
+    color: white;
+}
 div.cancelled{
-    color: red;
+    background-color: rgb(251, 75, 75);;
 }
 
 div.booked{
-    color: rgb(37, 95, 243);
+    background-color: rgb(105, 144, 241);
 }
 
 div.completed{
-    color: rgb(3, 165, 103);
+    background-color: rgb(4, 211, 97);
+}
+
+div.a-cancelled{
+    outline: 1px solid rgb(223, 35, 35);
+    background-color: rgba(250, 207, 207, 0.151);
+    border-left: 5px solid rgb(223, 35, 35);
+}
+div.a-completed{
+    outline: 1px solid rgb(4, 211, 97);
+    background-color: rgba(207, 250, 214, 0.151);
+    border-left: 5px solid rgb(4, 211, 97);
+}
+div.a-booked{
+    outline: 1px solid rgb(105, 144, 241);
+    background-color: rgba(207, 231, 250, 0.151);
+    border-left: 5px solid rgb(105, 144, 241);
 }
 
 p.disabled{
     opacity: 0.8;
+}
+
+button.btn-consultation:hover i{
+    transform: translateX(0);
 }
