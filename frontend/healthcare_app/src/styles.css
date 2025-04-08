@@ -5,6 +5,10 @@
 
 html, body { height: 100%; }
 
+:root{
+    --nav-footer-color: rgba(226, 233, 246, 0.753);
+}
+
 body { 
     margin: 0; 
     font-family: "Poppins", sans-serif; 
@@ -84,4 +88,12 @@ button.btn-danger:hover{
 button:disabled{
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+button.btn-arrow i{
+    transition: all 0.3s ease;
+}
+
+button.btn-arrow:hover i{
+    transform: translateX(3px)
 }

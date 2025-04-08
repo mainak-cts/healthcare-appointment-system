@@ -1,7 +1,10 @@
-<div class="availability">
+<div class="availability" [class]="{
+    'available': availability().available,
+    'unavailable': !availability().available
+}">
     @if(!isEditing()){
         <p>{{availability().availabilityId}}</p>
-        <a [routerLink]="['../users/', availability().doctor.userId]" routerLinkActive="router-link-active" >{{availability().doctor.name}}</a>
+        <a [routerLink]="['../users/', availability().doctor.userId]" routerLinkActive="router-link-active" >{{availability().doctor.name | titlecase}}</a>
         <p>{{availability().timeSlotStart | date:'short'}}</p>
         <span>to</span>
         <p>{{availability().timeSlotEnd | date:'short'}}</p>
@@ -11,10 +14,19 @@
             <p class="unavailable">UNAVAILABLE</p>
         }
         @if(userRole() === 'PATIENT'){
-            <button class="btn btn-book" (click)="onBook()">Book</button>
+            <button class="btn btn-book btn-arrow" (click)="onBook()">
+                Book
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
         }@else if(userRole() === 'DOCTOR') {
-            <button class="btn btn-edit-availability" (click)="onEditClick()">Edit</button>
-            <button class="btn btn-delete-availability" (click)="onDeleteAvailability()">Delete</button>
+            <button class="btn btn-edit-availability" (click)="onEditClick()">
+                Edit
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="btn btn-delete-availability" (click)="onDeleteAvailability()">
+                Delete
+                <i class="fa-solid fa-trash"></i>
+            </button>
         }
     }
     @else {
@@ -34,8 +46,14 @@
             }@else {
                 <p class="unavailable">UNAVAILABLE</p>
             }
-            <button class="btn" type="submit" (click)="onEditSubmit()">Submit</button>
-            <button class="btn" (click)="onEditCancel()">Cancel</button>
+            <button class="btn btn-arrow" type="submit" (click)="onEditSubmit()">
+                Submit
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button class="btn" (click)="onEditCancel()">
+                Cancel
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </form>
     }
 </div>

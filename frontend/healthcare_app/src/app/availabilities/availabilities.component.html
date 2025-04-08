@@ -1,9 +1,9 @@
 <div class="availabilities container">
     @if(currentLoggedInUser().role == 'PATIENT'){
-        <h1>Hi, {{currentLoggedInUser().name}}</h1>
+        <h1 class="h1-availabilities">Hi, {{currentLoggedInUser().name}}</h1>
         <h2>Find your preferable availability slots</h2>
     }@else if(currentLoggedInUser().role == 'DOCTOR'){
-        <h1>Hi, Dr. {{currentLoggedInUser().name}}</h1>
+        <h1 class="h1-availabilities">Hi, Dr. {{currentLoggedInUser().name}}</h1>
         <h2>Find your availability slots</h2>
     }
 
@@ -17,7 +17,10 @@
                 <label for="slotEnd">to</label>
                 <input type="datetime-local" class="timeSlot" id="slotEnd" name="slotEnd" formControlName="timeSlotEnd" [class.error-control]="slotEndInvalid">
             </div>
-            <button class="btn" (click)="onCreateSubmit()">Create</button>
+            <button class="btn" (click)="onCreateSubmit()">
+                Create
+                <i class="fa-solid fa-plus"></i>
+            </button>
         </form>
     }@else if(currentLoggedInUser().role == 'PATIENT'){
         <form id="filter-availability" [formGroup]="filterAvailabilityForm">
@@ -32,7 +35,10 @@
                 <label for="slotEnd">to</label>
                 <input type="datetime-local" class="timeSlot" id="slotEnd" name="slotEnd" formControlName="timeSlotEnd">
             </div>
-            <button class="btn" (click)="onFilterSubmit()">Filter</button>
+            <button class="btn" (click)="onFilterSubmit()">
+                Filter
+                <i class="fa-solid fa-filter"></i>
+            </button>
         </form>
     }
 

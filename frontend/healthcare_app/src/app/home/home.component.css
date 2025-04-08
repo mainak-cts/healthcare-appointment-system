@@ -2,6 +2,7 @@ div.show-case{
     margin-top: 1rem;
     display: flex;
     gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 div.show{
@@ -22,7 +23,23 @@ span.value{
     font-size: 3rem;
 }
 
+span.title{
+    font-weight: 500;
+}
+
 div.show:hover{
     cursor: pointer;
     transform: scale(1.05);
+}
+
+div.image-container{
+    margin-top: 1rem;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img#logo-banner{
+    width: 100%;
 }

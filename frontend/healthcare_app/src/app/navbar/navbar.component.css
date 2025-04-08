@@ -5,7 +5,7 @@ nav#navbar{
     box-sizing: border-box;
     height: 65px;
     gap: 1rem;
-    background-color: antiquewhite;
+    background-color: var(--nav-footer-color);
     padding: 1rem;
     padding-left: 1.5rem;
 }
@@ -52,6 +52,12 @@ a#a-profile:hover{
 
 a.btn-register{
     font-weight: normal;
+    border: 1px solid rgba(0, 0, 0, 0.429);
     box-shadow: 0 0 !important;
     color: black !important;
+    transition: all 0.1s ease-in !important;
+}
+
+a.btn-register:hover{
+    border-radius: 20px;
 }

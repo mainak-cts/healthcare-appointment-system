@@ -1,11 +1,11 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ConsultationComponent } from "../consultation/consultation.component";
 
 @Component({
   selector: 'app-appointment',
-  imports: [DatePipe, RouterLink, ConsultationComponent],
+  imports: [DatePipe, RouterLink, ConsultationComponent, TitleCasePipe],
   templateUrl: './appointment.component.html',
   styleUrl: './appointment.component.css'
 })
