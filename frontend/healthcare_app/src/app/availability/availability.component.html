@@ -6,7 +6,7 @@
         <p>{{availability().availabilityId}}</p>
         <a [routerLink]="['../users/', availability().doctor.userId]" routerLinkActive="router-link-active" >{{availability().doctor.name | titlecase}}</a>
         <p>{{availability().timeSlotStart | date:'short'}}</p>
-        <span>to</span>
+        <span><i class="fa-solid fa-arrow-right"></i></span>
         <p>{{availability().timeSlotEnd | date:'short'}}</p>
         @if(availability().available){
             <p class="available">AVAILABLE</p>
@@ -14,7 +14,7 @@
             <p class="unavailable">UNAVAILABLE</p>
         }
         @if(userRole() === 'PATIENT'){
-            <button class="btn btn-book btn-arrow" (click)="onBook()">
+            <button class="btn btn-book btn-arrow" (click)="onBook()" [disabled]="!availability().available">
                 Book
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
@@ -38,7 +38,7 @@
                 <input type="datetime-local" class="timeSlot" id="editSlotStart" name="editSlotStart" formControlName="timeSlotStart" [class.error-control]="slotStartInvalid">
             </div>
             <div class="slot time-slot-end">
-                <label for="editSlotEnd">to</label>
+                <label for="editSlotEnd"><i class="fa-solid fa-arrow-right"></i></label>
                 <input type="datetime-local" class="timeSlot" id="editSlotEnd" name="editSlotEnd" formControlName="timeSlotEnd" [class.error-control]="slotEndInvalid">
             </div>
             @if(availability().available){

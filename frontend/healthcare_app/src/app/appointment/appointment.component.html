@@ -18,6 +18,7 @@
             }
         }
         <div class="startTime">{{appointment().timeSlotStart | date: 'short'}}</div>
+        <p><i class="fa-solid fa-arrow-right"></i></p>
         <div class="endTime">{{appointment().timeSlotEnd | date: 'short'}}</div>
         @if(appointment().status === 'CANCELLED'){
             <div class="status cancelled">{{appointment().status}}</div>
@@ -28,7 +29,6 @@
         }
 
         @if(isYou()){
-
             <button class="btn btn-cancel" (click)="onCancelAppointment()" [disabled]="appointment().status !== 'BOOKED'">
                 Cancel
                 <i class="fa-solid fa-xmark"></i>

@@ -14,7 +14,7 @@
                 <input type="datetime-local" class="timeSlot" id="slotStart" name="slotStart" formControlName="timeSlotStart" [class.error-control]="slotStartInvalid">
             </div>
             <div class="slot time-slot-end">
-                <label for="slotEnd">to</label>
+                <label for="slotEnd"><i class="fa-solid fa-arrow-right"></i></label>
                 <input type="datetime-local" class="timeSlot" id="slotEnd" name="slotEnd" formControlName="timeSlotEnd" [class.error-control]="slotEndInvalid">
             </div>
             <button class="btn" (click)="onCreateSubmit()">
@@ -32,7 +32,7 @@
                 <input type="datetime-local" class="timeSlot" id="slotStart" name="slotStart" formControlName="timeSlotStart">
             </div>
             <div class="slot time-slot-end">
-                <label for="slotEnd">to</label>
+                <label for="slotEnd"><i class="fa-solid fa-arrow-right"></i></label>
                 <input type="datetime-local" class="timeSlot" id="slotEnd" name="slotEnd" formControlName="timeSlotEnd">
             </div>
             <button class="btn" (click)="onFilterSubmit()">
