@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -68,9 +67,9 @@ export class RegisterComponent {
       this.isLoading.set(true);
 
       const registerData: RegisterData = {
-        name: this.form.controls.name.value!,
-        email: this.form.controls.email.value!,
-        password: this.form.controls.password.value!,
+        name: this.form.controls.name.value!.trim(),
+        email: this.form.controls.email.value!.trim(),
+        password: this.form.controls.password.value!.trim(),
         role: this.form.controls.role.value!,
         phone: this.form.controls.phone.value!,
       }

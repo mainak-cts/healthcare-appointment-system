@@ -150,8 +150,8 @@ export class ProfileComponent implements OnInit{
     if(this.editProfileForm.valid){
       const data: UserData = {
         userId: this.currentLoggedInUser()!.userId,
-        name: this.editProfileForm.controls.name.value!,
-        password: this.editProfileForm.controls.password.value!,
+        name: this.editProfileForm.controls.name.value!.trim(),
+        password: this.editProfileForm.controls.password.value!.trim(),
         phone: this.editProfileForm.controls.phone.value!,
       }
 

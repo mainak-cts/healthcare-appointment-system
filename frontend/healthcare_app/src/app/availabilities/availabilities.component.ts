@@ -196,7 +196,7 @@ export class AvailabilitiesComponent implements OnInit{
 
   // Filter availabilities
   onFilterSubmit(){
-    const doctorName = this.filterAvailabilityForm.controls.doctorName.value;
+    const doctorName = this.filterAvailabilityForm.controls.doctorName.value!.trim();
     const timeSlotStart = this.filterAvailabilityForm.controls.timeSlotStart.value;
     const timeSlotEnd = this.filterAvailabilityForm.controls.timeSlotEnd.value;
     this.availabilityService.getAvailabilities(doctorName, timeSlotStart, timeSlotEnd).subscribe({
