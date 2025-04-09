@@ -2,6 +2,7 @@ import { DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, effect, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Availability } from '../models/Availability';
 
 @Component({
   selector: 'app-availability',
@@ -10,11 +11,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './availability.component.css'
 })
 export class AvailabilityComponent {
-  availability = input.required<any>();
+  availability = input.required<Availability>();
   userRole = input.required<string>();
 
   book = output<{doctorId: string, timeSlotStart: string, timeSlotEnd: string, availabilityId: string}>();
-  edit = output<{timeSlotStart: string, timeSlotEnd: string}>();
+  edit = output<{availabilityId: string, timeSlotStart: string, timeSlotEnd: string}>();
   delete = output<string>();
 
   isEditing = signal(false);
@@ -55,7 +56,7 @@ export class AvailabilityComponent {
   // Send to be booked availbility id to parent
   onBook(){
     const data = {
-      doctorId: this.availability().doctor.userId,
+      doctorId: this.availability().doctor!.userId,
       timeSlotStart: this.availability().timeSlotStart,
       timeSlotEnd: this.availability().timeSlotEnd,
       availabilityId: this.availability().availabilityId

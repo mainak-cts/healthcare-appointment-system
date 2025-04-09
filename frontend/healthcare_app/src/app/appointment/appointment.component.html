@@ -6,13 +6,13 @@
     }">
         @if(userRole() === 'DOCTOR'){
             @if(appointment().patient){
-                <a [routerLink]="['../', appointment().patient.userId]" routerLinkActive="router-link-active" >{{appointment().patient.name | titlecase}}</a>
+                <a [routerLink]="['../', appointment().patient!.userId]" routerLinkActive="router-link-active" >{{appointment().patient!.name | titlecase}}</a>
             }@else {
                 <p class="disabled">UNAVAILABLE</p>
             }
         }@else if(userRole() === 'PATIENT'){
             @if(appointment().doctor){
-                <a [routerLink]="['../', appointment().doctor.userId]" routerLinkActive="router-link-active" >{{appointment().doctor.name | titlecase}}</a>
+                <a [routerLink]="['../', appointment().doctor!.userId]" routerLinkActive="router-link-active" >{{appointment().doctor!.name | titlecase}}</a>
             }@else{
                 <p class="disabled">UNAVAILABLE</p>
             }

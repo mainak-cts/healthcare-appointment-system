@@ -2,6 +2,7 @@ import { DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ConsultationComponent } from "../consultation/consultation.component";
+import { Appointment } from '../models/Appointment';
 
 @Component({
   selector: 'app-appointment',
@@ -11,8 +12,8 @@ import { ConsultationComponent } from "../consultation/consultation.component";
 })
 export class AppointmentComponent {
 
-  appointment = input.required<any>();
-  isYou = input.required<any>();
+  appointment = input.required<Appointment>();
+  isYou = input.required<boolean>();
   showConsultation = signal(false);
   userRole = input.required<string>();
 

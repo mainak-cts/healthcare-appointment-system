@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastManagerService } from '../../services/toastr.service';
 import { ValidationService } from '../../services/validation.service';
 import { TitleCasePipe } from '@angular/common';
+import { User } from '../models/User';
+import { Appointment } from '../models/Appointment';
 
 
 @Component({
@@ -28,12 +30,12 @@ export class ProfileComponent implements OnInit{
   toastManagerService = inject(ToastManagerService);
   validationService = inject(ValidationService);
 
-  currentLoggedInUser = signal<any>(null);
+  currentLoggedInUser = signal<User | null>(null);
 
   editProfile = signal(false);
 
-  user = signal<any>(null);
-  appointments = signal<any[]>([]);
+  user = signal<User | null>(null);
+  appointments = signal<Appointment[]>([]);
 
   form = new FormGroup({
     patientName : new FormControl(''),
@@ -60,7 +62,7 @@ export class ProfileComponent implements OnInit{
           next: (user) => {
             this.user.set(user);
             if(this.user() != null){
-              this.appointmentService.getAppointmentByUserId(this.user().userId, this.user().role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
+              this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
                 next: (appointments) => this.appointments.set(appointments),
                 error: (err) => console.log(err)
               })
@@ -73,8 +75,8 @@ export class ProfileComponent implements OnInit{
       })
 
       effect(() => {
-        this.editProfileForm.controls.name.setValue(this.currentLoggedInUser().name);
-        this.editProfileForm.controls.phone.setValue(this.currentLoggedInUser().phone);
+        this.editProfileForm.controls.name.setValue(this.currentLoggedInUser()!.name);
+        this.editProfileForm.controls.phone.setValue(this.currentLoggedInUser()!.phone);
       })
   }
 
@@ -85,12 +87,12 @@ export class ProfileComponent implements OnInit{
   }
 
   get isItYourProfile(){
-    return this.userId() == this.currentLoggedInUser().userId;
+    return this.userId() == this.currentLoggedInUser()!.userId;
   }
 
   // Get appointments by user id
   onSubmit(){
-    this.appointmentService.getAppointmentByUserId(this.user().userId, this.user().role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
+    this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
       next: (appointments) => this.appointments.set(appointments),
       error: (err) => {
         this.appointments.set([])
@@ -147,7 +149,7 @@ export class ProfileComponent implements OnInit{
     this.editProfileForm.markAllAsTouched()
     if(this.editProfileForm.valid){
       const data: UserData = {
-        userId: this.currentLoggedInUser().userId,
+        userId: this.currentLoggedInUser()!.userId,
         name: this.editProfileForm.controls.name.value!,
         password: this.editProfileForm.controls.password.value!,
         phone: this.editProfileForm.controls.phone.value!,
@@ -182,7 +184,7 @@ export class ProfileComponent implements OnInit{
     const toDelete = window.confirm("Do you really want to delete your profile?")
 
     if(toDelete){
-      this.userService.deleteUserById(this.currentLoggedInUser().userId).subscribe({
+      this.userService.deleteUserById(this.currentLoggedInUser()!.userId).subscribe({
         next: (res) => {
           this.authService.logOutUser();
           this.toastManagerService.setLogOutMessage("Profile deleted successfully!");

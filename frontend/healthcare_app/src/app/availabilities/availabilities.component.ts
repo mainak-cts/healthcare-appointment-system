@@ -10,6 +10,8 @@ import { AvailabilityData } from '../models/AvailabilityData';
 import { AppointmentData } from '../models/AppointmentData';
 import { AppointmentApiService } from '../../services/appointmentapi.service';
 import { ToastrService } from 'ngx-toastr';
+import { Availability } from '../models/Availability';
+import { User } from '../models/User';
 
 
 @Component({
@@ -20,8 +22,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AvailabilitiesComponent implements OnInit{
 
-  currentLoggedInUser = signal<any>(null);
-  availabilities = signal<any[]>([]);
+  currentLoggedInUser = signal<User | null>(null);
+  availabilities = signal<Availability[]>([]);
 
   authService = inject(AuthApiService);
   availabilityService = inject(AvailabilityApiService);
@@ -49,8 +51,8 @@ export class AvailabilitiesComponent implements OnInit{
   ngOnInit(): void {
     this.authService.user$.subscribe((user) =>{
       this.currentLoggedInUser.set(user);
-      if(this.currentLoggedInUser() != null && this.currentLoggedInUser().role == 'DOCTOR'){
-        this.availabilityService.getAvailabilitiesByDoctorId(this.currentLoggedInUser().userId).subscribe({
+      if(this.currentLoggedInUser() != null && this.currentLoggedInUser()!.role == 'DOCTOR'){
+        this.availabilityService.getAvailabilitiesByDoctorId(this.currentLoggedInUser()!.userId).subscribe({
           next: (data) => {
             this.availabilities.set(data);
           },
@@ -60,7 +62,7 @@ export class AvailabilitiesComponent implements OnInit{
         })
       }
 
-      else if(this.currentLoggedInUser() != null && this.currentLoggedInUser().role == 'PATIENT'){
+      else if(this.currentLoggedInUser() != null && this.currentLoggedInUser()!.role == 'PATIENT'){
         this.availabilityService.getAvailabilities(null, null, null).subscribe({
           next: (data) => {
             this.availabilities.set(data);
@@ -94,7 +96,7 @@ export class AvailabilitiesComponent implements OnInit{
     this.formSubmitted.set(true)
     if(this.availabilityForm.valid){
       const data: AvailabilityData = {
-        doctorId: this.currentLoggedInUser().userId,
+        doctorId: this.currentLoggedInUser()!.userId,
         timeSlotStart: this.availabilityForm.controls.timeSlotStart.value!,
         timeSlotEnd: this.availabilityForm.controls.timeSlotEnd.value!,
       }
@@ -123,7 +125,7 @@ export class AvailabilitiesComponent implements OnInit{
   // Book a new appointment using a selected availabililty
   onBook(data: {doctorId: string, timeSlotStart: string, timeSlotEnd: string, availabilityId: string}){
     const appointmentData: AppointmentData = {
-      patientId: this.currentLoggedInUser().userId,
+      patientId: this.currentLoggedInUser()!.userId,
       doctorId: data.doctorId,
       timeSlotStart: data.timeSlotStart,
       timeSlotEnd: data.timeSlotEnd,
@@ -143,14 +145,14 @@ export class AvailabilitiesComponent implements OnInit{
   }
 
   // Edit an availability
-  onEdit(data: {timeSlotStart: string, timeSlotEnd: string}){
+  onEdit(data: {availabilityId: string, timeSlotStart: string, timeSlotEnd: string}){
     const editAvailabilityData = {
-      doctorId: this.currentLoggedInUser().userId,
+      doctorId: this.currentLoggedInUser()!.userId,
       ...data
     }
+
     this.availabilityService.editAvailability(editAvailabilityData).subscribe({
       next: (res) => {
-
         this.availabilities.update(av => av.map(a => {
           return a.availabilityId == res.availabilityId ? {...a, timeSlotStart: res.timeSlotStart, timeSlotEnd : res.timeSlotEnd}: a;
         }))

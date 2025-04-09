@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { AuthApiService } from "./authapi.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AvailabilityData } from "../app/models/AvailabilityData";
+import { Availability } from "../app/models/Availability";
 
 @Injectable({providedIn: 'root'})
 export class AvailabilityApiService{
@@ -13,7 +14,7 @@ export class AvailabilityApiService{
     private authHeader = new HttpHeaders({ 'Authorization': `Bearer ${this.jwtToken}` });
 
     getAvailabilitiesByDoctorId(doctorId: string){
-        return this.httpClient.get<any>(
+        return this.httpClient.get<Availability[]>(
             `${this.BASE_URL}`,
             {
                 params: {doctorId: doctorId},
@@ -35,7 +36,7 @@ export class AvailabilityApiService{
         }
 
         params = {...params, isAvailable: "true"}
-        return this.httpClient.get<any>(
+        return this.httpClient.get<Availability[]>(
             `${this.BASE_URL}`,
             {
                 params: params,
@@ -45,7 +46,7 @@ export class AvailabilityApiService{
     }
 
     createAvailability(data: AvailabilityData){
-        return this.httpClient.post<any>(
+        return this.httpClient.post<Availability>(
             `${this.BASE_URL}`,
             data,
             {
@@ -55,7 +56,7 @@ export class AvailabilityApiService{
     }
 
     deleteAvailabilityById(id: string){
-        return this.httpClient.delete<any>(
+        return this.httpClient.delete<Availability>(
             `${this.BASE_URL}/${id}`,
             {
                 headers: this.authHeader
@@ -64,7 +65,7 @@ export class AvailabilityApiService{
     }
 
     editAvailability(data: any){
-        return this.httpClient.put<any>(
+        return this.httpClient.put<Availability>(
             `${this.BASE_URL}`,
             data,
             {
