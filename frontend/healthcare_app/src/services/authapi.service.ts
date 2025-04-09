@@ -4,13 +4,14 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { RegisterData } from "../app/models/RegisterData";
+import { User } from "../app/models/User";
 
 @Injectable({providedIn: 'root'})
 export class AuthApiService{
     private httpClient: HttpClient = inject(HttpClient);
     private API_URL = "http://localhost:9090/api/users"
     private route = inject(Router);
-    private userSubject = new BehaviorSubject<any>(null);
+    private userSubject = new BehaviorSubject<User | null>(null);
     user$ =  this.userSubject.asObservable();
 
     constructor(){
@@ -28,7 +29,7 @@ export class AuthApiService{
      // To show the loading spinner, while waiting for the API response, made it async/await
     registerUser(data: RegisterData){
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        const response = this.httpClient.post<any>(this.API_URL + '/register', data, {headers})
+        const response = this.httpClient.post<User>(this.API_URL + '/register', data, {headers})
 
         return firstValueFrom(response);
     }
@@ -50,7 +51,7 @@ export class AuthApiService{
 
         const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-        this.httpClient.get(`${this.API_URL}/email/${email}`, {headers}).subscribe({
+        this.httpClient.get<User>(`${this.API_URL}/email/${email}`, {headers}).subscribe({
             next: (user) => {
                 this.userSubject.next(user)
             },
@@ -71,7 +72,7 @@ export class AuthApiService{
 
         const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-        return this.httpClient.get(`${this.API_URL}/${id}`, {headers});
+        return this.httpClient.get<User>(`${this.API_URL}/${id}`, {headers});
     }
 
     saveJwtToken(token: string){

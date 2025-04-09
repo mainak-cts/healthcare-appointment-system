@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { AuthApiService } from "./authapi.service";
 import { UserData } from "../app/models/UserData";
+import { User } from "../app/models/User";
 
 @Injectable({providedIn: 'root'})
 export class UserApiService{
@@ -12,7 +13,7 @@ export class UserApiService{
     private authHeader = new HttpHeaders({ 'Authorization': `Bearer ${this.jwtToken}` });
 
     editUserProfile(data: UserData){
-        return this.httpClient.put<any>(
+        return this.httpClient.put<User>(
             `${this.BASE_URL}`,
             data,
             {
@@ -22,7 +23,7 @@ export class UserApiService{
     }
 
     deleteUserById(id: string){
-        return this.httpClient.delete<any>(
+        return this.httpClient.delete<User>(
             `${this.BASE_URL}/${id}`,
             {
                 headers: this.authHeader

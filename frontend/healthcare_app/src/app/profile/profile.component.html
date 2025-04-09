@@ -3,7 +3,7 @@
         <h1>No user found with id: {{userId()}}</h1>
     }@else {
         <div class="profile-data">
-            @if(user().role === 'DOCTOR'){
+            @if(user()!.role === 'DOCTOR'){
                 <img src="/doctor.jfif" alt="doctor" id="doctor-pic">
             }@else {
                 <img src="/patient.png" alt="doctor" id="patient-pic">
@@ -11,10 +11,10 @@
             @if(!editProfile()){
                 <div class="profile-details">
                     <p class="p-user-details" id="user_id">User Id: <span>{{userId()}}</span></p>
-                    <p class="p-user-details" id="user_name">Name: <span>{{user().name | titlecase}}</span></p>
-                    <p class="p-user-details" id="user_role">Role: <span>{{user().role}}</span></p>
-                    <p class="p-user-details" id="user_email">Email: <span>{{user().email}}</span></p>
-                    <p class="p-user-details" id="user_phone">Phone: <span>{{user().phone}}</span></p>
+                    <p class="p-user-details" id="user_name">Name: <span>{{user()!.name | titlecase}}</span></p>
+                    <p class="p-user-details" id="user_role">Role: <span>{{user()!.role}}</span></p>
+                    <p class="p-user-details" id="user_email">Email: <span>{{user()!.email}}</span></p>
+                    <p class="p-user-details" id="user_phone">Phone: <span>{{user()!.phone}}</span></p>
                 </div>
                 @if(isItYourProfile){
                     <div class="edit-profile-div">
@@ -63,14 +63,14 @@
             }
         </div>
         <form id="filter-appointment" [formGroup]="form" (ngSubmit)="onSubmit()">
-            @if((currentLoggedInUser().role == 'PATIENT') && isItYourProfile){
+            @if((currentLoggedInUser()!.role == 'PATIENT') && isItYourProfile){
                 <div class="form-control">
                     <mat-form-field>
                         <mat-label>Doctor Name</mat-label>
                         <input matInput type="text" formControlName="doctorName">
                     </mat-form-field>
                 </div>
-            }@else if((currentLoggedInUser().role == 'DOCTOR') && isItYourProfile){
+            }@else if((currentLoggedInUser()!.role == 'DOCTOR') && isItYourProfile){
                 <div class="form-control">
                     <mat-form-field>
                         <mat-label>Patient Name</mat-label>
@@ -102,7 +102,7 @@
                 }
             }
             @for(appointment of appointments(); track appointment.appointmentId){
-                <app-appointment [appointment]="appointment" [isYou]="isItYourProfile" (cancel)="onCancel($event)" (complete)="onComplete($event)" [userRole] = "user().role"/>
+                <app-appointment [appointment]="appointment" [isYou]="isItYourProfile" (cancel)="onCancel($event)" (complete)="onComplete($event)" [userRole] = "user()!.role"/>
             }@empty {
                 <p class="p-appointments">No appointments found 😢</p>
             }

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { AuthApiService } from "./authapi.service";
 import { AppointmentData } from "../app/models/AppointmentData";
+import { Appointment } from "../app/models/Appointment";
 
 @Injectable({providedIn: 'root'})
 export class AppointmentApiService{
@@ -12,7 +13,7 @@ export class AppointmentApiService{
     private authHeader = new HttpHeaders({ 'Authorization': `Bearer ${this.jwtToken}` });
 
     getAppointmentById(id: string){
-        return this.httpClient.get(
+        return this.httpClient.get<Appointment>(
             `${this.BASE_URL}/${id}`,
             {
                 headers: this.authHeader
@@ -36,7 +37,7 @@ export class AppointmentApiService{
         if(doctorName != ''){
             params = {...params, doctorName}
         }
-        return this.httpClient.get<any[]>(
+        return this.httpClient.get<Appointment[]>(
             `${this.BASE_URL}`,
             {
                 params,
@@ -46,7 +47,7 @@ export class AppointmentApiService{
     }
 
     bookAppointment(data: AppointmentData){
-        return this.httpClient.post<any>(
+        return this.httpClient.post<Appointment>(
             `${this.BASE_URL}`,
             data,
             {
@@ -55,7 +56,7 @@ export class AppointmentApiService{
         )
     }
     cancelAppointment(id: string){
-        return this.httpClient.put<any>(
+        return this.httpClient.put<Appointment>(
             `${this.BASE_URL}/cancel/${id}`, {},
             {
                 headers: this.authHeader
@@ -63,7 +64,7 @@ export class AppointmentApiService{
         )
     }
     completeAppointment(id: string){
-        return this.httpClient.put<any>(
+        return this.httpClient.put<Appointment>(
             `${this.BASE_URL}/complete/${id}`, {},
             {
                 headers: this.authHeader

@@ -3,6 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { AuthApiService } from "./authapi.service";
 import { map } from "rxjs";
 import { ConsultationData } from "../app/models/ConsultationData";
+import { Consultation } from "../app/models/Consultation";
 
 @Injectable({providedIn: 'root'})
 export class ConsultationApiService{
@@ -13,7 +14,7 @@ export class ConsultationApiService{
     private authHeader = new HttpHeaders({ 'Authorization': `Bearer ${this.jwtToken}` });
 
     getConsultationByAppointmentId(appointmentId: string){
-        return this.httpClient.get<any[]>(
+        return this.httpClient.get<Consultation[]>(
             `${this.BASE_URL}`,
             {
                 params: {appointmentId},
@@ -23,7 +24,7 @@ export class ConsultationApiService{
     }
 
     createConsultation(data: {appointmentId: string, notes: string, prescription: string}){
-        return this.httpClient.post<any>(
+        return this.httpClient.post<Consultation>(
             `${this.BASE_URL}`,
             data,
             {
@@ -33,7 +34,7 @@ export class ConsultationApiService{
     }
 
     editConsultation(data: ConsultationData){
-        return this.httpClient.put<any>(
+        return this.httpClient.put<Consultation>(
             `${this.BASE_URL}`,
             data,
             {
@@ -43,7 +44,7 @@ export class ConsultationApiService{
     }
 
     deleteConsultationById(id: string){
-        return this.httpClient.delete<any>(
+        return this.httpClient.delete<Consultation>(
             `${this.BASE_URL}/${id}`,
         
             {

@@ -8,6 +8,8 @@ import { ConsultationData } from '../models/ConsultationData';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ValidationService } from '../../services/validation.service';
+import { User } from '../models/User';
+import { Consultation } from '../models/Consultation';
 
 @Component({
   selector: 'app-consultation',
@@ -19,7 +21,7 @@ export class ConsultationComponent implements OnInit{
   appointmentId = input.required<string>();
   consultationService = inject(ConsultationApiService);
   authService = inject(AuthApiService);
-  currentLoggedInUser = signal<any>(null);
+  currentLoggedInUser = signal<User | null>(null);
   route = inject(Router);
   toastr = inject(ToastrService);
   validationService = inject(ValidationService);
@@ -27,7 +29,7 @@ export class ConsultationComponent implements OnInit{
 
   editable = signal(false);
   create = signal(false);
-  consultation = signal<any>(null); 
+  consultation = signal<Consultation | null>(null); 
 
   delete = output();
 
@@ -64,8 +66,8 @@ export class ConsultationComponent implements OnInit{
     
     // When the consultation is loaded (signal changes), set the values in the edit consultation form
     effect(() => {
-      this.form.controls.notes.setValue(this.consultation().notes);
-      this.form.controls.prescription.setValue(this.consultation().prescription);
+      this.form.controls.notes.setValue(this.consultation()!.notes);
+      this.form.controls.prescription.setValue(this.consultation()!.prescription);
     })
   }
 
@@ -96,7 +98,7 @@ export class ConsultationComponent implements OnInit{
   onEditConsultation(){
     if(this.form.valid){
       const data: ConsultationData = {
-        consultationId: this.consultation().consultationId,
+        consultationId: this.consultation()!.consultationId,
         notes: this.form.controls.notes.value!,
         prescription: this.form.controls.prescription.value!,
       }
@@ -141,7 +143,7 @@ export class ConsultationComponent implements OnInit{
   onDelete(){
     const shouldDelete = confirm("Do you really want to delete the consultation?")
     if(shouldDelete){
-      this.consultationService.deleteConsultationById(this.consultation().consultationId).subscribe({
+      this.consultationService.deleteConsultationById(this.consultation()!.consultationId).subscribe({
         next: (res) => {
           this.consultation.set(null);
           this.toastr.success("Consultation deleted successfully", "Deleted")

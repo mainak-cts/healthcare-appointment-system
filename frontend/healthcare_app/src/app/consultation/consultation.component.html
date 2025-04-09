@@ -16,16 +16,16 @@
             <div class="show-consultation">
                 <div class="notes">
                     <h3 class="h-consultation">Notes</h3>
-                    <p class="p-consultation">{{consultation().notes}}</p>
+                    <p class="p-consultation">{{consultation()!.notes}}</p>
                 </div>
                 <div class="prescription">
                     <h3 class="h-consultation">Prescription</h3>
-                    <p class="p-consultation">{{consultation().prescription}}</p>
+                    <p class="p-consultation">{{consultation()!.prescription}}</p>
                 </div>
             </div>
         }
         <div class="btn-grp edit-btns">
-            @if(currentLoggedInUser().role === 'DOCTOR'){
+            @if(currentLoggedInUser()!.role === 'DOCTOR'){
                 @if(!editable()){
                     <button class="btn" (click)="onEdit()">
                         Edit
@@ -51,7 +51,7 @@
         <div class="no-consultation">
             @if(!create()){
                 <h2>No consultations found</h2>
-                @if(currentLoggedInUser().role === 'DOCTOR'){
+                @if(currentLoggedInUser()!.role === 'DOCTOR'){
                     <button class="btn" (click)="onCreate()" [disabled]="status() == 'CANCELLED'">
                         Create
                         <i class="fa-solid fa-plus"></i>
