@@ -3,10 +3,11 @@ import { inject, Injectable } from "@angular/core";
 import { AuthApiService } from "./authapi.service";
 import { UserData } from "../app/models/UserData";
 import { User } from "../app/models/User";
+import { BASE_URLS } from "../environment/environment";
 
 @Injectable({providedIn: 'root'})
 export class UserApiService{
-    private BASE_URL = "http://localhost:9090/api/users"
+    private BASE_URL = BASE_URLS.USER_BASE_URL;
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 

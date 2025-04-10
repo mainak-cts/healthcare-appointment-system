@@ -3,10 +3,11 @@ import { inject, Injectable } from "@angular/core";
 import { AuthApiService } from "./authapi.service";
 import { AppointmentData } from "../app/models/AppointmentData";
 import { Appointment } from "../app/models/Appointment";
+import { BASE_URLS } from "../environment/environment";
 
 @Injectable({providedIn: 'root'})
 export class AppointmentApiService{
-    private BASE_URL = "http://localhost:9090/api/appointments"
+    private BASE_URL = BASE_URLS.APPOINTMENT_BASE_URL;
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
