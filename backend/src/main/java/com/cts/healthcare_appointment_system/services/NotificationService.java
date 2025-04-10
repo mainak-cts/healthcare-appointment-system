@@ -48,7 +48,7 @@ public class NotificationService {
 
         String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Your appointment with Dr. " + doctor.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment + " to " + timeEndOfAppointment + " has been successfully completed.\n\n" + "If you need any further assistance or follow-up, please reach out to our clinic." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
 
-        String doctorEmailBody = "Dear Dr. " + doctor.getName() + "," + "\n\n" + "Your appointment with " + patient.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment + " to " + timeEndOfAppointment + " has been successfully completed.\n\n" + "If you need any further assistance or follow-up, please reach out to our clinic." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+        String doctorEmailBody = "Dear Dr. " + doctor.getName() + "," + "\n\n" + "Your appointment with " + patient.getName() + " on "+ dateOfAppointment + " at " + timeStartOfAppointment + " to " + timeEndOfAppointment + " has been successfully completed. Please give the needed consultation to the patient, if not given.\n\n" + "If you need any further assistance or follow-up, please reach out to our clinic." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
 
         service.sendEmail(doctor.getEmail(), subject, doctorEmailBody);
         service.sendEmail(patient.getEmail(), subject, patientEmailBody);
@@ -112,6 +112,20 @@ public class NotificationService {
         String subject = "Appointment Rescheduled";
 
         String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Your appointment with Dr. " + doctor.getName() + " has been rescheduled.\n\n" + "New Date: " + dateOfAppointment + "\nNew Time: " + timeStartOfAppointment + " to " + timeEndOfAppointment + "\n\n" + "If you have any issues with the new timing, please contact us." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
+        
+        service.sendEmail(patient.getEmail(), subject, patientEmailBody);
+    }
+
+    public void sendConsultationEmail(Appointment appointment){
+        User patient = appointment.getPatient();
+        User doctor = appointment.getDoctor();
+        LocalDate dateOfAppointment = appointment.getTimeSlotStart().toLocalDate();
+        String timeStartOfAppointment = formatTime(appointment.getTimeSlotStart().toLocalTime());
+        String timeEndOfAppointment = formatTime(appointment.getTimeSlotEnd().toLocalTime());
+
+        String subject = "Appointment Rescheduled";
+
+        String patientEmailBody = "Dear " + patient.getName() + "," + "\n\n" + "Dr. " + doctor.getName() + " has given valuable consultation for the appointment - \n\n" + "Date: " + dateOfAppointment + "\nTime: " + timeStartOfAppointment + " to " + timeEndOfAppointment + "\n\n" + "Please check it out and if you face any issues, please contact us." + "\n\n" + "Best Regards," + "\n" + "Healthcare Appointment System";
         
         service.sendEmail(patient.getEmail(), subject, patientEmailBody);
     }

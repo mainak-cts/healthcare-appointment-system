@@ -25,6 +25,7 @@ public class ConsultationService {
 
     private ConsultationRepository repo;
     private AppointmentRepository appointmentRepo;
+    private NotificationService notificationService;
 
     // GET methods
     // Get all consultations
@@ -89,6 +90,9 @@ public class ConsultationService {
 
         appointment.setConsultation(consultation);
         appointmentRepo.save(appointment);
+
+        // Send consultation given mail to the patient
+        notificationService.sendConsultationEmail(appointment);
 
         return ResponseEntity.status(HttpStatus.OK).body(consultation);
     }
