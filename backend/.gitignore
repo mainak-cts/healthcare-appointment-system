@@ -7,6 +7,8 @@ target/
 # Ignore application.properties
 /src/main/resources/application.properties
 
+/logs/
+
 ### STS ###
 .apt_generated
 .classpath
