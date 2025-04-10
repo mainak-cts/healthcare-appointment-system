@@ -7,7 +7,7 @@ import { BASE_URLS } from "../environment/environment";
 
 @Injectable({providedIn: 'root'})
 export class AvailabilityApiService{
-    private BASE_URL = BASE_URLS.AVAILABILTY_BASE_URL;
+    private BASE_URL = BASE_URLS.AVAILABILITY_BASE_URL;
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
