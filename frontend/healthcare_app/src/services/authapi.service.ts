@@ -5,11 +5,12 @@ import { Router } from "@angular/router";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { RegisterData } from "../app/models/RegisterData";
 import { User } from "../app/models/User";
+import { BASE_URLS } from "../environment/environment";
 
 @Injectable({providedIn: 'root'})
 export class AuthApiService{
     private httpClient: HttpClient = inject(HttpClient);
-    private API_URL = "http://localhost:9090/api/users"
+    private API_URL = BASE_URLS.USER_BASE_URL;
     private route = inject(Router);
     private userSubject = new BehaviorSubject<User | null>(null);
     user$ =  this.userSubject.asObservable();

@@ -3,10 +3,11 @@ import { AuthApiService } from "./authapi.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AvailabilityData } from "../app/models/AvailabilityData";
 import { Availability } from "../app/models/Availability";
+import { BASE_URLS } from "../environment/environment";
 
 @Injectable({providedIn: 'root'})
 export class AvailabilityApiService{
-    private BASE_URL = 'http://localhost:9090/api/availabilities'
+    private BASE_URL = BASE_URLS.AVAILABILITY_BASE_URL;
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
