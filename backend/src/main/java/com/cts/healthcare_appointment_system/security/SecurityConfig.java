@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/consultations/**").hasAuthority("DOCTOR")
                                 .requestMatchers("/consultations").authenticated()
                                 .requestMatchers("/consultations/**").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/appointments/complete/**").hasAuthority("DOCTOR")
                                 .requestMatchers("/appointments").authenticated()
                                 .requestMatchers("/appointments/**").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/availabilities").hasAuthority("DOCTOR")

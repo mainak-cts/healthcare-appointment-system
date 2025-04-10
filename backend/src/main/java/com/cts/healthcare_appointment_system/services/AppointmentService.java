@@ -120,7 +120,7 @@ public class AppointmentService {
             throw new ApiException("Invalid availability time slot details", HttpStatus.BAD_REQUEST);
         }
         if (!availability.isAvailable()) {
-            throw new ApiException("Already booked availability slot", HttpStatus.BAD_REQUEST);
+            throw new ApiException("Sorry, the slot is not available", HttpStatus.BAD_REQUEST);
         }
 
         List<Appointment> prevAppointments = patient.getPatientAppointments();
