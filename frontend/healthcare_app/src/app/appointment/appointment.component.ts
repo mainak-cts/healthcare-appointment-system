@@ -15,7 +15,7 @@ export class AppointmentComponent {
   appointment = input.required<Appointment>();
   isYou = input.required<boolean>();
   showConsultation = signal(false);
-  userRole = input.required<string>();
+  userRole = input.required<"DOCTOR" | "PATIENT">();
 
   cancel = output<string>();
   complete = output<string>();
