@@ -9,24 +9,26 @@ export class UserApiService{
     private BASE_URL = "http://localhost:9090/api/users"
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
-    private jwtToken = this.authService.getToken()
-    private authHeader = new HttpHeaders({ 'Authorization': `Bearer ${this.jwtToken}` });
 
     editUserProfile(data: UserData){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
         return this.httpClient.put<User>(
             `${this.BASE_URL}`,
             data,
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }
 
     deleteUserById(id: string){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
         return this.httpClient.delete<User>(
             `${this.BASE_URL}/${id}`,
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }

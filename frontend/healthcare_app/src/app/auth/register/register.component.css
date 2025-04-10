@@ -33,8 +33,10 @@ div.register form h1{
 
 p.form-control-error{
     margin: 0;
+    width: 400px;
     font-size: 0.8rem;
     color: red;
+    text-align: justify;
     position: relative;
     bottom: 10px;
 }

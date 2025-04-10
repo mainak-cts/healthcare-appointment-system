@@ -7,23 +7,26 @@ import { Availability } from "../app/models/Availability";
 @Injectable({providedIn: 'root'})
 export class AvailabilityApiService{
     private BASE_URL = 'http://localhost:9090/api/availabilities'
-
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
-    private jwtToken = this.authService.getToken()
-    private authHeader = new HttpHeaders({ 'Authorization': `Bearer ${this.jwtToken}` });
 
     getAvailabilitiesByDoctorId(doctorId: string){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+
         return this.httpClient.get<Availability[]>(
             `${this.BASE_URL}`,
             {
                 params: {doctorId: doctorId},
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }
 
     getAvailabilities(doctorName: string | null, timeSlotStart: string | null, timeSlotEnd: string | null){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+
         let params = {}
         if(doctorName){
             params = {...params, namePrefix: doctorName}
@@ -40,36 +43,44 @@ export class AvailabilityApiService{
             `${this.BASE_URL}`,
             {
                 params: params,
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }
 
     createAvailability(data: AvailabilityData){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
         return this.httpClient.post<Availability>(
             `${this.BASE_URL}`,
             data,
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }
 
     deleteAvailabilityById(id: string){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+
         return this.httpClient.delete<Availability>(
             `${this.BASE_URL}/${id}`,
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }
 
     editAvailability(data: any){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+        
         return this.httpClient.put<Availability>(
             `${this.BASE_URL}`,
             data,
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }

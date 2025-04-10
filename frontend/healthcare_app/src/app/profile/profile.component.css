@@ -52,7 +52,7 @@ img#doctor-pic, img#patient-pic{
 }
 
 img#patient-pic{
-    background-size: contain;
+    background-size: cover;
 }
 
 div.profile-details{

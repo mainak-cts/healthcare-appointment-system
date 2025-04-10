@@ -33,10 +33,13 @@
                 Cancel
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <button class="btn btn-complete" (click)="onCompleteAppointment()" [disabled]="appointment().status !== 'BOOKED'">
-                Complete
-                <i class="fa-solid fa-check"></i>
-            </button>
+            <!-- Only DOCTOR has the access to COMPLETE button -->
+            @if(userRole() === 'DOCTOR'){
+                <button class="btn btn-complete" (click)="onCompleteAppointment()" [disabled]="appointment().status !== 'BOOKED'">
+                    Complete
+                    <i class="fa-solid fa-check"></i>
+                </button>
+            }
             @if(!showConsultation()){
                 <button class="btn btn-consultation" (click)="toggleConsultation()">
                     <i class="fa-solid fa-eye"></i> consultation

@@ -10,45 +10,55 @@ export class ConsultationApiService{
     private BASE_URL = "http://localhost:9090/api/consultations"
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
-    private jwtToken = this.authService.getToken()
-    private authHeader = new HttpHeaders({ 'Authorization': `Bearer ${this.jwtToken}` });
 
     getConsultationByAppointmentId(appointmentId: string){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+        
         return this.httpClient.get<Consultation[]>(
             `${this.BASE_URL}`,
             {
                 params: {appointmentId},
-                headers: this.authHeader
+                headers: authHeader
             }
         ).pipe(map(e => e[0]));
     }
 
     createConsultation(data: {appointmentId: string, notes: string, prescription: string}){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+
         return this.httpClient.post<Consultation>(
             `${this.BASE_URL}`,
             data,
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }
 
     editConsultation(data: ConsultationData){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+
         return this.httpClient.put<Consultation>(
             `${this.BASE_URL}`,
             data,
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }
 
     deleteConsultationById(id: string){
+        const jwtToken = this.authService.getToken()
+        const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
+
         return this.httpClient.delete<Consultation>(
             `${this.BASE_URL}/${id}`,
         
             {
-                headers: this.authHeader
+                headers: authHeader
             }
         )
     }

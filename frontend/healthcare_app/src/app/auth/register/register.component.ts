@@ -35,7 +35,7 @@ export class RegisterComponent {
       validators: [Validators.required, Validators.email]
     }),
     password: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(8), Validators.maxLength(20), this.validationService.noWhiteSpaceMinLengthValidator(8)]
+      validators: [Validators.required, Validators.minLength(8), Validators.maxLength(20), this.validationService.noWhiteSpaceMinLengthValidator(8), Validators.pattern("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,20}$")]
     }),
     role: new FormControl('', {
       validators: [Validators.required]
@@ -94,7 +94,8 @@ export class RegisterComponent {
       }finally{
         this.isLoading.set(false);
       }
-
+    }else{
+      console.log(this.form.controls.password)
     }
   }
 }
