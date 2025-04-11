@@ -33,6 +33,16 @@
                     <p class="form-control-error">Password must be 8-20 characters long and include at least one letter, one number, and one special character</p>
                 }
             </div>
+
+            <div class="form-control">
+                <mat-form-field>
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput type="password" formControlName="confirm_password"/>
+                </mat-form-field>
+                @if(isConfirmPasswordInvalid){
+                    <p class="form-control-error">Password doesn't match</p>
+                }
+            </div>
     
             <div class="form-control">
                 <mat-form-field>

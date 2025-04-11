@@ -75,11 +75,6 @@ div.register form button{
     div.register-img {
         width: 70%;
     }
-
-    p.form-control-error {
-        width: 70vw;
-        font-size: 0.7rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -94,11 +89,6 @@ div.register form button{
 
     div.register-img {
         width: 75%;
-    }
-
-    p.form-control-error {
-        font-size: 0.7rem;
-        bottom: 5px;
     }
 
     div.register-container {

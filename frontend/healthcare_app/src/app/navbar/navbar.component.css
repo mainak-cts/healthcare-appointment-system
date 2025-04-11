@@ -24,7 +24,7 @@ nav#navbar a:not(.active-route, .btn-register, .a-profile)::after{
     left: 0;
     width: 0px;
     height: 2px;
-    background-color: rgb(145, 86, 255);
+    background-color: rgb(12, 107, 215);
     transition: all 0.2s ease;
 }
 
@@ -38,7 +38,7 @@ nav#navbar a:hover{
 
 nav#navbar a.active-route{
     color: black;
-    border-bottom: 2px solid rgb(145, 86, 255);
+    border-bottom: 2px solid rgb(12, 107, 215);
     font-weight: bold;
 }
 

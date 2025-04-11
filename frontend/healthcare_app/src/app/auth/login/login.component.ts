@@ -7,14 +7,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthApiService } from '../../../services/authapi.service';
 import { LogInData } from '../../models/LogInData';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ToastManagerService } from '../../../services/toastr.service';
 import { ValidationService } from '../../../services/validation.service';
 
 @Component({
   selector: 'app-login',
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule, MatProgressSpinnerModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

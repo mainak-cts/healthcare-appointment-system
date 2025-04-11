@@ -37,6 +37,9 @@ export class RegisterComponent {
     password: new FormControl('', {
       validators: [Validators.required, Validators.minLength(8), Validators.maxLength(20), this.validationService.noWhiteSpaceMinLengthValidator(8), Validators.pattern("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,20}$")]
     }),
+    confirm_password: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(8), Validators.maxLength(20)]
+    }),
     role: new FormControl('', {
       validators: [Validators.required]
     }),
@@ -59,6 +62,13 @@ export class RegisterComponent {
   }
   get isPhoneInvalid(){
     return this.form.controls.phone.touched && this.form.controls.phone.invalid;
+  }
+
+  get isConfirmPasswordInvalid(){
+    if(this.form.controls.password.touched && this.form.controls.confirm_password.touched){
+      return this.form.controls.password!.value !== this.form.controls.confirm_password!.value;
+    }
+    return false;
   }
 
   // Submit registration form

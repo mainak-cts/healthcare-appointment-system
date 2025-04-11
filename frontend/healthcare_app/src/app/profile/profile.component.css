@@ -7,7 +7,7 @@ div.appointments{
 }
 
 mat-form-field.mat-mdc-form-field{
-    width: 250px !important;
+    width: 400px !important;
     position: relative;
     top: 0.5rem;
     padding: 0.5rem !important;
@@ -15,10 +15,17 @@ mat-form-field.mat-mdc-form-field{
 
 form#filter-appointment{
     margin-top: 1rem;
+    border: 1px solid rgba(30, 1, 1, 0.489);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 5px;
+    padding: 0 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+form#filter-appointment mat-form-field.mat-mdc-form-field{
+    width: 250px !important;
 }
 
 div.form-control{
@@ -121,6 +128,7 @@ div.delete-profile{
 
     form#filter-appointment{
         gap: 0rem;
+        padding:0 1rem 1rem 1rem;
         flex-direction: column;
     }
 
