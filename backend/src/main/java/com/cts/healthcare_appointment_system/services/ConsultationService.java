@@ -133,6 +133,8 @@ public class ConsultationService {
         if(consultation == null){
             throw new ApiException("Invalid consultation id: " + id, HttpStatus.BAD_REQUEST);
         }
+        
+        log.info("Deleted a consultation with id: {} for appointmentId: {}", consultation.getConsultationId(), consultation.getAppointment().getAppointmentId());
 
         Appointment appointment = consultation.getAppointment();
         appointment.setConsultation(null);
@@ -141,7 +143,6 @@ public class ConsultationService {
         appointmentRepo.save(appointment);
         repo.delete(consultation);
 
-        log.info("Deleted a consultation with id: {} for appointmentId: {}", consultation.getConsultationId(), consultation.getAppointment().getAppointmentId());
 
         return ResponseEntity.status(HttpStatus.OK).body(consultation);
     }
