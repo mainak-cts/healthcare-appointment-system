@@ -252,10 +252,11 @@ public class AvailabilityService {
             });
         }
 
+        log.info("Deleted an availability slot with id: {} from {} to {} for doctor with id: {}", id, delAvailability.getTimeSlotStart(), delAvailability.getTimeSlotEnd(), delAvailability.getDoctor().getUserId());
+        
         // Breaking the associativity with the doctor
         delAvailability.getDoctor().removeAvailability(delAvailability);
 
-        log.info("Deleted an availability slot with id: {} from {} to {} for doctor with id: {}", id, delAvailability.getTimeSlotStart(), delAvailability.getTimeSlotEnd(), delAvailability.getDoctor().getUserId());
 
         // Deleting the availability
         availabilityRepo.delete(delAvailability);
