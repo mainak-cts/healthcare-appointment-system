@@ -24,7 +24,9 @@ import com.cts.healthcare_appointment_system.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AvailabilityService {
@@ -161,6 +163,8 @@ public class AvailabilityService {
         // Save the edited availability
         availabilityRepo.save(availability);
 
+        log.info("Edited an availability with id: {} from {} to {} for doctor with id: {}", dto.getAvailabilityId(), dto.getTimeSlotStart(), dto.getTimeSlotEnd(), dto.getDoctorId());
+
         return ResponseEntity.status(HttpStatus.OK).body(availability);
     }
 
@@ -213,6 +217,8 @@ public class AvailabilityService {
         availabilityRepo.save(newAvailability);
         userRepo.save(doctor);
 
+        log.info("Created an availability slot from {} to {} for doctor with id: {}", dto.getTimeSlotStart(), dto.getTimeSlotEnd(), dto.getDoctorId());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(newAvailability);
     }
 
@@ -248,6 +254,9 @@ public class AvailabilityService {
 
         // Breaking the associativity with the doctor
         delAvailability.getDoctor().removeAvailability(delAvailability);
+
+        log.info("Deleted an availability slot with id: {} from {} to {} for doctor with id: {}", id, delAvailability.getTimeSlotStart(), delAvailability.getTimeSlotEnd(), delAvailability.getDoctor().getUserId());
+
         // Deleting the availability
         availabilityRepo.delete(delAvailability);
         return ResponseEntity.status(HttpStatus.OK).body(delAvailability);

@@ -18,7 +18,9 @@ import com.cts.healthcare_appointment_system.repositories.ConsultationRepository
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ConsultationService {
@@ -94,6 +96,8 @@ public class ConsultationService {
         // Send consultation given mail to the patient
         notificationService.sendConsultationEmail(appointment);
 
+        log.info("Created a new consultation for appointmentd with id: {}", dto.getAppointmentId());
+
         return ResponseEntity.status(HttpStatus.OK).body(consultation);
     }
 
@@ -116,6 +120,8 @@ public class ConsultationService {
 
         repo.save(consultation);
 
+        log.info("Updated a consultation with id: {} for appointmentId: {}", consultation.getConsultationId(), consultation.getAppointment().getAppointmentId());
+
         return ResponseEntity.status(HttpStatus.OK).body(consultation);
     }
 
@@ -134,6 +140,8 @@ public class ConsultationService {
 
         appointmentRepo.save(appointment);
         repo.delete(consultation);
+
+        log.info("Deleted a consultation with id: {} for appointmentId: {}", consultation.getConsultationId(), consultation.getAppointment().getAppointmentId());
 
         return ResponseEntity.status(HttpStatus.OK).body(consultation);
     }

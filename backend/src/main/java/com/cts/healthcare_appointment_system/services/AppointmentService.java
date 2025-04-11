@@ -22,7 +22,9 @@ import com.cts.healthcare_appointment_system.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AppointmentService {
@@ -158,6 +160,8 @@ public class AppointmentService {
 
         appointmentRepo.save(appointment);
 
+        log.info("Created new appointment for doctor with id: {} and patient with id: {}", doctor.getUserId(), patient.getUserId());
+
         // Send appointment booked email
         notificationService.sendBookedEmail(appointment);
 
@@ -193,6 +197,8 @@ public class AppointmentService {
         }
 
         appointmentRepo.save(appointment);
+
+        log.info("Cancelled an appointment with id: {}", appointment.getAppointmentId());
 
         // Send appointment cancellation email
         notificationService.sendCancellationEmail(appointment);
@@ -231,6 +237,8 @@ public class AppointmentService {
         }
 
         appointmentRepo.save(appointment);
+
+        log.info("Completed an appointment with id: {}", appointment.getAppointmentId());
 
         // Send appointment completion email
         notificationService.sendCompletionEmail(appointment);

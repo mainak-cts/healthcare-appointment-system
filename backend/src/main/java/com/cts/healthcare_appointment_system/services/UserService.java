@@ -23,7 +23,9 @@ import com.cts.healthcare_appointment_system.security.JwtUtils;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -56,8 +58,12 @@ public class UserService {
     //Get user by email
     public ResponseEntity<User> getUserByEmail(String email) {
         User user = userRepo.findByEmail(email).orElse(null);
+
+        log.debug("Executing getUserByEmail() for: {}", email);
+
         if (user == null) {
-            throw new ApiException("No user with user email: " + email + " found", HttpStatus.BAD_REQUEST);
+            log.error("No user found in getUserByEmail() with email: {}", email);
+            throw new ApiException("No user found with email: " + email + " found", HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -71,8 +77,11 @@ public class UserService {
         String password = dto.getPassword();
         String phone = dto.getPhone();
 
+        log.debug("Executing changeUserDetails() for userId: {}", userId);
+
         User user = userRepo.findById(userId).orElse(null);
         if(user == null){
+            log.error("No user found in changeUserDetails() for userId: {}", userId);
             throw new ApiException("No user found with id: " + userId, HttpStatus.BAD_REQUEST);
         }
         user.setName(name);
@@ -90,8 +99,11 @@ public class UserService {
     public ResponseEntity<User> registerUser(UserDTO dto) {
         // userId is set to null so that JPA will think it's a new entity, will generate primary key value, and save it
 
+        log.debug("Executing registerUser() for user with email: {}", dto.getEmail());
+
         // Check whether the email is already registered or not
         if(userRepo.findByEmail(dto.getEmail()).orElse(null) != null){
+            log.error("Failed to register user with email: {}, as it is already registered", dto.getEmail());
             throw new ApiException("Email id already registered", HttpStatus.BAD_REQUEST);
         }
 
@@ -124,6 +136,9 @@ public class UserService {
         JwtDTO jwtDto = new JwtDTO();
         User user = userRepo.findByEmail(dto.getEmail()).orElse(null);
         if (auth.isAuthenticated()) {
+
+            log.debug("User with email {} logged in", dto.getEmail());
+
             String jwt = jwtUtils.generateJWTToken(dto.getEmail());
 
             jwtDto.setEmail(dto.getEmail());
@@ -141,7 +156,11 @@ public class UserService {
     @Transactional
     public ResponseEntity<User> deleteUserById(int id) {
         User user = userRepo.findById(id).orElse(null);
+
+        log.debug("Executing deleteUserById() for user with id: {}", id);
+
         if (user == null) {
+            log.error("Failed to delete user as no user found with id: {}", id);
             throw new ApiException("No user with user id: " + id + " found", HttpStatus.BAD_REQUEST);
         }
         // Removing the associations
