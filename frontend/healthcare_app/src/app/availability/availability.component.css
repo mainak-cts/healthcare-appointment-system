@@ -5,7 +5,7 @@ div.availability{
     min-width: 50vw;
     align-items: center;
     box-sizing: border-box;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
@@ -70,7 +70,7 @@ div.top-edit-availability{
     align-items: center;
     gap: 1rem;
 }
-div.mid-edit-availability{
+form.mid-edit-availability{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -118,8 +118,7 @@ div.availabilities p{
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
-        padding: 1vw;
-         width: 70vw;
+        width: 70vw;
     }
 
     div.slot{
@@ -129,7 +128,6 @@ div.availabilities p{
     div.slot input{
         width: 100%;
     }
-
 
     form#edit-availability{
         margin-top: 1rem;
@@ -148,7 +146,6 @@ div.availabilities p{
         gap: 0;
     }
 
-        
     div.slot{
         gap: 5px;
         flex-direction: column;

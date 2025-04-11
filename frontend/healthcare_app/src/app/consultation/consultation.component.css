@@ -24,6 +24,7 @@ div.no-consultation{
 }
 form.consultation-form{
     display: flex;
+    width: 100%;
     flex-direction: column;
     gap: 0.5rem;
 }
@@ -42,4 +43,10 @@ div.notes h3.h-consultation{
 div.btn-grp{
     display: flex;
     justify-content: space-between;
+}
+
+@media (max-width: 512px) {
+    div.consultation{
+        width: 80vw;
+    }
 }
