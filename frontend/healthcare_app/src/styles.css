@@ -103,3 +103,9 @@ button.btn-arrow:hover i{
         width: 70vw !important;
     }
 }
+
+@media (max-width: 576px) {
+    .toast-container .ngx-toastr{
+        width: 100% !important;
+    }
+}
