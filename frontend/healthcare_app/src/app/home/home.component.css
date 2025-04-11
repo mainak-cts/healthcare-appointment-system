@@ -43,6 +43,15 @@ div.image-container{
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: home_img 0.65s ease-in-out infinite alternate backwards;
+}
+
+@keyframes home_img {
+    from{
+        transform: scale(1.01);
+    }to{
+        transform: scale(0.99);
+    }
 }
 
 img#logo-banner{
