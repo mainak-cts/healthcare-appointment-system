@@ -17,7 +17,7 @@ nav#navbar a{
     position: relative;
 }
 
-nav#navbar a:not(.active-route, .btn-register)::after{
+nav#navbar a:not(.active-route, .btn-register, .a-profile)::after{
     content: '';
     position: absolute;
     bottom: -1.5px;
@@ -56,14 +56,14 @@ img#profile-pic{
     aspect-ratio: 1/1;
 }
 
-a#a-profile{
+a.a-profile{
     display: flex;
     justify-content: center;
     align-items: center;
     transition: all 0.2s ease-in-out;
 }
 
-a#a-profile:hover{
+a.a-profile:hover{
     opacity: 0.6;
 }
 

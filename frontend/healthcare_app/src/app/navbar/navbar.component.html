@@ -8,7 +8,7 @@
             <a routerLink="login" routerLinkActive="active-route">Login</a>
             <a routerLink="register" class="btn btn-register">Register</a>
         }@else {
-            <a [routerLink]="['users', user().userId]" id="a-profile">
+            <a [routerLink]="['users', user().userId]" class="a-profile">
                 <img src="/profile_pic.png" alt="pic" id="profile-pic">
             </a>
         }
