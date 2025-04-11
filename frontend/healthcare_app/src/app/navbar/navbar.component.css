@@ -14,14 +14,31 @@ nav#navbar a{
     text-decoration: none;
     color: rgb(84, 83, 83);
     transition: color 0.2s ease-in;
+    position: relative;
 }
+
+nav#navbar a:not(.active-route, .btn-register, .a-profile)::after{
+    content: '';
+    position: absolute;
+    bottom: -1.5px;
+    left: 0;
+    width: 0px;
+    height: 2px;
+    background-color: rgb(145, 86, 255);
+    transition: all 0.2s ease;
+}
+
+nav#navbar a:hover::after{
+    width: 100%;
+}
+
 nav#navbar a:hover{
     color: black;
 }
 
 nav#navbar a.active-route{
     color: black;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid rgb(145, 86, 255);
     font-weight: bold;
 }
 
@@ -39,14 +56,14 @@ img#profile-pic{
     aspect-ratio: 1/1;
 }
 
-a#a-profile{
+a.a-profile{
     display: flex;
     justify-content: center;
     align-items: center;
     transition: all 0.2s ease-in-out;
 }
 
-a#a-profile:hover{
+a.a-profile:hover{
     opacity: 0.6;
 }
 

@@ -108,3 +108,32 @@ div.delete-profile{
     align-items: center;
     margin-bottom:1rem;
 }
+
+@media (max-width: 768px) {
+    p.p-user-details{
+        font-size: 1rem;
+    }
+
+    p.p-appointments{
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    form#filter-appointment{
+        gap: 0rem;
+        flex-direction: column;
+    }
+
+    mat-form-field.mat-mdc-form-field{
+        width: 80vw !important;
+    }
+
+    div.profile-data{
+        width: 80vw;
+    }
+
+    img#doctor-pic, img#patient-pic{
+        width: 60%;
+    }
+
+}

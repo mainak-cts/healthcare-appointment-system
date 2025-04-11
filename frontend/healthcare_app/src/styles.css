@@ -26,6 +26,7 @@ div.container{
     min-height: 100%;
     display: flex;
     justify-content: center;
+    box-sizing: border-box;
     align-items: center;
     flex-direction: column;
 }
@@ -96,4 +97,16 @@ button.btn-arrow i{
 
 button.btn-arrow:hover i{
     transform: translateX(3px)
+}
+
+@media (max-width: 768px) {
+    div.mat-mdc-form-field-flex{
+        width: 70vw !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .toast-container .ngx-toastr{
+        width: 100% !important;
+    }
 }

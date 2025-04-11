@@ -1,13 +1,16 @@
 <div class="availability" [class]="{
     'available': availability().available,
-    'unavailable': !availability().available
-}">
+    'unavailable': !availability().available}">
+
     @if(!isEditing()){
+        <div class="top-availability">
         <p>{{availability().availabilityId}}</p>
         <a [routerLink]="['../users/', availability().doctor.userId]" routerLinkActive="router-link-active" >{{availability().doctor.name | titlecase}}</a>
         <p>{{availability().timeSlotStart | date:'short'}}</p>
         <span><i class="fa-solid fa-arrow-right"></i></span>
         <p>{{availability().timeSlotEnd | date:'short'}}</p>
+    </div>
+    <div class="bottom-availability">
         @if(availability().available){
             <p class="available">AVAILABLE</p>
         }@else {
@@ -28,11 +31,15 @@
                 <i class="fa-solid fa-trash"></i>
             </button>
         }
+        </div>
     }
     @else {
-        <p>{{availability().availabilityId}}</p>
-        <p>{{availability().doctor.name}}</p>
-        <form id="edit-availability" [formGroup]="editForm">
+        <div class="top-edit-availability">
+            <p>{{availability().availabilityId}}</p>
+            <p>{{availability().doctor.name}}</p>
+        </div>
+  
+        <form id="edit-availability" class="mid-edit-availability" [formGroup]="editForm">
             <div class="slot time-slot-start">
                 <label for="editSlotStart">From</label>
                 <input type="datetime-local" class="timeSlot" id="editSlotStart" name="editSlotStart" formControlName="timeSlotStart" [class.error-control]="slotStartInvalid">
@@ -41,6 +48,9 @@
                 <label for="editSlotEnd"><i class="fa-solid fa-arrow-right"></i></label>
                 <input type="datetime-local" class="timeSlot" id="editSlotEnd" name="editSlotEnd" formControlName="timeSlotEnd" [class.error-control]="slotEndInvalid">
             </div>
+        </form>
+
+        <div class="bottom-edit-availability">
             @if(availability().available){
                 <p class="available">AVAILABLE</p>
             }@else {
@@ -54,6 +64,6 @@
                 Cancel
                 <i class="fa-solid fa-xmark"></i>
             </button>
-        </form>
+        </div>
     }
 </div>

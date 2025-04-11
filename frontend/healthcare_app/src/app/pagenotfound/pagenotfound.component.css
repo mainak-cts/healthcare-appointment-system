@@ -1,0 +1,22 @@
+div.p-not-found-img{
+    width: 600px;
+    animation: not_found_img 0.5s ease-in-out infinite alternate backwards;
+}
+
+@keyframes not_found_img {
+    from{
+        transform: translateX(-5px);
+    }to{
+        transform: translateX(5px);
+    }
+}
+
+div.p-not-found-img img{
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    div.p-not-found-img{
+        width: 80vw;
+    }
+}

@@ -4,6 +4,11 @@ div.show-case{
     gap: 1rem;
     margin-bottom: 2rem;
 }
+h1{
+    text-align: center;
+    margin-left: 10%;
+    margin-right:10%
+}
 
 div.show{
     display: flex;
@@ -38,8 +43,55 @@ div.image-container{
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: home_img 0.65s ease-in-out infinite alternate backwards;
+}
+
+@keyframes home_img {
+    from{
+        transform: scale(1.01);
+    }to{
+        transform: scale(0.99);
+    }
 }
 
 img#logo-banner{
     width: 100%;
+}
+
+@media (max-width: 768px) {
+
+    h1{
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+
+    div.show-case {
+        flex-direction: column;
+        align-items: center;
+        gap:1rem;
+    }
+
+    div.show{
+        width: 75vw;
+        text-align: center;
+    }
+    
+    div.image-container {
+        width: 70vw;
+    }
+
+    span.value {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    div.show {
+        padding: 0.5rem;
+    }
+
+    span.value {
+        font-size: 1.5rem;
+    }
 }

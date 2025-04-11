@@ -69,3 +69,10 @@ p.disabled{
 button.btn-consultation:hover i{
     transform: translateX(0);
 }
+
+
+@media (max-width: 1024px) {
+    div.appointment{
+        width: 80vw;
+    }
+}
