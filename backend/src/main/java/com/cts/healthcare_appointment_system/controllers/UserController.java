@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cts.healthcare_appointment_system.dto.ChangePasswordDTO;
 import com.cts.healthcare_appointment_system.dto.JwtDTO;
 import com.cts.healthcare_appointment_system.dto.UserDTO;
 import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
@@ -62,6 +63,12 @@ public class UserController {
     @PutMapping("")
     public ResponseEntity<User> changeUserDetails(@Valid @RequestBody UserUpdateDTO userUpdateDTO){
     	return userService.changeUserDetails(userUpdateDTO);
+    }
+
+    // Forgot password
+    @PutMapping("/change-password")
+    public ResponseEntity<User> changePassword(@Valid @RequestBody ChangePasswordDTO dto){
+        return userService.changeUserPassword(dto);
     }
     
     //Delete user by id

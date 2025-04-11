@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/users/change-password").permitAll()
                                 .requestMatchers("/users").authenticated()
                                 .requestMatchers("/users/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/consultations").hasAuthority("DOCTOR")

@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.cts.healthcare_appointment_system.dto.ChangePasswordDTO;
 import com.cts.healthcare_appointment_system.dto.JwtDTO;
 import com.cts.healthcare_appointment_system.dto.UserDTO;
 import com.cts.healthcare_appointment_system.dto.UserLoginDTO;
@@ -91,6 +92,25 @@ public class UserService {
         userRepo.save(user);
         return ResponseEntity.status(HttpStatus.OK).body(user);
 
+    }
+
+    // Change password
+    public ResponseEntity<User> changeUserPassword(ChangePasswordDTO dto){
+        String email = dto.getEmail();
+        String newPassword = dto.getNewPassword();
+
+        log.debug("Changing password for the user with email: {}", email);
+
+        User user = userRepo.findByEmail(email).orElse(null);
+
+        if (user == null) {
+            throw new ApiException("No user found with email: " + email + " found", HttpStatus.BAD_REQUEST);
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepo.save(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     // POST methods
