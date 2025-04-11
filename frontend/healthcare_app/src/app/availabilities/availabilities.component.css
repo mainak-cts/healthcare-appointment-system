@@ -1,9 +1,14 @@
 div.show-availabilities{
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+h2{
+    text-align: center;
 }
 
 h1.h1-availabilities{
@@ -60,26 +65,33 @@ p.p-availabilities{
         flex-direction: column;
         align-items: center;
         width: 75vw;
-        gap: 0.25em;
-        
+        gap: 0.25em; 
+    }
+
+    div.form-control{
+        width: 80%;
+    }
+
+    input#doctorName{
+        width: 100%;
+        font-size: 0.8rem;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+        box-sizing: border-box;
     }
 
     div.availability {
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
-        /* align-content: center; */
-       padding: 1vw;
-         width: 70vw;
+        padding: 1vw;
+        width: 70vw;
     }
 
    
     button{
         margin-top: 1rem;
     }
-
-
-    
 
     div.show-availabilities{
         justify-content: center;
@@ -100,7 +112,6 @@ p.p-availabilities{
 
     input.timeSlot {
         width: 100%;
-     
         font-size: 0.8rem;
         padding-left: 2.5rem;
         padding-right: 2.5rem;
@@ -136,6 +147,10 @@ p.p-availabilities{
     h1.h1-availabilities {
         font-size: 1.5rem;
         text-align: center;
+    }
+
+    h2{
+        font-size: 1.2rem;
     }
 
     input {

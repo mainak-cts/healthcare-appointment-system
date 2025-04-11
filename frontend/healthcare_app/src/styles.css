@@ -97,3 +97,9 @@ button.btn-arrow i{
 button.btn-arrow:hover i{
     transform: translateX(3px)
 }
+
+@media (max-width: 768px) {
+    div.mat-mdc-form-field-flex{
+        width: 70vw !important;
+    }
+}
