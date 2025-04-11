@@ -4,10 +4,11 @@ import { AuthApiService } from "./authapi.service";
 import { map } from "rxjs";
 import { ConsultationData } from "../app/models/ConsultationData";
 import { Consultation } from "../app/models/Consultation";
+import { BASE_URLS } from "../environment/environment";
 
 @Injectable({providedIn: 'root'})
 export class ConsultationApiService{
-    private BASE_URL = "http://localhost:9090/api/consultations"
+    private BASE_URL = BASE_URLS.CONSULTATION_BASE_URL;
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
