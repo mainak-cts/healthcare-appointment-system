@@ -27,6 +27,7 @@ public class ConsultationService {
 
     private ConsultationRepository repo;
     private AppointmentRepository appointmentRepo;
+    private NotificationService notificationService;
 
     // GET methods
     // Get all consultations
@@ -91,6 +92,9 @@ public class ConsultationService {
 
         appointment.setConsultation(consultation);
         appointmentRepo.save(appointment);
+
+        // Send consultation given mail to the patient
+        notificationService.sendConsultationEmail(appointment);
 
         log.info("Created a new consultation for appointmentd with id: {}", dto.getAppointmentId());
 
