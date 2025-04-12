@@ -8,9 +8,15 @@
             <a routerLink="login" routerLinkActive="active-route">Login</a>
             <a routerLink="register" class="btn btn-register">Register</a>
         }@else {
-            <a [routerLink]="['users', user().userId]" class="a-profile">
-                <img src="/profile_pic.png" alt="pic" id="profile-pic">
-            </a>
+            @if(user().role === 'DOCTOR'){
+                <a [routerLink]="['users', user().userId]" class="a-profile" matTooltip = "Profile">
+                    <img src="/doctor.png" alt="pic" class="profile-pic">
+                </a>
+            }@else{
+                <a [routerLink]="['users', user().userId]" class="a-profile" matTooltip = "Profile">
+                    <img src="/patient.png" alt="pic" class="profile-pic">
+                </a>
+            }
         }
     </div>
 </nav>

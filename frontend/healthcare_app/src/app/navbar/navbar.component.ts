@@ -2,10 +2,11 @@ import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthApiService } from '../../services/authapi.service';
 import { ToastManagerService } from '../../services/toastr.service';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, MatTooltipModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

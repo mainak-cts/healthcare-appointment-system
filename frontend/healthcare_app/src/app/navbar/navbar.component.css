@@ -51,20 +51,23 @@ div.side-nav{
     right: 0.85rem;
 }
 
-img#profile-pic{
+img.profile-pic{
     width: 40px;
     aspect-ratio: 1/1;
 }
 
 a.a-profile{
     display: flex;
+    border-radius: 50%;
+    outline: 2px solid rgba(0, 0, 0, 0.445);
     justify-content: center;
     align-items: center;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.05s ease !important;
 }
 
 a.a-profile:hover{
-    opacity: 0.6;
+    outline: 3px solid rgba(0, 0, 0, 0.244);
+    opacity: 0.8;
 }
 
 a.btn-register{
