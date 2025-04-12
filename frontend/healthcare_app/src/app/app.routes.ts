@@ -4,8 +4,9 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AvailabilitiesComponent } from './availabilities/availabilities.component';
-import { authGuard } from './guards/auth.guard';
+import { authGuard, forgotPasswordGuard } from './guards/auth.guard';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
 
 export const routes: Routes = [
     {
@@ -39,6 +40,12 @@ export const routes: Routes = [
         component: ProfileComponent,
         canMatch: [authGuard],
         title: 'Profile'
+    },
+    {
+        path: 'forgot-password',
+        component: ChangepasswordComponent,
+        canMatch: [forgotPasswordGuard],
+        title: "Forgot password"
     },
     {
         path: '**',

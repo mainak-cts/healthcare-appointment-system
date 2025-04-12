@@ -4,6 +4,8 @@ import { AuthApiService } from "./authapi.service";
 import { UserData } from "../app/models/UserData";
 import { User } from "../app/models/User";
 import { BASE_URLS } from "../environment/environment";
+import { ChangeUserPassword } from "../app/models/ChnageUserPassword";
+import { firstValueFrom } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class UserApiService{
@@ -32,5 +34,14 @@ export class UserApiService{
                 headers: authHeader
             }
         )
+    }
+
+    changeUserPassword(data: ChangeUserPassword){
+        const response = this.httpClient.put<User>(
+            `${this.BASE_URL}/change-password`,
+            data
+        )
+
+        return firstValueFrom(response);
     }
 }

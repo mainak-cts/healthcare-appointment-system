@@ -103,6 +103,12 @@ button.btn-arrow:hover i{
     div.mat-mdc-form-field-flex{
         width: 70vw !important;
     }
+
+    p.form-control-error {
+        width: 70vw !important;
+        font-size: 0.75rem !important;
+        bottom: 0.9rem !important;
+    }
 }
 
 @media (max-width: 576px) {

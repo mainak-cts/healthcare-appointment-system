@@ -48,6 +48,19 @@ div.login-img img{
     width: 100%;
 }
 
+div.forgot-password{
+    position: relative;
+    bottom: 10px;
+    display: flex;
+    width: 95%;
+    flex-direction: row-reverse;
+}
+
+a#a-forgot-password{
+    color: rgb(1, 36, 112);
+    font-size: 0.8rem;
+}
+
 @media (max-width: 768px) {
     div.login-container {
         box-sizing: border-box;
@@ -80,10 +93,5 @@ div.login-img img{
 
     div.login-img {
         width: 75%;
-    }
-
-    p.form-control-error {
-        font-size: 0.7rem;
-        bottom: 5px;
     }
 }
