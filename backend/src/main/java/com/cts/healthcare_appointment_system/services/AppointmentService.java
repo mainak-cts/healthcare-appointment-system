@@ -177,6 +177,10 @@ public class AppointmentService {
             throw new ApiException("Invalid appointment with id: " + id, HttpStatus.BAD_REQUEST);
         }
 
+        if(appointment.getConsultation() != null){
+            throw new ApiException("Can't cancel an appointment after consultation is given.", HttpStatus.BAD_REQUEST);
+        }
+
         if (appointment.getStatus() != AppointmentStatus.COMPLETED) {
             appointment.cancel();
         } else {
