@@ -83,6 +83,7 @@ export class AvailabilitiesComponent implements OnInit{
     return this.availabilityForm.controls.timeSlotEnd.touched && this.availabilityForm.controls.timeSlotEnd.value == '';
   }
 
+  // When submit button is clicked, check whether some data is given, if not clicked, the input fields are just touched and focus goes off, check whether is it ''
   get slotStartInvalid(){
     return this.formSubmitted() ? this.availabilityForm.controls.timeSlotStart.invalid: this.isTimeSlotStartInvalid;
   }
@@ -104,6 +105,11 @@ export class AvailabilitiesComponent implements OnInit{
         next: (res) => {
           this.availabilities.set([res, ...this.availabilities()]);
           this.toastr.success("Availability slot created successfully", "Created")
+          this.availabilityForm.reset();
+          // This part is required, as we set the initital values as '', and written the logic in the getter based on it
+          this.availabilityForm.controls.timeSlotStart.setValue('');
+          this.availabilityForm.controls.timeSlotEnd.setValue('');
+          this.formSubmitted.set(false)
         },
         error: (err) => {
           if(err.error.error){

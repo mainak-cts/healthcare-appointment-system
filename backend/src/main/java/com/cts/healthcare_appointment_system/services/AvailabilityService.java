@@ -241,13 +241,19 @@ public class AvailabilityService {
                 throw new ApiException("Can't fetch the associated appointments", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            // Cancel the associated appointment slots and send scancellation mail
+            // Cancel the associated appointment slots and send cancellation mail
             appointments.forEach(ap -> {
                 if (ap.getStatus() == AppointmentStatus.BOOKED) {
-                    ap.cancel();
-                    appointmentRepo.save(ap);
-                    // Send cancellation mail
-                    notificationService.sendCancellationEmail(ap);
+                    // Only when no consultation is given delete the associated appointment
+                    if(ap.getConsultation() == null){
+                        ap.cancel();
+                        appointmentRepo.save(ap);
+                        log.info("Cancelled an appointment with id: {}", ap.getAppointmentId());
+                        // Send cancellation mail
+                        notificationService.sendCancellationEmail(ap);
+                    }else{
+                        throw new ApiException("Please remove the consultation of the associated appointment, before deleting the slot.", HttpStatus.BAD_REQUEST);
+                    }
                 }
             });
         }
@@ -256,7 +262,6 @@ public class AvailabilityService {
         
         // Breaking the associativity with the doctor
         delAvailability.getDoctor().removeAvailability(delAvailability);
-
 
         // Deleting the availability
         availabilityRepo.delete(delAvailability);
