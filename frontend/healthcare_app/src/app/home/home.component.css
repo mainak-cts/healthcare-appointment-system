@@ -15,7 +15,7 @@ div.show{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(173, 108, 201, 0.2);
+    background-color: rgb(209, 232, 252);
     border: 1px solid rgba(0, 0, 0, 0.315);
     border-radius: 5px;
     padding: 0.85rem;

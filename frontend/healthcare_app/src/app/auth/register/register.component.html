@@ -65,9 +65,7 @@
                 @if(isPhoneInvalid){
                     <p class="form-control-error">Phone number is invalid</p>
                 }
-            </div>
-    
-    
+            </div>    
             <button type="submit" class="btn btn-login btn-arrow">
                 Register
                 @if(!isLoading()){
@@ -77,6 +75,9 @@
                     <mat-progress-spinner mode="indeterminate" diameter="15"></mat-progress-spinner>
                 }
             </button>
+            <div class="login-now">
+                Already have an account? <a routerLink = "../login" id="a-login-now">Login</a>
+            </div>
         </form>
     </div>
 </div>
