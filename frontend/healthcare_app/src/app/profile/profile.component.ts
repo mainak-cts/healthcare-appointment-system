@@ -95,13 +95,12 @@ export class ProfileComponent implements OnInit{
   onFilterSubmit(){
     this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
       next: (appointments) => {
-        // Filter appointment based on id, if provided
-        let fetchedAppointments = appointments;
         let appointmentWithId: Appointment | undefined;
-        const appointmentId = this.form.controls.appointmentId.value!;
-
+        const appointmentId = this.form.controls.appointmentId.value!.trim();
+        
+        // Filter appointment based on id, if provided
         if(appointmentId != ''){
-          appointmentWithId = fetchedAppointments.find((a) => a.appointmentId == appointmentId);
+          appointmentWithId = appointments.find((a) => a.appointmentId == appointmentId);
         }
 
         // If some value for id is entered
@@ -111,7 +110,7 @@ export class ProfileComponent implements OnInit{
           else   // else set empty array
             this.appointments.set([])
         }else{
-          this.appointments.set(fetchedAppointments);  
+          this.appointments.set(appointments);  
         }
 
       },
