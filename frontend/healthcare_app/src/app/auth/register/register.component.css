@@ -63,10 +63,6 @@ div.login-now{
     margin-top: 0.85rem;
 }
 
-a#a-login-now{
-    color: rgb(1, 36, 112);
-}
-
 @media (max-width: 768px) {
     div.register-container {
         box-sizing: border-box;
