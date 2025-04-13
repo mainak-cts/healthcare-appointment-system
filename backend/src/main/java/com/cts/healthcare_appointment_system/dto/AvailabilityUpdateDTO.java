@@ -22,7 +22,6 @@ public class AvailabilityUpdateDTO {
     private Integer doctorId;
 
     @NotNull(message = "Time slot start cannot be null")
-    @Future(message = "Time slot start must be in the future")
     private LocalDateTime timeSlotStart;
 
     @NotNull(message = "Time slot end cannot be null")
