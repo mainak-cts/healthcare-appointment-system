@@ -57,9 +57,15 @@ div.forgot-password{
 }
 
 a#a-forgot-password{
-    color: rgb(1, 36, 112);
     font-size: 0.8rem;
 }
+
+div.new-account{
+    font-size: 0.9rem;
+    position: relative;
+    margin-top: 1rem;
+}
+
 
 @media (max-width: 768px) {
     div.login-container {

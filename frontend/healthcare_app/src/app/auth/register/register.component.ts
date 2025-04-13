@@ -9,12 +9,12 @@ import { AuthApiService } from '../../../services/authapi.service';
 import { RegisterData } from '../../models/RegisterData';
 import { ToastrService } from 'ngx-toastr';
 import { ToastManagerService } from '../../../services/toastr.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ValidationService } from '../../../services/validation.service';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule, MatProgressSpinnerModule, MatSelectModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule, MatProgressSpinnerModule, MatSelectModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
