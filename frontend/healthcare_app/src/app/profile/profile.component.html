@@ -62,7 +62,13 @@
                 </div>
             }
         </div>
-        <form id="filter-appointment" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form id="filter-appointment" [formGroup]="form" (ngSubmit)="onFilterSubmit()">
+            <div class="form-control">
+                <mat-form-field>
+                    <mat-label>Appointment Id</mat-label>
+                    <input matInput type="text" formControlName="appointmentId">
+                </mat-form-field>
+            </div>
             @if((currentLoggedInUser()!.role == 'PATIENT') && isItYourProfile){
                 <div class="form-control">
                     <mat-form-field>

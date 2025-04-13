@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit{
   appointments = signal<Appointment[]>([]);
 
   form = new FormGroup({
+    appointmentId : new FormControl(''),
     patientName : new FormControl(''),
     doctorName : new FormControl(''),
     status : new FormControl('')
@@ -91,9 +92,29 @@ export class ProfileComponent implements OnInit{
   }
 
   // Get appointments by user id
-  onSubmit(){
+  onFilterSubmit(){
     this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
-      next: (appointments) => this.appointments.set(appointments),
+      next: (appointments) => {
+        // Filter appointment based on id, if provided
+        let fetchedAppointments = appointments;
+        let appointmentWithId: Appointment | undefined;
+        const appointmentId = this.form.controls.appointmentId.value!;
+
+        if(appointmentId != ''){
+          appointmentWithId = fetchedAppointments.find((a) => a.appointmentId == appointmentId);
+        }
+
+        // If some value for id is entered
+        if(appointmentId != ''){
+          if(appointmentWithId)   // if any appointment found with that id
+            this.appointments.set([appointmentWithId])
+          else   // else set empty array
+            this.appointments.set([])
+        }else{
+          this.appointments.set(fetchedAppointments);  
+        }
+
+      },
       error: (err) => {
         this.appointments.set([])
       }
