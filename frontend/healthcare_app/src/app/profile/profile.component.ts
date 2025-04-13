@@ -136,6 +136,7 @@ export class ProfileComponent implements OnInit{
   }
 
   onEditProfile(){
+    this.toastr.info("If you don't want to change your password, type your existing password.", "Password")
     this.editProfile.set(true);
   }
 
