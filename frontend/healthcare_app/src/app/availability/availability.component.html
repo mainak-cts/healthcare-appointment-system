@@ -4,7 +4,6 @@
 
     @if(!isEditing()){
         <div class="top-availability">
-        <p>{{availability().availabilityId}}</p>
         <a [routerLink]="['../users/', availability().doctor.userId]" routerLinkActive="router-link-active" >{{availability().doctor.name | titlecase}}</a>
         <p>{{availability().timeSlotStart | date:'short'}}</p>
         <span><i class="fa-solid fa-arrow-right"></i></span>

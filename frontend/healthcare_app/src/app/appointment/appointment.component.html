@@ -4,6 +4,7 @@
         'a-completed': appointment().status === 'COMPLETED',
         'a-booked': appointment().status === 'BOOKED'
     }">
+        <p>{{appointment().appointmentId}}</p>
         @if(userRole() === 'DOCTOR'){
             @if(appointment().patient){
                 <a [routerLink]="['../', appointment().patient!.userId]" routerLinkActive="router-link-active" >{{appointment().patient!.name | titlecase}}</a>

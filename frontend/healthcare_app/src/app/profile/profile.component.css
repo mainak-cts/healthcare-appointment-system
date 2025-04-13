@@ -125,23 +125,27 @@ div.delete-profile{
         font-size: 1rem;
         font-weight: 500;
     }
-
-    form#filter-appointment{
-        gap: 0rem;
-        padding:0 1rem 1rem 1rem;
-        flex-direction: column;
-    }
-
+    
     mat-form-field.mat-mdc-form-field{
         width: 80vw !important;
     }
-
+    
     div.profile-data{
         width: 80vw;
     }
-
     img#doctor-pic, img#patient-pic{
         width: 60%;
     }
+}
 
+@media (max-width: 900px){
+    form#filter-appointment{
+        gap: 0rem;
+        padding:0 0.75rem 0.75rem 1rem;
+        flex-direction: column;
+    }
+    
+    form#filter-appointment mat-form-field.mat-mdc-form-field{
+        width: 100% !important;
+    }
 }
