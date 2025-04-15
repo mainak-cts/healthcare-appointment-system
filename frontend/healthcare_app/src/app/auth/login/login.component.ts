@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
     if(this.form.valid){
       this.isLoading.set(true);
       const body:LogInData = {
-        email: this.form.controls.email.value!.trim(),
+        email: this.form.controls.email.value!.trim().toLowerCase(),
         password: this.form.controls.password.value!.trim()
       }
 

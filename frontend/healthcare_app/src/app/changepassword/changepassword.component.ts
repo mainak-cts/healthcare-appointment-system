@@ -60,7 +60,7 @@ export class ChangepasswordComponent {
     if(this.form.valid && !this.isConfirmPasswordInvalid){
       this.isLoading.set(true);
       const body: ChangeUserPassword = {
-        email: this.form.controls.email.value!.trim(),
+        email: this.form.controls.email.value!.trim().toLowerCase(),
         newPassword: this.form.controls.password.value!.trim()
       }
       
