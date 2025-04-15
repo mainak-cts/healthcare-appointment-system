@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
@@ -11,10 +11,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit{
-  doctors = 100;
-  patients = 500;
-  appointments = 1000;
-  support = "24 x 7";
+  doctors = signal(100);
+  patients = signal(500);
+  appointments = signal(1000);
+  support = signal("24 x 7");
 
   toastManagerService = inject(ToastManagerService);
   toastr = inject(ToastrService);
