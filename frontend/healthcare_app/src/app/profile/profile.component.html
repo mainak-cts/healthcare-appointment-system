@@ -36,18 +36,38 @@
                             <mat-label>Name</mat-label>
                             <input matInput type="text" formControlName="name">
                         </mat-form-field>
+                        @if(isNameValid){
+                            <p class="form-control-error">Invalid name</p>
+                        }
                     </div>
                     <div class="form-control">
                         <mat-form-field>
-                            <mat-label>New password</mat-label>
-                            <input matInput type="password" formControlName="password">
+                            <mat-label>New Password</mat-label>
+                            <input matInput formControlName="password" [type]="hide() ? 'password' : 'text'"/>
+                            <button
+                                type="button"
+                                class="password-input-btn"
+                                mat-icon-button
+                                matSuffix
+                                (click)="togglePasswordShow($event)"
+                                [attr.aria-label]="'Hide password'"
+                                [attr.aria-pressed]="hide()"
+                                >
+                                <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
                         </mat-form-field>
+                        @if(isPasswordInvalid){
+                            <p class="form-control-error">Invalid password</p>
+                        }
                     </div>
                     <div class="form-control">
                         <mat-form-field>
                             <mat-label>Phone</mat-label>
                             <input matInput type="text" formControlName="phone">
                         </mat-form-field>
+                        @if(isPhoneInvalid){
+                            <p class="form-control-error">Invalid phone</p>
+                        }
                     </div>
                 </form>
                 <div class="edit-profile-form-btns">
@@ -94,7 +114,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <button type="submit" class="btn">
+            <button type="submit" class="btn" id="btn-filter">
                 Filter
                 <i class="fa-solid fa-filter"></i>
             </button>

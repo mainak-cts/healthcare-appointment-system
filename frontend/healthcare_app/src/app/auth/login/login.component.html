@@ -18,7 +18,18 @@
             <div class="form-control">
                 <mat-form-field>
                     <mat-label>Password</mat-label>
-                    <input matInput type="password" formControlName="password"/>
+                    <input matInput formControlName="password" [type]="hide() ? 'password' : 'text'"/>
+                    <button
+                        type="button"
+                        class="password-input-btn"
+                        mat-icon-button
+                        matSuffix
+                        (click)="togglePasswordShow($event)"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide()"
+                        >
+                        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
                 </mat-form-field>
                 @if(isPasswordInvalid){
                     <p class="form-control-error">Invalid password</p>
