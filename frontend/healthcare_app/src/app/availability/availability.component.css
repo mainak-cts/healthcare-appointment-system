@@ -1,7 +1,7 @@
 div.availability{
     border-radius: 5px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     min-width: 50vw;
     align-items: center;
     box-sizing: border-box;
@@ -116,7 +116,6 @@ div.availabilities p{
 @media (max-width: 1024px) {
     div.availability {
         flex-direction: column;
-        justify-content: space-around;
         align-items: center;
         width: 70vw;
     }
