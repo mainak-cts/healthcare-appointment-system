@@ -12,10 +12,34 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit{
-  doctors = "100+";
-  patients = "500+";
-  appointments = "1000+";
+  doctors = 0;
+  patients = 0;
+  appointments = 0;
   support = "24 x 7";
+
+  doctorInterval = setInterval(()=>{
+    if(this.doctors < 100){
+      this.doctors++;
+    }else{
+      clearInterval(this.doctorInterval)
+    }
+  }, 10)
+
+  patientInterval = setInterval(()=>{
+    if(this.patients < 500){
+      this.patients++;
+    }else{
+      clearInterval(this.patientInterval)
+    }
+  }, 5)
+
+  appointmentInterval = setInterval(()=>{
+    if(this.appointments < 1000){
+      this.appointments++;
+    }else{
+      clearInterval(this.appointmentInterval)
+    }
+  }, 1)
 
   toastManagerService = inject(ToastManagerService);
   toastr = inject(ToastrService);
