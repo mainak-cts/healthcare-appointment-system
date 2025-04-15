@@ -80,7 +80,7 @@ export class RegisterComponent {
 
       const registerData: RegisterData = {
         name: this.form.controls.name.value!.trim(),
-        email: this.form.controls.email.value!.trim(),
+        email: this.form.controls.email.value!.trim().toLowerCase(),
         password: this.form.controls.password.value!.trim(),
         role: this.form.controls.role.value!,
         phone: this.form.controls.phone.value!,
