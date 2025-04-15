@@ -27,6 +27,8 @@ export class ChangepasswordComponent {
   toastManagerService = inject(ToastManagerService);
   validatorService = inject(ValidationService);
 
+  hidePassword = signal(true);
+  confirmHidePassword = signal(true);
 
   form = new FormGroup({
     email: new FormControl('', {
@@ -80,5 +82,14 @@ export class ChangepasswordComponent {
         this.isLoading.set(false);
       }
     }
+  }
+
+  togglePasswordShow(event: MouseEvent) {
+    this.hidePassword.set(!this.hidePassword());
+    event.stopPropagation();
+  }
+  toggleConfirmPasswordShow(event: MouseEvent) {
+    this.confirmHidePassword.set(!this.confirmHidePassword());
+    event.stopPropagation();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, input, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { AuthApiService } from '../../services/authapi.service';
 import { AppointmentApiService } from '../../services/appointmentapi.service';
 import { AppointmentComponent } from '../appointment/appointment.component';
@@ -13,13 +13,16 @@ import { ValidationService } from '../../services/validation.service';
 import { TitleCasePipe } from '@angular/common';
 import { User } from '../models/User';
 import { Appointment } from '../models/Appointment';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-profile',
-  imports: [AppointmentComponent, ReactiveFormsModule, MatSelectModule, MatInputModule, TitleCasePipe],
+  imports: [AppointmentComponent, ReactiveFormsModule, MatSelectModule, MatInputModule, MatIconModule,TitleCasePipe, MatButtonModule],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrl: './profile.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit{
   userId = input.required<string>();
@@ -30,6 +33,7 @@ export class ProfileComponent implements OnInit{
   toastManagerService = inject(ToastManagerService);
   validationService = inject(ValidationService);
 
+  hide = signal(true);
   currentLoggedInUser = signal<User | null>(null);
 
   editProfile = signal(false);
@@ -89,6 +93,16 @@ export class ProfileComponent implements OnInit{
 
   get isItYourProfile(){
     return this.userId() == this.currentLoggedInUser()!.userId;
+  }
+
+  get isNameValid(){
+    return this.editProfileForm.controls.name.touched && this.editProfileForm.controls.name.invalid;
+  }
+  get isPasswordInvalid(){
+    return this.editProfileForm.controls.password.touched && this.editProfileForm.controls.password.invalid;
+  }
+  get isPhoneInvalid(){
+    return this.editProfileForm.controls.phone.touched && this.editProfileForm.controls.phone.invalid;
   }
 
   // Get appointments by user id
@@ -220,5 +234,10 @@ export class ProfileComponent implements OnInit{
   logOut(){
     this.authService.logOutUser();
     this.toastManagerService.setLogOutMessage("Logout successful!");
+  }
+
+  togglePasswordShow(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 }

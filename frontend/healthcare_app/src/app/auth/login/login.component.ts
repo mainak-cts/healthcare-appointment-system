@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   authService:AuthApiService = inject(AuthApiService);
   route = inject(Router);
   isLoading = signal(false);
+  hide = signal(true);
 
   toastr = inject(ToastrService);
   toastManagerService = inject(ToastManagerService);
@@ -83,5 +84,10 @@ export class LoginComponent implements OnInit {
         this.isLoading.set(false);
       }
     }
+  }
+
+  togglePasswordShow(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 }

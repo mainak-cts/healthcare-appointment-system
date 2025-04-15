@@ -40,8 +40,8 @@ main{
     flex: 1;
 }
 
-div.mat-mdc-form-field-flex{
-    width: 400px !important;
+mat-form-field{
+    width: 420px !important;
 }
 a{
     color: rgb(16, 0, 0);
@@ -109,7 +109,7 @@ button.btn-arrow:hover i{
 }
 
 @media (max-width: 768px) {
-    div.mat-mdc-form-field-flex{
+    mat-form-field{
         width: 70vw !important;
     }
 

@@ -26,6 +26,8 @@ export class RegisterComponent {
   toastManagerService = inject(ToastManagerService);
   validationService = inject(ValidationService);
   route = inject(Router);
+  hidePassword = signal(true);
+  confirmHidePassword = signal(true);
 
   form = new FormGroup({
     name: new FormControl('', {
@@ -107,5 +109,14 @@ export class RegisterComponent {
     }else{
       console.log(this.form.controls.password)
     }
+  }
+
+  togglePasswordShow(event: MouseEvent) {
+    this.hidePassword.set(!this.hidePassword());
+    event.stopPropagation();
+  }
+  toggleConfirmPasswordShow(event: MouseEvent) {
+    this.confirmHidePassword.set(!this.confirmHidePassword());
+    event.stopPropagation();
   }
 }
