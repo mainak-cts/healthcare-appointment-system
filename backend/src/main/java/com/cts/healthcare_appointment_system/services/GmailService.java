@@ -1,12 +1,15 @@
 package com.cts.healthcare_appointment_system.services;
 
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class GmailService implements EmailService{
@@ -28,8 +31,13 @@ public class GmailService implements EmailService{
         // Set body of the email
         mail.setText(body);
 
-        // Send the email
-        mailSender.send(mail);
+        try {
+			// Send the email
+			mailSender.send(mail);
+		} catch (MailSendException e) {
+			
+			log.error("Can't send mail: {}", e.getMessage());
+		}
     }
     
 }
