@@ -43,6 +43,38 @@ main{
 mat-form-field{
     width: 420px !important;
 }
+
+mat-paginator{
+    background-color: transparent !important;
+    font-size: 1rem !important;
+    margin-bottom: 10px !important;
+    width: max-content;
+}
+
+.mat-mdc-paginator-range-label {
+    margin: 0px 18px 0 0px;
+}
+
+.mat-mdc-tooltip-trigger.mat-mdc-paginator-navigation-previous{
+    margin-right: 0.5rem;
+}
+
+.mat-mdc-paginator-range-label {
+    margin: 0 20px 0 5px !important;
+}
+
+mat-paginator .mat-mdc-button-persistent-ripple.mdc-icon-button__ripple{
+    background-color: #007bff1a !important;
+}
+
+mat-paginator .mat-mdc-button-persistent-ripple.mdc-icon-button__ripple:hover{
+    cursor: pointer !important;
+}
+
+.mat-mdc-paginator-page-size-select{
+    width: 115px !important;
+}
+
 a{
     color: rgb(16, 0, 0);
 }
@@ -123,5 +155,8 @@ button.btn-arrow:hover i{
 @media (max-width: 576px) {
     .toast-container .ngx-toastr{
         width: 100% !important;
+    }
+    .mat-mdc-paginator-container{
+        flex-direction: column !important;
     }
 }

@@ -53,10 +53,20 @@
                 <p class="p-availabilities">Available time slots - </p>
             }
         }
-        @for(availability of availabilities(); track availability.availabilityId){
+        @for(availability of pagedAvailabilities(); track availability.availabilityId){
                 <app-availability [availability]="availability" [userRole]="currentLoggedInUser()!.role" (book)="onBook($event)" (edit)="onEdit($event)" (delete)="onDelete($event)"/>
         }@empty {
             <p class="p-availabilities">No available time slots 😢</p>
         }
     </div>
+
+    @if(pagedAvailabilities().length > 0){
+        <mat-paginator
+            [length]="availabilities().length"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="[10, 20, 30]"
+            (page)="onPageChange($event)"
+        >    
+        </mat-paginator>
+    }
 </div>

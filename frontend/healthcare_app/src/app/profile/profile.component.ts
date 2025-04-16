@@ -15,11 +15,12 @@ import { User } from '../models/User';
 import { Appointment } from '../models/Appointment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator'
 
 
 @Component({
   selector: 'app-profile',
-  imports: [AppointmentComponent, ReactiveFormsModule, MatSelectModule, MatInputModule, MatIconModule,TitleCasePipe, MatButtonModule],
+  imports: [AppointmentComponent, ReactiveFormsModule, MatSelectModule, MatInputModule, MatIconModule,TitleCasePipe, MatButtonModule, MatPaginatorModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
   encapsulation: ViewEncapsulation.None
@@ -40,6 +41,10 @@ export class ProfileComponent implements OnInit{
 
   user = signal<User | null>(null);
   appointments = signal<Appointment[]>([]);
+
+  pagedAppointments = signal<Appointment[]>([]);
+  pageSize = signal<number>(10);
+  currentPage = signal<number>(0);
 
   form = new FormGroup({
     appointmentId : new FormControl(''),
@@ -68,7 +73,9 @@ export class ProfileComponent implements OnInit{
             this.user.set(user);
             if(this.user() != null){
               this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
-                next: (appointments) => this.appointments.set(appointments),
+                next: (appointments) => {
+                  this.appointments.set(appointments)
+                },
                 error: (err) => console.log(err)
               })
             }
@@ -83,12 +90,29 @@ export class ProfileComponent implements OnInit{
         this.editProfileForm.controls.name.setValue(this.currentLoggedInUser()!.name);
         this.editProfileForm.controls.phone.setValue(this.currentLoggedInUser()!.phone);
       })
+
+      // Whenever the apppointments array changes, update the paged appointments
+      effect(() => {
+        this.appointments()
+        this.updatePagedAppointments();
+      })
   }
 
   ngOnInit(): void {
     this.authService.user$.subscribe((loggedInUser) => {
       this.currentLoggedInUser.set(loggedInUser);
     });
+  }
+
+  updatePagedAppointments(){
+    const startIndex = this.currentPage() * this.pageSize();
+    const endIndex = startIndex + this.pageSize();
+    this.pagedAppointments.set(this.appointments().slice(startIndex, endIndex));
+  }
+  onPageChange(event: PageEvent){
+    this.pageSize.set(event.pageSize);
+    this.currentPage.set(event.pageIndex);
+    this.updatePagedAppointments();
   }
 
   get isItYourProfile(){
@@ -126,7 +150,6 @@ export class ProfileComponent implements OnInit{
         }else{
           this.appointments.set(appointments);  
         }
-
       },
       error: (err) => {
         this.appointments.set([])

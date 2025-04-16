@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { AuthApiService } from '../../services/authapi.service';
 import { HttpClient } from '@angular/common/http';
 import { AvailabilityApiService } from '../../services/availabilityapi.service';
@@ -12,11 +12,11 @@ import { AppointmentApiService } from '../../services/appointmentapi.service';
 import { ToastrService } from 'ngx-toastr';
 import { Availability } from '../models/Availability';
 import { User } from '../models/User';
-
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator'
 
 @Component({
   selector: 'app-availabilities',
-  imports: [AvailabilityComponent, MatInputModule, MatFormFieldModule, ReactiveFormsModule],
+  imports: [AvailabilityComponent, MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatPaginatorModule],
   templateUrl: './availabilities.component.html',
   styleUrl: './availabilities.component.css'
 })
@@ -24,6 +24,10 @@ export class AvailabilitiesComponent implements OnInit{
 
   currentLoggedInUser = signal<User | null>(null);
   availabilities = signal<Availability[]>([]);
+
+  pagedAvailabilities = signal<Availability[]>([]);
+  pageSize = signal<number>(10);
+  currentPage = signal<number>(0);
 
   authService = inject(AuthApiService);
   availabilityService = inject(AvailabilityApiService);
@@ -46,6 +50,14 @@ export class AvailabilitiesComponent implements OnInit{
     timeSlotStart: new FormControl(''),
     timeSlotEnd: new FormControl(''),
   })
+
+  constructor(){
+    // Whenever the apppointments array changes, update the paged appointments
+    effect(() => {
+      this.availabilities()
+      this.updatePagedAvailabilities();
+    })
+  }
 
   // Set the current logged in user and fetch all the availabilities
   ngOnInit(): void {
@@ -74,6 +86,18 @@ export class AvailabilitiesComponent implements OnInit{
       }
     })
   }
+
+  updatePagedAvailabilities(){
+    const startIndex = this.currentPage() * this.pageSize();
+    const endIndex = startIndex + this.pageSize();
+    this.pagedAvailabilities.set(this.availabilities().slice(startIndex, endIndex));
+  }
+  onPageChange(event: PageEvent){
+    this.pageSize.set(event.pageSize);
+    this.currentPage.set(event.pageIndex);
+    this.updatePagedAvailabilities();
+  }
+
 
   // Getters to check whether the inputs are valid or not
   get isTimeSlotStartInvalid(){
