@@ -2,15 +2,25 @@
     @if(consultation()){
         <h2>Consultation</h2>
         @if(editable()){
-            <form class="consultation-form" [formGroup]="form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Notes</mat-label>
-                    <textarea matInput formControlName="notes"></textarea>
-                  </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Prescription</mat-label>
-                    <textarea matInput formControlName="prescription"></textarea>
-                </mat-form-field>
+            <form class="consultation-form" [formGroup]="editConsultationForm">
+                <div class="form-control">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Notes</mat-label>
+                        <textarea matInput formControlName="notes"></textarea>
+                    </mat-form-field>
+                    @if(isEditedNotesValid){
+                        <p class="form-control-error">Notes can only contain 5-500 characters</p>
+                    }
+                </div>
+                <div class="form-control">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Prescription</mat-label>
+                        <textarea matInput formControlName="prescription"></textarea>
+                    </mat-form-field>
+                    @if(isEditedPrescriptionValid){
+                        <p class="form-control-error">Prescription can only contain 5-1000 characters</p>
+                    }
+                </div>
             </form>
         }@else{
             <div class="show-consultation">
@@ -60,14 +70,24 @@
             }@else {
                 <form class="consultation-form" [formGroup]="newConsultationForm">
                     <h2>Consultation</h2>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Notes</mat-label>
-                        <textarea matInput formControlName="newNotes"></textarea>
-                      </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Prescription</mat-label>
-                        <textarea matInput formControlName="newPrescription"></textarea>
-                    </mat-form-field>
+                    <div class="form-control">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Notes</mat-label>
+                            <textarea matInput formControlName="newNotes"></textarea>
+                          </mat-form-field>
+                        @if(isNewNotesValid){
+                            <p class="form-control-error">Notes can only contain 5-500 characters</p>
+                        }
+                    </div>
+                    <div class="form-control">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Prescription</mat-label>
+                            <textarea matInput formControlName="newPrescription"></textarea>
+                        </mat-form-field>
+                        @if(isNewPrescriptionValid){
+                            <p class="form-control-error">Prescription can only contain 5-1000 characters</p>
+                        }
+                    </div>
     
                     <div class="btn-grp">
                         <button class="btn" (click)="onCancelCreate()">

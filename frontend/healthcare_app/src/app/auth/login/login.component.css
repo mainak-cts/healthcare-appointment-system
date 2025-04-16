@@ -82,6 +82,10 @@ div.new-account{
         padding: 0.75rem;
     }
 
+    div.forgot-password{
+        width: 88%;
+    }
+
     div.login-img {
         width: 70%;
     }

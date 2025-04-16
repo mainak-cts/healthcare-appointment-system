@@ -16,6 +16,18 @@ div.consultation h2{
     text-align: center;
 }
 
+p.form-control-error{
+    margin: 0;
+    color: red;
+    font-size: 0.8rem;
+    position: relative;
+    bottom: 10px;
+}
+
+div.form-control{
+    position: relative;
+}
+
 div.no-consultation{
     display: flex;
     gap: 0.5rem;

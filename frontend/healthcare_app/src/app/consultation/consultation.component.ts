@@ -33,7 +33,7 @@ export class ConsultationComponent implements OnInit{
 
   delete = output();
 
-  form = new FormGroup({
+  editConsultationForm = new FormGroup({
     notes: new FormControl('', {
       validators: [Validators.required, Validators.minLength(5), Validators.maxLength(500), this.validationService.noWhiteSpaceMinLengthValidator(5)]
     }),
@@ -66,8 +66,8 @@ export class ConsultationComponent implements OnInit{
     
     // When the consultation is loaded (signal changes), set the values in the edit consultation form
     effect(() => {
-      this.form.controls.notes.setValue(this.consultation()!.notes);
-      this.form.controls.prescription.setValue(this.consultation()!.prescription);
+      this.editConsultationForm.controls.notes.setValue(this.consultation()!.notes);
+      this.editConsultationForm.controls.prescription.setValue(this.consultation()!.prescription);
     })
   }
 
@@ -76,6 +76,22 @@ export class ConsultationComponent implements OnInit{
     this.authService.user$.subscribe((loggedInUser) => {
       this.currentLoggedInUser.set(loggedInUser);
     });
+  }
+
+  get isEditedNotesValid(){
+    return this.editConsultationForm.controls.notes.touched && this.editConsultationForm.controls.notes.invalid;
+  }
+
+  get isEditedPrescriptionValid(){
+    return this.editConsultationForm.controls.prescription.touched && this.editConsultationForm.controls.prescription.invalid;
+  }
+
+  get isNewNotesValid(){
+    return this.newConsultationForm.controls.newNotes.touched && this.newConsultationForm.controls.newNotes.invalid;
+  }
+
+  get isNewPrescriptionValid(){
+    return this.newConsultationForm.controls.newPrescription.touched && this.newConsultationForm.controls.newPrescription.invalid;
   }
 
   onEdit(){
@@ -96,11 +112,11 @@ export class ConsultationComponent implements OnInit{
 
   // Edit consultation
   onEditConsultation(){
-    if(this.form.valid){
+    if(this.editConsultationForm.valid){
       const data: ConsultationData = {
         consultationId: this.consultation()!.consultationId,
-        notes: this.form.controls.notes.value!,
-        prescription: this.form.controls.prescription.value!,
+        notes: this.editConsultationForm.controls.notes.value!,
+        prescription: this.editConsultationForm.controls.prescription.value!,
       }
       this.consultationService.editConsultation(data).subscribe({
         next: (res) => {
