@@ -36,7 +36,7 @@ public class GmailService implements EmailService{
 			mailSender.send(mail);
 		} catch (MailSendException e) {
 			
-			log.error("Can't send mail: {}", e.getMessage());
+			log.error("Can't send mail to: {}, error message: {}", recieverEmail, e.getMessage());
 		}
     }
     
