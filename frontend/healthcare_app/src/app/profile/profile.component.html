@@ -127,12 +127,22 @@
                     <p class="p-appointments">Appointments - </p>
                 }
             }
-            @for(appointment of appointments(); track appointment.appointmentId){
+            @for(appointment of pagedAppointments(); track appointment.appointmentId){
                 <app-appointment [appointment]="appointment" [isYou]="isItYourProfile" (cancel)="onCancel($event)" (complete)="onComplete($event)" [userRole] = "user()!.role"/>
             }@empty {
                 <p class="p-appointments">No appointments found 😢</p>
             }
         </div>
+
+        @if(pagedAppointments().length > 0){
+            <mat-paginator
+                [length]="appointments().length"
+                [pageSize]="pageSize()"
+                [pageSizeOptions]="[10, 20, 30]"
+                (page)="onPageChange($event)"
+            >    
+            </mat-paginator>
+        }
     }
 
     @if(isItYourProfile){
@@ -144,5 +154,4 @@
             </button>
         </div>
     }
-
 </div>

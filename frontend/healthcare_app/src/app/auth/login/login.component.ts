@@ -38,6 +38,10 @@ export class LoginComponent implements OnInit {
       this.toastr.success(this.toastManagerService.logOutMessage(), "Logout")
       this.toastManagerService.resetLogOutMessage();
     }
+    if(this.toastManagerService.unauthRedirectToLoginMessage() != ''){
+      this.toastr.warning(this.toastManagerService.unauthRedirectToLoginMessage(), 'Login');
+      this.toastManagerService.resetUnauthRedirectToLoginMessage();
+    }
   }
 
   form = new FormGroup({

@@ -1,15 +1,19 @@
 import { inject } from "@angular/core";
 import { CanMatchFn, Router } from "@angular/router";
 import { AuthApiService } from "../../services/authapi.service";
+import { ToastManagerService } from "../../services/toastr.service";
 
 export const authGuard: CanMatchFn = (route, segments) =>{
     const router = inject(Router);
+    const toastManagerService = inject(ToastManagerService);
     const authService = inject(AuthApiService);
 
     if(authService.isAuthenticated()){
         return true;
     }
-    router.navigate(["/login"]);
+
+    toastManagerService.setUnauthRedirectToLoginMessage('Please login to access this page');
+    router.navigate(["/login"], {replaceUrl: true});
     return false;
 }
 
