@@ -84,7 +84,6 @@ export class AuthApiService{
         const token = this.getToken();
         if(token != null){
            const payload = JSON.parse(atob(token.split(".")[1]));
-           console.log("Inside service: " + payload)
            return payload.sub;
         }else{
             return null;

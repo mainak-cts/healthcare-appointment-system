@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmit(){
+    this.form.markAllAsTouched()
     if(this.form.valid){
       this.isLoading.set(true);
       const body:LogInData = {
