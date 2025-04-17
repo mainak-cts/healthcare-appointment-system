@@ -10,10 +10,10 @@ import { provideToastr } from 'ngx-toastr';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes, withComponentInputBinding()), 
-    provideHttpClient(),
-    provideAnimations(),
-    provideToastr({
+    provideRouter(routes, withComponentInputBinding()),   // Router config
+    provideHttpClient(),  // HttpClient config
+    provideAnimations(),  // Angular animations config
+    provideToastr({       // Toast message notification config
       timeOut: 3000,
       closeButton: true,
       progressBar: true

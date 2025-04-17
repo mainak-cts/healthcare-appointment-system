@@ -26,7 +26,17 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator'
   encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit{
+  hide = signal(true);
+  currentLoggedInUser = signal<User | null>(null);
+  user = signal<User | null>(null);
+  appointments = signal<Appointment[]>([]);
+  editProfile = signal(false);
+  pagedAppointments = signal<Appointment[]>([]);
+  pageSize = signal<number>(10);
+  currentPage = signal<number>(0);
+
   userId = input.required<string>();
+
   authService = inject(AuthApiService);
   appointmentService = inject(AppointmentApiService);
   userService = inject(UserApiService);
@@ -34,18 +44,7 @@ export class ProfileComponent implements OnInit{
   toastManagerService = inject(ToastManagerService);
   validationService = inject(ValidationService);
 
-  hide = signal(true);
-  currentLoggedInUser = signal<User | null>(null);
-
-  editProfile = signal(false);
-
-  user = signal<User | null>(null);
-  appointments = signal<Appointment[]>([]);
-
-  pagedAppointments = signal<Appointment[]>([]);
-  pageSize = signal<number>(10);
-  currentPage = signal<number>(0);
-
+  // Filter appointments form
   filterForm = new FormGroup({
     appointmentId : new FormControl(''),
     patientName : new FormControl(''),
@@ -53,6 +52,7 @@ export class ProfileComponent implements OnInit{
     status : new FormControl('')
   })
 
+  // Edit user profile form
   editProfileForm = new FormGroup({
     name : new FormControl('', {
       validators: [Validators.required, Validators.minLength(2), this.validationService.noWhiteSpaceMinLengthValidator(2)]
@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit{
     })
   })
 
-  // Fetching the details of the user, whose profile is visited
+  // Fetching the details of the user, whose profile is visited, and fetching the corresponding appointments of that user
   constructor() {
       effect(() => {
         this.authService.getUserById(this.userId())?.subscribe({
@@ -86,6 +86,7 @@ export class ProfileComponent implements OnInit{
         })
       })
 
+      // Update the fields of the edit profile form, with the details of the current logged in user
       effect(() => {
         if(this.currentLoggedInUser() != null){
           this.editProfileForm.controls.name.setValue(this.currentLoggedInUser()!.name);
@@ -100,12 +101,14 @@ export class ProfileComponent implements OnInit{
       })
   }
 
+  // Fetch the details of the currently logged in user
   ngOnInit(): void {
     this.authService.user$.subscribe((loggedInUser) => {
       this.currentLoggedInUser.set(loggedInUser);
     });
   }
 
+  // Update the appointments data, for pagination
   updatePagedAppointments(){
     const startIndex = this.currentPage() * this.pageSize();
     const endIndex = startIndex + this.pageSize();
@@ -117,12 +120,14 @@ export class ProfileComponent implements OnInit{
     this.updatePagedAppointments();
   }
 
+  // To check the profile belongs to the currently logged in user, or not
   get isItYourProfile(){
     if(this.currentLoggedInUser() != null)
       return this.userId() == this.currentLoggedInUser()!.userId;
     return false;
   }
 
+  // Getters to check the inputs are valid or not (To show error message in DOM)
   get isNameValid(){
     return this.editProfileForm.controls.name.touched && this.editProfileForm.controls.name.invalid;
   }
@@ -135,6 +140,8 @@ export class ProfileComponent implements OnInit{
 
   // Get appointments by user id
   onFilterSubmit(){
+
+    // Make the API call
     this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.filterForm.controls.status.value!, this.filterForm.controls.patientName.value!.trim(), this.filterForm.controls.doctorName.value!.trim()).subscribe({
       next: (appointments) => {
         let appointmentWithId: Appointment | undefined;
@@ -163,8 +170,11 @@ export class ProfileComponent implements OnInit{
 
   // Cancel an appointment
   onCancel(id: string){
+    // If user chose 'OK' in the popup, cancel, else not
     const toCancel = confirm("Do you really want to cancel the appointment?")
+
     if(toCancel){
+      // Make API call
       this.appointmentService.cancelAppointment(id).subscribe({
         next: (res) => {
           this.toastr.success("Appointment cancelled successfully!", "Cancelled")
@@ -182,6 +192,8 @@ export class ProfileComponent implements OnInit{
 
   // Complete an appointment
   onComplete(id: string){
+
+    // Make API call
     this.appointmentService.completeAppointment(id).subscribe({
       next: (res) => {
         this.toastr.success("Appointment completed successfully!", "Completed")
@@ -196,20 +208,24 @@ export class ProfileComponent implements OnInit{
     })
   }
 
+  // Show edit profile form
   onEditProfile(){
     this.toastr.info("If you don't want to change your password, type your existing password.", "Password")
     this.editProfile.set(true);
   }
 
+  // Hide edit profile form
   onEditProfileCancel(){
     this.editProfile.set(false);
     this.editProfileForm.controls.password.reset();
   }
 
-  // Edit Profile
+  // Edit Profile from submit
   onEditProfileSubmitForm(){
     this.editProfileForm.markAllAsTouched()
     if(this.editProfileForm.valid){
+
+      // Request body to be sent
       const data: UserData = {
         userId: this.currentLoggedInUser()!.userId,
         name: this.editProfileForm.controls.name.value!.trim(),
@@ -217,6 +233,7 @@ export class ProfileComponent implements OnInit{
         phone: this.editProfileForm.controls.phone.value!,
       }
 
+      // Make the API call
       this.userService.editUserProfile(data).subscribe({
         next: (res) =>{
           this.user.set(res);    // Set the updated user details
@@ -243,12 +260,15 @@ export class ProfileComponent implements OnInit{
 
   // Delete profile
   onDeleteProfile(){
+    // If user chose 'OK' in the popup, delete, else not
     const toDelete = window.confirm("Do you really want to delete your profile?")
 
     if(toDelete){
+
+      // Make the API call
       this.userService.deleteUserById(this.currentLoggedInUser()!.userId).subscribe({
         next: (res) => {
-          this.authService.logOutUser();
+          this.authService.logOutUser();  //logout the user
           this.toastManagerService.setLogOutMessage("Profile deleted successfully!");
         },
         error: (err) => {
@@ -258,11 +278,13 @@ export class ProfileComponent implements OnInit{
     }
   }
 
+  // Logout the user
   logOut(){
     this.authService.logOutUser();
     this.toastManagerService.setLogOutMessage("Logout successful!");
   }
 
+  // Show/hide password
   togglePasswordShow(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();

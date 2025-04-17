@@ -8,9 +8,12 @@ import { BASE_URLS } from "../environment/environment";
 @Injectable({providedIn: 'root'})
 export class AvailabilityApiService{
     private BASE_URL = BASE_URLS.AVAILABILITY_BASE_URL;
+
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
+    // Get all availabilities of a doctor by doctor id
+    // GET http://localhost:9090/availabilities?doctorId={id}
     getAvailabilitiesByDoctorId(doctorId: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -24,10 +27,13 @@ export class AvailabilityApiService{
         )
     }
 
+    // Get all available availabilities
+    // GET http://localhost:9090/availabilities?isAvailable=true&params
     getAvailabilities(doctorName: string | null, timeSlotStart: string | null, timeSlotEnd: string | null){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
 
+        // Filter availabilities query params
         let params = {}
         if(doctorName){
             params = {...params, namePrefix: doctorName}
@@ -49,6 +55,8 @@ export class AvailabilityApiService{
         )
     }
 
+    // Create an availability
+    // POST http://localhost:9090/availabilities
     createAvailability(data: AvailabilityData){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -61,6 +69,8 @@ export class AvailabilityApiService{
         )
     }
 
+    // Delete an availability
+    // DELETE http://localhost:9090/availabilities/{id}
     deleteAvailabilityById(id: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -73,7 +83,14 @@ export class AvailabilityApiService{
         )
     }
 
-    editAvailability(data: any){
+    // Edit an availability
+    // PUT http://localhost:9090/availabilities
+    editAvailability(data: {
+        doctorId: string,
+        availabilityId: string,
+        timeSlotStart: string,
+        timeSlotEnd: string
+    }){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
         

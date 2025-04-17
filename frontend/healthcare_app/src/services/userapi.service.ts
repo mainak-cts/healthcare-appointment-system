@@ -13,6 +13,8 @@ export class UserApiService{
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
+    // Edit user profile
+    // PUT http://localhost:9090/users
     editUserProfile(data: UserData){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -25,6 +27,8 @@ export class UserApiService{
         )
     }
 
+    // Delete user by id
+    // DELETE http://localhost:9090/users/{id}
     deleteUserById(id: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -36,6 +40,8 @@ export class UserApiService{
         )
     }
 
+    // Change password of an user
+    // PUT http://localhost:9090/users/change-password
     changeUserPassword(data: ChangeUserPassword){
         const response = this.httpClient.put<User>(
             `${this.BASE_URL}/change-password`,
