@@ -60,7 +60,7 @@ div.btn-grp{
     justify-content: space-between;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 512px) {
     div.consultation{
         width: 80vw;
     }
