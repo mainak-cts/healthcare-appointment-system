@@ -52,19 +52,24 @@ export class ConsultationComponent implements OnInit{
   })
 
   // Fetch the associated consultation, for the given appointment
-  // When the consultation is loaded (signal changes), set the values in the edit consultation form
   constructor(){
     effect(() => {
       this.consultationService.getConsultationByAppointmentId(this.appointmentId()).subscribe({
         next: (res) => {
           this.consultation.set(res);
-          this.editConsultationForm.controls.notes.setValue(this.consultation()!.notes);
-          this.editConsultationForm.controls.prescription.setValue(this.consultation()!.prescription);
         },
         error: (err) => {
-          console.log(err);
+          console.log(err.error?.message);
         }
       })
+    })
+
+    // When the consultation is loaded (signal changes), set the values in the edit consultation form
+    effect(() => {
+      if (this.consultation() != null) {
+        this.editConsultationForm.controls.notes.setValue(this.consultation()!.notes);
+        this.editConsultationForm.controls.prescription.setValue(this.consultation()!.prescription);
+      }
     })
   }
 
