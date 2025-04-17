@@ -157,7 +157,7 @@ public class UserService {
         User user = userRepo.findByEmail(dto.getEmail()).orElse(null);
         if (auth.isAuthenticated()) {
 
-            log.debug("User with email {} logged in", dto.getEmail());
+            log.debug("User with email: {} logged in", dto.getEmail());
 
             String jwt = jwtUtils.generateJWTToken(dto.getEmail());
 

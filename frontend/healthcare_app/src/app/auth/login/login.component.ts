@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmit(){
+    this.form.markAllAsTouched()
     if(this.form.valid){
       this.isLoading.set(true);
       const body:LogInData = {

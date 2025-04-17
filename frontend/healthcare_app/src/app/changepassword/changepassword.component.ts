@@ -57,6 +57,7 @@ export class ChangepasswordComponent {
   }
 
   async onSubmit(){
+    this.form.markAllAsTouched();
     if(this.form.valid && !this.isConfirmPasswordInvalid){
       this.isLoading.set(true);
       const body: ChangeUserPassword = {

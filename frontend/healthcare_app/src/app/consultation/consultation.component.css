@@ -52,12 +52,15 @@ div.notes h3.h-consultation{
     margin-top: 0;
 }
 
+form.consultation-form div.form-control mat-form-field{
+    width: 96.2% !important;
+}
 div.btn-grp{
     display: flex;
     justify-content: space-between;
 }
 
-@media (max-width: 512px) {
+@media (max-width: 768px) {
     div.consultation{
         width: 80vw;
     }

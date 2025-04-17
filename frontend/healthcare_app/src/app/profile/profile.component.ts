@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit{
   pageSize = signal<number>(10);
   currentPage = signal<number>(0);
 
-  form = new FormGroup({
+  filterForm = new FormGroup({
     appointmentId : new FormControl(''),
     patientName : new FormControl(''),
     doctorName : new FormControl(''),
@@ -72,7 +72,7 @@ export class ProfileComponent implements OnInit{
           next: (user) => {
             this.user.set(user);
             if(this.user() != null){
-              this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
+              this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.filterForm.controls.status.value!, this.filterForm.controls.patientName.value!, this.filterForm.controls.doctorName.value!).subscribe({
                 next: (appointments) => {
                   this.appointments.set(appointments)
                 },
@@ -87,8 +87,10 @@ export class ProfileComponent implements OnInit{
       })
 
       effect(() => {
-        this.editProfileForm.controls.name.setValue(this.currentLoggedInUser()!.name);
-        this.editProfileForm.controls.phone.setValue(this.currentLoggedInUser()!.phone);
+        if(this.currentLoggedInUser() != null){
+          this.editProfileForm.controls.name.setValue(this.currentLoggedInUser()!.name);
+          this.editProfileForm.controls.phone.setValue(this.currentLoggedInUser()!.phone);
+        }
       })
 
       // Whenever the apppointments array changes, update the paged appointments
@@ -116,7 +118,9 @@ export class ProfileComponent implements OnInit{
   }
 
   get isItYourProfile(){
-    return this.userId() == this.currentLoggedInUser()!.userId;
+    if(this.currentLoggedInUser() != null)
+      return this.userId() == this.currentLoggedInUser()!.userId;
+    return false;
   }
 
   get isNameValid(){
@@ -131,10 +135,10 @@ export class ProfileComponent implements OnInit{
 
   // Get appointments by user id
   onFilterSubmit(){
-    this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.form.controls.status.value!, this.form.controls.patientName.value!, this.form.controls.doctorName.value!).subscribe({
+    this.appointmentService.getAppointmentByUserId(this.user()!.userId, this.user()!.role, this.filterForm.controls.status.value!, this.filterForm.controls.patientName.value!.trim(), this.filterForm.controls.doctorName.value!.trim()).subscribe({
       next: (appointments) => {
         let appointmentWithId: Appointment | undefined;
-        const appointmentId = this.form.controls.appointmentId.value!.trim();
+        const appointmentId = this.filterForm.controls.appointmentId.value!.trim();
         
         // Filter appointment based on id, if provided
         if(appointmentId != ''){

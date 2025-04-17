@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { AuthApiService } from "./authapi.service";
 import { AppointmentData } from "../app/models/AppointmentData";

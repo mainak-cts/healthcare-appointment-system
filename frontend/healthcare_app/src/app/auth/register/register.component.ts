@@ -75,7 +75,8 @@ export class RegisterComponent {
 
   // Submit registration form
   async onSubmit(){
-    if(this.form.valid){
+    this.form.markAllAsTouched()
+    if(this.form.valid && !this.isConfirmPasswordInvalid){
       this.isLoading.set(true);
 
       const registerData: RegisterData = {
@@ -106,8 +107,6 @@ export class RegisterComponent {
       }finally{
         this.isLoading.set(false);
       }
-    }else{
-      console.log(this.form.controls.password)
     }
   }
 

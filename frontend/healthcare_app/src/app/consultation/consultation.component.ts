@@ -59,15 +59,17 @@ export class ConsultationComponent implements OnInit{
           this.consultation.set(res);
         },
         error: (err) => {
-          console.log(err);
+          console.log(err.error?.message);
         }
       })
     })
-    
+
     // When the consultation is loaded (signal changes), set the values in the edit consultation form
     effect(() => {
-      this.editConsultationForm.controls.notes.setValue(this.consultation()!.notes);
-      this.editConsultationForm.controls.prescription.setValue(this.consultation()!.prescription);
+      if (this.consultation() != null) {
+        this.editConsultationForm.controls.notes.setValue(this.consultation()!.notes);
+        this.editConsultationForm.controls.prescription.setValue(this.consultation()!.prescription);
+      }
     })
   }
 
@@ -112,6 +114,7 @@ export class ConsultationComponent implements OnInit{
 
   // Edit consultation
   onEditConsultation(){
+    this.editConsultationForm.markAllAsTouched()
     if(this.editConsultationForm.valid){
       const data: ConsultationData = {
         consultationId: this.consultation()!.consultationId,
@@ -133,6 +136,7 @@ export class ConsultationComponent implements OnInit{
 
   // Create new consultation
   onCreateConsultation(){
+    this.newConsultationForm.markAllAsTouched()
     if(this.newConsultationForm.valid){
       const data: {appointmentId: string, notes: string, prescription: string} = {
         appointmentId: this.appointmentId(),
