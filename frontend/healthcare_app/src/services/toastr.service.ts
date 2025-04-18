@@ -1,5 +1,6 @@
 import { Injectable, signal } from "@angular/core";
 
+// For cross component notifications
 @Injectable({providedIn: 'root'})
 export class ToastManagerService{
     logInMessage = signal<string>('');

@@ -36,6 +36,7 @@ export class AvailabilitiesComponent implements OnInit{
   formSubmitted = signal(false);
   toastr = inject(ToastrService);
 
+  // Create availability form
   availabilityForm = new FormGroup({
     timeSlotStart: new FormControl('', {
       validators: [Validators.required]
@@ -45,6 +46,7 @@ export class AvailabilitiesComponent implements OnInit{
     }),
   })
 
+  // Filter availabilities form
   filterAvailabilityForm = new FormGroup({
     doctorName: new FormControl(''),
     timeSlotStart: new FormControl(''),
@@ -59,7 +61,9 @@ export class AvailabilitiesComponent implements OnInit{
     })
   }
 
-  // Set the current logged in user and fetch all the availabilities
+  // Set the current logged in user and fetch all the availabilities based on their ROLE
+  // If, ROLE is DOCTOR, only fetch his/her slots
+  // Else, Fetch all the 'available' slots
   ngOnInit(): void {
     this.authService.user$.subscribe((user) =>{
       this.currentLoggedInUser.set(user);
@@ -87,6 +91,7 @@ export class AvailabilitiesComponent implements OnInit{
     })
   }
 
+  // For pagination, show only a chunk of appointments, based on page number
   updatePagedAvailabilities(){
     const startIndex = this.currentPage() * this.pageSize();
     const endIndex = startIndex + this.pageSize();
@@ -120,13 +125,18 @@ export class AvailabilitiesComponent implements OnInit{
   onCreateSubmit(){
     this.formSubmitted.set(true)
     if(this.availabilityForm.valid){
+
+      // Request body to be sent
       const data: AvailabilityData = {
         doctorId: this.currentLoggedInUser()!.userId,
         timeSlotStart: this.availabilityForm.controls.timeSlotStart.value!,
         timeSlotEnd: this.availabilityForm.controls.timeSlotEnd.value!,
       }
+
+      // Make the API call
       this.availabilityService.createAvailability(data).subscribe({
         next: (res) => {
+          // Getting the newly created slot, and adding it in the array
           this.availabilities.set([res, ...this.availabilities()]);
           this.toastr.success("Availability slot created successfully", "Created")
           this.availabilityForm.reset();
@@ -154,6 +164,8 @@ export class AvailabilitiesComponent implements OnInit{
 
   // Book a new appointment using a selected availabililty
   onBook(data: {doctorId: string, timeSlotStart: string, timeSlotEnd: string, availabilityId: string}){
+
+    // Request body to be sent
     const appointmentData: AppointmentData = {
       patientId: this.currentLoggedInUser()!.userId,
       doctorId: data.doctorId,
@@ -161,6 +173,7 @@ export class AvailabilitiesComponent implements OnInit{
       timeSlotEnd: data.timeSlotEnd,
     }
 
+    // Make the API call
     this.appointmentService.bookAppointment(appointmentData).subscribe({
       next: (res) => {
         this.availabilities.update(av => av.map(a => {
@@ -176,11 +189,14 @@ export class AvailabilitiesComponent implements OnInit{
 
   // Edit an availability
   onEdit(data: {availabilityId: string, timeSlotStart: string, timeSlotEnd: string}){
+
+    // Request body to be sent
     const editAvailabilityData = {
       doctorId: this.currentLoggedInUser()!.userId,
       ...data
     }
 
+    // Make the API call
     this.availabilityService.editAvailability(editAvailabilityData).subscribe({
       next: (res) => {
         this.availabilities.update(av => av.map(a => {
@@ -207,8 +223,11 @@ export class AvailabilitiesComponent implements OnInit{
 
   // Delete an availability
   onDelete(id: string){
+    // If 'OK' is chosen in the popup, delete, else not
     const confirmDelete = confirm("Do you really want to delete the slot?")
+
     if(confirmDelete){
+      // Make the APi call
       this.availabilityService.deleteAvailabilityById(id).subscribe({
         next: (res) => {
           const updatedList = this.availabilities().filter((a) => a.availabilityId != res.availabilityId);
@@ -226,9 +245,13 @@ export class AvailabilitiesComponent implements OnInit{
 
   // Filter availabilities
   onFilterSubmit(){
+    
+    // Fetch the params, based on which filtering will be done
     const doctorName = this.filterAvailabilityForm.controls.doctorName.value!.trim();
     const timeSlotStart = this.filterAvailabilityForm.controls.timeSlotStart.value;
     const timeSlotEnd = this.filterAvailabilityForm.controls.timeSlotEnd.value;
+
+    // Make the API call
     this.availabilityService.getAvailabilities(doctorName, timeSlotStart, timeSlotEnd).subscribe({
       next: (res) => {
         this.availabilities.set(res);

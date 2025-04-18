@@ -18,35 +18,37 @@ import { Consultation } from '../models/Consultation';
   styleUrl: './consultation.component.css'
 })
 export class ConsultationComponent implements OnInit{
-  appointmentId = input.required<string>();
-  consultationService = inject(ConsultationApiService);
-  authService = inject(AuthApiService);
-  currentLoggedInUser = signal<User | null>(null);
-  route = inject(Router);
-  toastr = inject(ToastrService);
-  validationService = inject(ValidationService);
-  status = input.required<"COMPLETED" | "CANCELLED" | "BOOKED">();
-
   editable = signal(false);
   create = signal(false);
   consultation = signal<Consultation | null>(null); 
+  currentLoggedInUser = signal<User | null>(null);
 
+  appointmentId = input.required<string>();
+  status = input.required<"COMPLETED" | "CANCELLED" | "BOOKED">();
   delete = output();
 
-  editConsultationForm = new FormGroup({
-    notes: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(500), this.validationService.noWhiteSpaceMinLengthValidator(5)]
-    }),
-    prescription: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(1000), this.validationService.noWhiteSpaceMinLengthValidator(5)]
-    }),
-  })
+  consultationService = inject(ConsultationApiService);
+  authService = inject(AuthApiService);
+  route = inject(Router);
+  toastr = inject(ToastrService);
+  validationService = inject(ValidationService);
 
+  // New consultation form
   newConsultationForm = new FormGroup({
     newNotes: new FormControl('', {
       validators: [Validators.required, Validators.minLength(5), Validators.maxLength(500), this.validationService.noWhiteSpaceMinLengthValidator(5)]
     }),
     newPrescription: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(1000), this.validationService.noWhiteSpaceMinLengthValidator(5)]
+    }),
+  })
+
+  // Edit consultation form
+  editConsultationForm = new FormGroup({
+    notes: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(500), this.validationService.noWhiteSpaceMinLengthValidator(5)]
+    }),
+    prescription: new FormControl('', {
       validators: [Validators.required, Validators.minLength(5), Validators.maxLength(1000), this.validationService.noWhiteSpaceMinLengthValidator(5)]
     }),
   })
@@ -80,6 +82,7 @@ export class ConsultationComponent implements OnInit{
     });
   }
 
+  // Getters to check the inputs are valid or not (To show error message in DOM)
   get isEditedNotesValid(){
     return this.editConsultationForm.controls.notes.touched && this.editConsultationForm.controls.notes.invalid;
   }
@@ -96,31 +99,40 @@ export class ConsultationComponent implements OnInit{
     return this.newConsultationForm.controls.newPrescription.touched && this.newConsultationForm.controls.newPrescription.invalid;
   }
 
+  // Show edit form
   onEdit(){
     this.editable.set(true)
   }
 
+  // Hide edit form
   onCancel(){
     this.editable.set(false)
   }
+  
+  // Show create form
+  onCreate(){
+    this.create.set(true)
+  }
+
+  // Hide create form
   onCancelCreate(){
     this.create.set(false)
     this.newConsultationForm.reset()
-  }
-
-  onCreate(){
-    this.create.set(true)
   }
 
   // Edit consultation
   onEditConsultation(){
     this.editConsultationForm.markAllAsTouched()
     if(this.editConsultationForm.valid){
+
+      // Request body to be sent
       const data: ConsultationData = {
         consultationId: this.consultation()!.consultationId,
         notes: this.editConsultationForm.controls.notes.value!,
         prescription: this.editConsultationForm.controls.prescription.value!,
       }
+
+      // Make the API call
       this.consultationService.editConsultation(data).subscribe({
         next: (res) => {
           this.consultation.set(res);
@@ -138,11 +150,15 @@ export class ConsultationComponent implements OnInit{
   onCreateConsultation(){
     this.newConsultationForm.markAllAsTouched()
     if(this.newConsultationForm.valid){
+
+      // Request body to be sent
       const data: {appointmentId: string, notes: string, prescription: string} = {
         appointmentId: this.appointmentId(),
         notes: this.newConsultationForm.controls.newNotes.value!,
         prescription: this.newConsultationForm.controls.newPrescription.value!,
       }
+
+      // Make the API call
       this.consultationService.createConsultation(data).subscribe({
         next: (res) => {
           this.consultation.set(res);
@@ -160,13 +176,18 @@ export class ConsultationComponent implements OnInit{
     }
   }
 
+  // Delete consultation
   onDelete(){
+    // If user chose 'OK', then delete, else not
     const shouldDelete = confirm("Do you really want to delete the consultation?")
     if(shouldDelete){
+
+      // Make the API call
       this.consultationService.deleteConsultationById(this.consultation()!.consultationId).subscribe({
         next: (res) => {
           this.consultation.set(null);
           this.toastr.success("Consultation deleted successfully", "Deleted")
+          // To hide the consultation, emit the event to parent (appointment)
           this.delete.emit();
         },
         error: (err) => {

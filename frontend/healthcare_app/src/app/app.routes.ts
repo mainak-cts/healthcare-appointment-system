@@ -8,6 +8,7 @@ import { authGuard, forgotPasswordGuard } from './guards/auth.guard';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 
+// Routes for our app
 export const routes: Routes = [
     {
         path: '',

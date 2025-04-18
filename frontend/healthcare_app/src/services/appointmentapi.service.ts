@@ -8,9 +8,12 @@ import { BASE_URLS } from "../environment/environment";
 @Injectable({providedIn: 'root'})
 export class AppointmentApiService{
     private BASE_URL = BASE_URLS.APPOINTMENT_BASE_URL;
+    
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
+    // GET an appointment by id
+    // GET http://localhost:9090/appointments/{id}
     getAppointmentById(id: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -23,10 +26,13 @@ export class AppointmentApiService{
         )
     }
 
+    // GET appointments by user id
+    // GET http://localhost:9090/appointments?params
     getAppointmentByUserId(userId: string, role: string, status: string, patientName: string, doctorName: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
 
+        // For filtering the appointments, set query params
         let params = {};
         if(role === 'PATIENT'){
             params = {patientId: userId}
@@ -51,6 +57,8 @@ export class AppointmentApiService{
         )
     }
 
+    // Book an appointment
+    // POST http://localhost:9090/appointments
     bookAppointment(data: AppointmentData){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -63,6 +71,9 @@ export class AppointmentApiService{
             }
         )
     }
+
+    // Cancel an appointment
+    // PUT http://localhost:9090/appointments/cancel/{id}
     cancelAppointment(id: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -74,6 +85,9 @@ export class AppointmentApiService{
             }
         )
     }
+
+    // Complete an appointment
+    // PUT http://localhost:9090/appointments/complete/{id}
     completeAppointment(id: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });

@@ -21,14 +21,16 @@ import { ValidationService } from '../../../services/validation.service';
 export class RegisterComponent {
 
   isLoading = signal(false);
+  hidePassword = signal(true);
+  confirmHidePassword = signal(true);
+
   authService = inject(AuthApiService);
   toastr = inject(ToastrService);
   toastManagerService = inject(ToastManagerService);
   validationService = inject(ValidationService);
   route = inject(Router);
-  hidePassword = signal(true);
-  confirmHidePassword = signal(true);
 
+  // Form to submit user data for registration
   form = new FormGroup({
     name: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2), this.validationService.noWhiteSpaceMinLengthValidator(2)]
@@ -50,6 +52,7 @@ export class RegisterComponent {
     })
   })
 
+  // Getters to check the inputs are valid or not (To show error message in DOM)
   get isNameInvalid(){
     return this.form.controls.name.touched && this.form.controls.name.invalid;
   }
@@ -79,6 +82,7 @@ export class RegisterComponent {
     if(this.form.valid && !this.isConfirmPasswordInvalid){
       this.isLoading.set(true);
 
+      // Request body to be sent
       const registerData: RegisterData = {
         name: this.form.controls.name.value!.trim(),
         email: this.form.controls.email.value!.trim().toLowerCase(),
@@ -88,11 +92,16 @@ export class RegisterComponent {
       }
 
       try{
+        // Make the API call
         const res = await this.authService.registerUser(registerData);
+
+        // If API call succeeds, show success notification
         this.toastManagerService.setRedirectToLoginMessage(`Hi, ${res.name}, please log in with your credentials`)
         this.toastManagerService.setLogInMessage(`Hi, ${res.name}, welcome to our app!`)
         this.route.navigate(["/login"]);
+
       }catch(err: any){
+        // If API call fails, show error notification
         if(err.error.error){
           let errorMsg = '';
           for(let errKey in err.error){
@@ -110,6 +119,7 @@ export class RegisterComponent {
     }
   }
 
+  // Show/hide password & confirm password
   togglePasswordShow(event: MouseEvent) {
     this.hidePassword.set(!this.hidePassword());
     event.stopPropagation();

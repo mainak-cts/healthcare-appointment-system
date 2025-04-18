@@ -19,17 +19,17 @@ import { UserApiService } from '../../services/userapi.service';
   styleUrl: './changepassword.component.css'
 })
 export class ChangepasswordComponent {
-  route = inject(Router);
+  hidePassword = signal(true);
+  confirmHidePassword = signal(true);
   isLoading = signal(false);
-
+  
+  route = inject(Router);
   toastr = inject(ToastrService);
   userService = inject(UserApiService);
   toastManagerService = inject(ToastManagerService);
   validatorService = inject(ValidationService);
 
-  hidePassword = signal(true);
-  confirmHidePassword = signal(true);
-
+  // Change password form
   form = new FormGroup({
     email: new FormControl('', {
       validators: [Validators.required, Validators.email]
@@ -42,6 +42,7 @@ export class ChangepasswordComponent {
     })
   })
 
+  // Getters to check the inputs are valid or not (To show error message in DOM)
   get isEmailInvalid(){
     return this.form.controls.email.touched && this.form.controls.email.invalid;
   }
@@ -56,16 +57,20 @@ export class ChangepasswordComponent {
     return false;
   }
 
+  // Submit the change password data
   async onSubmit(){
     this.form.markAllAsTouched();
     if(this.form.valid && !this.isConfirmPasswordInvalid){
       this.isLoading.set(true);
+
+      // Request body to be sent
       const body: ChangeUserPassword = {
         email: this.form.controls.email.value!.trim().toLowerCase(),
         newPassword: this.form.controls.password.value!.trim()
       }
       
       try{
+        // Make the API call
         const data = await this.userService.changeUserPassword(body);
         this.form.reset();
 
@@ -85,10 +90,12 @@ export class ChangepasswordComponent {
     }
   }
 
+  // Show/hide password and confirm password
   togglePasswordShow(event: MouseEvent) {
     this.hidePassword.set(!this.hidePassword());
     event.stopPropagation();
   }
+
   toggleConfirmPasswordShow(event: MouseEvent) {
     this.confirmHidePassword.set(!this.confirmHidePassword());
     event.stopPropagation();

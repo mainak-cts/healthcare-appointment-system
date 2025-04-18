@@ -9,9 +9,12 @@ import { BASE_URLS } from "../environment/environment";
 @Injectable({providedIn: 'root'})
 export class ConsultationApiService{
     private BASE_URL = BASE_URLS.CONSULTATION_BASE_URL;
+
     private httpClient = inject(HttpClient);
     private authService = inject(AuthApiService);
 
+    // Get consultation by appointment id
+    // GET http://localhost:9090/consultations?appointmentId={id}
     getConsultationByAppointmentId(appointmentId: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -22,9 +25,11 @@ export class ConsultationApiService{
                 params: {appointmentId},
                 headers: authHeader
             }
-        ).pipe(map(e => e[0]));
+        ).pipe(map(e => e[0]));   // As the response returns an array, getting only the first element (one appointment -> one consultation)
     }
 
+    // Create a consultation
+    // POST http://localhost:9090/consultations
     createConsultation(data: {appointmentId: string, notes: string, prescription: string}){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -38,6 +43,8 @@ export class ConsultationApiService{
         )
     }
 
+    // Create a consultation
+    // POST http://localhost:9090/consultations
     editConsultation(data: ConsultationData){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });
@@ -50,7 +57,8 @@ export class ConsultationApiService{
             }
         )
     }
-
+    // Delete a consultation
+    // DELETE http://localhost:9090/consultations/{id}
     deleteConsultationById(id: string){
         const jwtToken = this.authService.getToken()
         const authHeader = new HttpHeaders({ 'Authorization': `Bearer ${jwtToken}` });

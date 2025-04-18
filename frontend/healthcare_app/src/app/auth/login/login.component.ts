@@ -19,11 +19,11 @@ import { ValidationService } from '../../../services/validation.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-  authService:AuthApiService = inject(AuthApiService);
-  route = inject(Router);
   isLoading = signal(false);
   hide = signal(true);
-
+  
+  route = inject(Router);
+  authService:AuthApiService = inject(AuthApiService);
   toastr = inject(ToastrService);
   toastManagerService = inject(ToastManagerService);
   validationService = inject(ValidationService);
@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  // Form to submit login data
   form = new FormGroup({
     email: new FormControl('', {
       validators: [Validators.required, Validators.email]
@@ -53,44 +54,54 @@ export class LoginComponent implements OnInit {
     })
   })
 
+   // Getters to check the inputs are valid or not (To show error message in DOM)
   get isEmailInvalid(){
     return this.form.controls.email.touched && this.form.controls.email.invalid;
   }
+
   get isPasswordInvalid(){
     return this.form.controls.password.touched && this.form.controls.password.invalid;
   }
 
+  // Submit the login data
   async onSubmit(){
-    this.form.markAllAsTouched()
+    this.form.markAllAsTouched()    // To show error messages, when the form is submitted
     if(this.form.valid){
-      this.isLoading.set(true);
+      this.isLoading.set(true);   // Enable the spinner, before the response came
+
+      // Request body to be sent
       const body:LogInData = {
         email: this.form.controls.email.value!.trim().toLowerCase(),
         password: this.form.controls.password.value!.trim()
       }
 
       try{
+        // Make the API call
         const data = await this.authService.logInUser(body);
+
+        // Saving the JWT and fetching the current logged in user details
         this.authService.handleLogIn(data.jwtToken);
         this.form.reset();
+        
         // While registering, setting welcome message differently, if not set, set from here
         if(this.toastManagerService.logInMessage() == ''){
           this.toastManagerService.setLogInMessage("Welcome back, " + data.email);
         }
         this.route.navigate(["/home"], {replaceUrl: true})
       }catch(err: any){
-          // If server is not running, sending meaningful error message
+          // If the API call fails, show error
           if(err.error.message){
             this.toastr.error(err.error.message, err.error.error);
           }else{
             this.toastr.error("Something went wrong, please try again later", "Error")
           }
       }finally{
-        this.isLoading.set(false);
+        this.isLoading.set(false);  // Disable the spinner, after the API call is done
       }
     }
   }
 
+  // Show/hide password
   togglePasswordShow(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
