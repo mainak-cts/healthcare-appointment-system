@@ -24,6 +24,7 @@ export class AvailabilitiesComponent implements OnInit{
 
   currentLoggedInUser = signal<User | null>(null);
   availabilities = signal<Availability[]>([]);
+  formSubmitted = signal(false);
 
   pagedAvailabilities = signal<Availability[]>([]);
   pageSize = signal<number>(10);
@@ -33,7 +34,6 @@ export class AvailabilitiesComponent implements OnInit{
   availabilityService = inject(AvailabilityApiService);
   appointmentService = inject(AppointmentApiService);
   httpClient = inject(HttpClient);
-  formSubmitted = signal(false);
   toastr = inject(ToastrService);
 
   // Create availability form
