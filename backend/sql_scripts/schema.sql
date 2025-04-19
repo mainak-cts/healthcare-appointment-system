@@ -28,8 +28,8 @@ CREATE TABLE appointments(
 CREATE TABLE consultations(
 	consultation_id INT AUTO_INCREMENT,
     appointment_id INT,
-    notes VARCHAR(255),
-    prescription VARCHAR(255),
+    notes VARCHAR(500),
+    prescription VARCHAR(1000),
     CONSTRAINT consultation_pk PRIMARY KEY(consultation_id),
     CONSTRAINT consultation_appointment_fk FOREIGN KEY(appointment_id) REFERENCES appointments(appointment_id)
 );
@@ -48,6 +48,3 @@ CREATE TABLE availabilities(
 -- DROP TABLE appointments;
 -- DROP table consultations;
 -- DROP TABLE availabilities;
-
-
-
