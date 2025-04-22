@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+// For representing user login data
+
 @Data
 public class UserLoginDTO {
 

@@ -12,7 +12,9 @@ import com.cts.healthcare_appointment_system.repositories.AppointmentRepository;
 import com.cts.healthcare_appointment_system.repositories.AvailabilityRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CronJobsService {
@@ -21,7 +23,7 @@ public class CronJobsService {
     private AppointmentRepository appointmentRepo;
     private NotificationService notificationService;
 
-
+    // Find all the past time slots of the current date, and make them unavailable, automatically
     @Scheduled(cron = "0 * * ? * *")   
     public void markPastAvailabilitiesUnavailable(){
         // Find all the past slots of today
@@ -39,6 +41,8 @@ public class CronJobsService {
                         // Mark the appointment as completed
                         ap.complete();
                         appointmentRepo.save(ap);
+
+                        log.info("Completed an appointment with id: {}", ap.getAppointmentId());
 
                         // Send completion mail
                         notificationService.sendCompletionEmail(ap);

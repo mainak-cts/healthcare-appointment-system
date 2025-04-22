@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+// For changing password
+
 @Data
 public class ChangePasswordDTO {
     @Email(message = "Email is invalid")

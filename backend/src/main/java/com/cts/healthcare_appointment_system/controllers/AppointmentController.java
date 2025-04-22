@@ -21,8 +21,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/appointments")
 @AllArgsConstructor
+@RequestMapping("/appointments")
 public class AppointmentController {
 	
 	private AppointmentService appointmentService;

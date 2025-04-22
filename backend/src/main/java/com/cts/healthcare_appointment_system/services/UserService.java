@@ -94,7 +94,7 @@ public class UserService {
 
     }
 
-    // Change password
+    // Change password of an user
     public ResponseEntity<User> changeUserPassword(ChangePasswordDTO dto){
         String email = dto.getEmail();
         String newPassword = dto.getNewPassword();
