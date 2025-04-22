@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// For updating an availability slot
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -56,6 +56,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // Forwarding request to next filter
+        // JWTFilter only checks whether the JWT is valid or not, i.e, whether the associated email id matches or token is expired or not
+        // The next filter (UserNamePasswordAuthFilter) will perform the actual username and the password validation. (that's why we need UsernamePasswordAuthenticationToken)
         filterChain.doFilter(request, response);
     }
 

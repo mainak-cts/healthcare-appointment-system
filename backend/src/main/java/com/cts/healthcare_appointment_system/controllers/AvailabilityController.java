@@ -23,8 +23,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/availabilities")
 @AllArgsConstructor
+@RequestMapping("/availabilities")
 public class AvailabilityController {
 
     private AvailabilityService availabilityService;

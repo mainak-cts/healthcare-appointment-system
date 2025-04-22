@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// For creating a new consultation
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

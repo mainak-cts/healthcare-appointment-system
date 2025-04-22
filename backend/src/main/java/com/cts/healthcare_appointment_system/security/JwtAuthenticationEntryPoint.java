@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    // Executes whenever some exception occurs during the Authentication or Authorization process
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException {

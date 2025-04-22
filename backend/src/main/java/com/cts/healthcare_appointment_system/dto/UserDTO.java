@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// For creating a new user
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
