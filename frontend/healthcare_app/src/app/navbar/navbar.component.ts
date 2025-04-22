@@ -14,8 +14,6 @@ export class NavbarComponent implements OnInit{
   authService = inject(AuthApiService);
   user = signal<any>(null);
 
-  toastManagerService = inject(ToastManagerService);
-
   // Fetch the details of the currently logged in user
   ngOnInit(){
     this.authService.user$.subscribe((user) => {
