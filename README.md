@@ -2,10 +2,11 @@
 
 ## Introduction
 
-The **Healthcare Appointment Management System** is a Spring Boot-based solution designed to simplify and streamline healthcare appointment management. It provides a robust and secure platform for managing user registrations, scheduling appointments, maintaining consultation records, and monitoring doctor availability. Notifications for appointments are automated using **CRON jobs** with **Java Mail Sender**.
+The **Healthcare Appointment Management System** is a Spring Boot-based solution designed to simplify and streamline healthcare appointment management. It provides a robust and secure platform for managing user registrations, scheduling appointments, maintaining consultation records, and monitoring doctor availability. Notifications for appointments are automated using **CRON jobs** with **Java Mail Sender**. The frontend is developed using **Angular** to ensure a responsive and user-friendly interface.
 
-![Data Flow Diagram](./backend/images/dfd.png)
----
+## ![Home Page](./backend/images/home_page.png)
+
+## ![Data Flow Diagram](./backend/images/dfd.png)
 
 ## Features
 
@@ -25,8 +26,9 @@ The **Healthcare Appointment Management System** is a Spring Boot-based solution
 
 ## Tech Stack
 
-- **Programming Language**: Java (JDK 17+)
-- **Framework**: Spring Boot
+- **Programming Language**: Java (JDK 21)
+- **Backend Framework**: Spring Boot (`http://localhost:9090/api`)
+- **Frontend Framework**: Angular (v19+) (`http://localhost:4200`)
 - **Database**: MySQL
 - **Build Tool**: Maven
 - **Validation**: Jakarta Validation API
@@ -50,61 +52,60 @@ The **Healthcare Appointment Management System** is a Spring Boot-based solution
 
 ---
 
-## API Endpoints
+## Backend API Endpoints
 
 ### 1. User Management
 
-| Endpoint         | Method | Description                    |
-|------------------|--------|--------------------------------|
-| `/users`         | GET    | Fetch all users               |
-| `/users/{id}`    | GET    | Fetch user by ID              |
-| `/users/register`| POST   | Register a new user           |
-| `/users/login`   | POST   | Authenticate an existing user |
-| `/users`         | PUT    | Update user profile           |
-| `/users/{id}`    | DELETE | Delete user by ID             |
+| Endpoint          | Method | Description                   |
+| ----------------- | ------ | ----------------------------- |
+| `/users`          | GET    | Fetch all users               |
+| `/users/{id}`     | GET    | Fetch user by ID              |
+| `/users/register` | POST   | Register a new user           |
+| `/users/login`    | POST   | Authenticate an existing user |
+| `/users`          | PUT    | Update user profile           |
+| `/users/{id}`     | DELETE | Delete user by ID             |
 
 ---
 
 ### 2. Appointment Scheduling
 
-| Endpoint                    | Method | Description                    |
-|-----------------------------|--------|--------------------------------|
-| `/appointments`             | GET    | Fetch all appointments         |
-| `/appointments/{id}`        | GET    | Fetch appointment by ID        |
-| `/appointments`             | POST   | Create a new appointment       |
-| `/appointments/cancel/{id}` | PUT    | Cancel an appointment          |
-| `/appointments/complete/{id}`| PUT   | Mark appointment as completed  |
+| Endpoint                      | Method | Description                   |
+| ----------------------------- | ------ | ----------------------------- |
+| `/appointments`               | GET    | Fetch all appointments        |
+| `/appointments/{id}`          | GET    | Fetch appointment by ID       |
+| `/appointments`               | POST   | Create a new appointment      |
+| `/appointments/cancel/{id}`   | PUT    | Cancel an appointment         |
+| `/appointments/complete/{id}` | PUT    | Mark appointment as completed |
 
 ---
 
 ### 3. Consultation Records
 
-| Endpoint                    | Method | Description                    |
-|-----------------------------|--------|--------------------------------|
-| `/consultations`            | GET    | Fetch all consultations        |
-| `/consultations/{id}`       | GET    | Fetch consultation by ID       |
-| `/consultations`            | POST   | Create a new consultation      |
-| `/consultations`            | PUT    | Update consultation details    |
-| `/consultations/{id}`       | DELETE | Delete consultation by ID      |
+| Endpoint              | Method | Description                 |
+| --------------------- | ------ | --------------------------- |
+| `/consultations`      | GET    | Fetch all consultations     |
+| `/consultations/{id}` | GET    | Fetch consultation by ID    |
+| `/consultations`      | POST   | Create a new consultation   |
+| `/consultations`      | PUT    | Update consultation details |
+| `/consultations/{id}` | DELETE | Delete consultation by ID   |
 
 ---
 
 ### 4. Doctor Availability
 
-| Endpoint                    | Method | Description                    |
-|-----------------------------|--------|--------------------------------|
-| `/availabilities`           | GET    | Fetch all availability records |
-| `/availabilities/{id}`      | GET    | Fetch availability by ID       |
-| `/availabilities`           | POST   | Add new availability           |
-| `/availabilities`           | PUT    | Update availability            |
-| `/availabilities/{id}`      | DELETE | Remove availability            |
+| Endpoint               | Method | Description                    |
+| ---------------------- | ------ | ------------------------------ |
+| `/availabilities`      | GET    | Fetch all availability records |
+| `/availabilities/{id}` | GET    | Fetch availability by ID       |
+| `/availabilities`      | POST   | Add new availability           |
+| `/availabilities`      | PUT    | Update availability            |
+| `/availabilities/{id}` | DELETE | Remove availability            |
 
 ---
 
 ## Database Schema
 
 ![Database Schema](./backend/images/db_diagram.png)
-
 
 ## Key Features
 
