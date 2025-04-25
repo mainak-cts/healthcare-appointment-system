@@ -6,7 +6,7 @@
 html, body { height: 100%; }
 
 :root{
-    --nav-footer-color: rgba(226, 233, 246, 0.753);
+    --nav-footer-color: rgba(225, 239, 250);
 }
 
 body { 
@@ -24,6 +24,8 @@ body {
 div.container{
     width: 100vw;
     min-height: 100%;
+    margin-top: 2.25rem;
+    margin-bottom: 2.5rem;
     display: flex;
     justify-content: center;
     box-sizing: border-box;
@@ -158,5 +160,6 @@ button.btn-arrow:hover i{
     }
     .mat-mdc-paginator-container{
         flex-direction: column !important;
+        gap: 7px;
     }
 }

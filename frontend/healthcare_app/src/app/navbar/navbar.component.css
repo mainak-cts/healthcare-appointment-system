@@ -4,6 +4,8 @@ nav#navbar{
     align-items: center;
     box-sizing: border-box;
     height: 65px;
+    position: fixed;
+    z-index: 100;
     gap: 1rem;
     background-color: var(--nav-footer-color);
     padding: 1rem;
